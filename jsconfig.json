@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "app/",
+    "paths": {
+      "@shared/*": ["shared/*"],
+      "@assets/*": ["assets/*"],
+      "@utils/*": ["utils/*"],
+      "@providers/*": ["providers/*"],
+      "@actions/*": ["actions/*"]
+    }
+  }
+}
