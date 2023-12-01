@@ -22,9 +22,9 @@ export async function getCurrentUserCart() {
   }
 }
 
-export async function syncBackendCart(cartId, cartItems) {
+export async function updateBackendCart(cartId, cartItems) {
   if (cartItems.length) {
-    await sql`DELETE FROM cart_items`;
+    await sql`DELETE FROM cart_items;`;
 
     const query = `INSERT INTO cart_items (cart_id, pizza_id, name, price, quantity, image_url)
 VALUES

@@ -8,6 +8,7 @@ import {
   useSyncClientCartToBackendCart,
   useSyncLocalStorageCartToComputedCart,
 } from "./hooks";
+import { useCurrentUser } from "@shared/hooks";
 
 export const CartContext = createContext({});
 
@@ -20,6 +21,7 @@ const initialState = {
 
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState(initialState);
+  const user = useCurrentUser();
 
   const { data: cartBackend } = useQuery({
     queryKey: ["cart"],
@@ -37,6 +39,7 @@ export default function CartProvider({ children }) {
       return { ...cart, status: "NOT_LOGGED_IN" };
     },
     initialData: cart,
+    enabled: !!user,
   });
 
   const backendCartMutation = useBackendCartMutation();

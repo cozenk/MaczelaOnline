@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Maczela's Pizza Online Shop
 
-## Getting Started
+**Running the app locally..**
 
 First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, open the ngrok application and type in.
+This will ensure Clerk's newly created users will be synced to our database.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```powershell
+ngrok http 3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+**SQL Queries**
 
-To learn more about Next.js, take a look at the following resources:
+To initialize the tables:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sql
+CREATE TABLE users (
+	id SERIAL PRIMARY KEY,
+	clerk_id VARCHAR(255) NOT NULL,
+	image_url VARCHAR(255),
+	first_name VARCHAR(255),
+	last_name VARCHAR(255),
+	mobile_number VARCHAR(11),
+	email VARCHAR(255) NOT NULL,
+	street_address VARCHAR(255),
+	city VARCHAR(255),
+	province VARCHAR(255),
+	postal_code VARCHAR(10),
+	role VARCHAR(10) NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE
+);
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+CREATE TABLE pizza (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	image_url VARCHAR(255),
+	category VARCHAR(255),
+	description VARCHAR(255),
+	price DECIMAL(10, 2),
+	size VARCHAR(255)
+);
 
-## Deploy on Vercel
+CREATE TABLE cart (
+	id SERIAL PRIMARY KEY,
+	user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE
+);
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+CREATE TABLE cart_items (
+	id SERIAL PRIMARY KEY,
+	cart_id INT REFERENCES cart(id) ON DELETE CASCADE,
+	pizza_id INT UNIQUE REFERENCES pizza(id) ON DELETE CASCADE,
+	name VARCHAR(255),
+	price DECIMAL(10, 2),
+	quantity INT,
+	image_url VARCHAR(255),
+	size VARCHAR(255)
+);
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+CREATE TABLE orders (
+	id SERIAL PRIMARY KEY,
+	status VARCHAR(255),
+	placed_date TIMESTAMP WITH TIME ZONE,
+	is_completed BOOLEAN DEFAULT false,
+	user_id INT REFERENCES users(id) ON DELETE CASCADE,
+	total_price DECIMAL(10, 2),
+	total_items VARCHAR(255)
+);
+
+CREATE TABLE order_items (
+	id SERIAL PRIMARY KEY,
+	order_id INT REFERENCES orders(id) ON DELETE CASCADE,
+	pizza_id INT REFERENCES pizza(id),
+	name VARCHAR(255),
+	price DECIMAL(10, 2),
+	quantity INT,
+	size VARCHAR(255),
+	image_url VARCHAR(255)
+);
+```
+
+To delete a table _(Edit as you need)_:
+
+```sql
+DROP TABLE pizza;
+```
+
+To insert a pizza _(Edit as you need)_:
+
+```sql
+INSERT INTO pizza (name,  image_url, category, description, price, size)
+VALUS ('All Veggies', '/pizza-menu/1.jpg', 'Best sellers', 'Some description', 298, 'Medium 10"');
+```

@@ -6,7 +6,7 @@ export function useSyncLocalStorageCartToComputedCart({
   setCart,
   computedCart,
 }) {
-  // Only sync guest cart to local storage
+  // Only sync guest cart (not backend cart) to local storage
   useEffect(() => {
     if (
       computedCart.status === "LOADING" &&
@@ -46,6 +46,10 @@ export function useBackendCartMutation() {
           cartItems: cart.cartItems,
         }),
       });
+    },
+    onError: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 
