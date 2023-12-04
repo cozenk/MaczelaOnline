@@ -1,14 +1,13 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { setLocalStorageItem } from "@utils/localStorage";
 import { createContext, useMemo, useState } from "react";
 import {
   useBackendCartMutation,
+  useFetchCartBackend,
   useSyncClientCartToBackendCart,
   useSyncLocalStorageCartToComputedCart,
 } from "./hooks";
-import { useCurrentUser } from "@shared/hooks";
 
 export const CartContext = createContext({});
 
@@ -21,27 +20,8 @@ const initialState = {
 
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState(initialState);
-  const user = useCurrentUser();
 
-  const { data: cartBackend } = useQuery({
-    queryKey: ["cart"],
-    queryFn: async () => {
-      const fetchedCart = await (await fetch("/api/cart/me")).json();
-      if (fetchedCart) {
-        return {
-          ...cart,
-          id: fetchedCart.id,
-          cartItems: fetchedCart.cartItems,
-          status: "BACKEND_CART",
-        };
-      }
-
-      return { ...cart, status: "NOT_LOGGED_IN" };
-    },
-    initialData: cart,
-    enabled: !!user,
-  });
-
+  const cartBackend = useFetchCartBackend({ initialState, clientCart: cart });
   const backendCartMutation = useBackendCartMutation();
 
   const computedCart = useMemo(() => {
@@ -76,7 +56,15 @@ export default function CartProvider({ children }) {
     };
   }, [cart, cartBackend]);
 
-  const addToCart = ({ id, name, price, quantity, imageSrc, imageAlt }) => {
+  const addToCart = ({
+    id,
+    name,
+    price,
+    quantity,
+    imageSrc,
+    imageAlt,
+    size,
+  }) => {
     if (name && price && quantity) {
       const newItem = {
         pizzaId: id,
@@ -86,12 +74,12 @@ export default function CartProvider({ children }) {
         total: price * quantity,
         imageSrc,
         imageAlt,
+        size,
       };
 
       setCart((cart) => ({
         ...cart,
         cartItems: [...cart.cartItems, newItem],
-        action: "ADD_ITEM",
       }));
     }
   };

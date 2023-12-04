@@ -20,7 +20,7 @@ export default function Nav() {
           <a href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
             <span className="sr-only">Your Company</span>
             <Image src={icon} width={35} height={35} alt="brand icon" />
-            <span className="text-xl font-bold text-gray-900">
+            <span className="text-xl font-bold  dark:text-white">
               Maczela's <span className="text-red-600">Pizza</span>
             </span>
           </a>
@@ -31,7 +31,7 @@ export default function Nav() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-semibold leading-6 text-gray-900"
+              className="text-sm font-semibold leading-6  dark:text-white"
             >
               {item.name}
             </a>

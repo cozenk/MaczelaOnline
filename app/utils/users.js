@@ -15,13 +15,13 @@ export async function getCurrentUser() {
   const query = `SELECT * FROM users WHERE clerk_id = $1;`;
   const data = [clerkUser.id];
 
-  const { rows: userRows } = await sql.query(query, data);
+  const { rows } = await sql.query(query, data);
 
-  if (userRows.length) {
-    return userRows[0];
+  if (rows.length) {
+    return rows[0];
   }
 
-  throw new Error("Can't create user");
+  throw new Error("Can't find the user");
 }
 
 export async function initUserCart(userId) {
@@ -33,6 +33,8 @@ export async function initUserCart(userId) {
   if (rows.length) {
     return console.log(`Cart ${rows[0].id} for ${userId} created`);
   }
+
+  throw new Error("Can't initialize user cart");
 }
 
 export async function createDbUser({
@@ -56,6 +58,7 @@ export async function createDbUser({
 
     return null;
   } catch (err) {
+    console.error("Can't create user");
     throw err;
   }
 }
@@ -72,5 +75,5 @@ export async function deleteDbUser(clerkId) {
     return { email };
   }
 
-  return console.log("User doesn't exist");
+  throw new Error("Can't delete user as it doesn't exist");
 }

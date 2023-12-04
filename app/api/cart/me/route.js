@@ -10,7 +10,8 @@ export async function GET() {
     price: item.price,
     pizzaId: item.pizza_id,
     imageSrc: item.image_url,
-    price: Number(item.price),
+    price: Number(item.price).toLocaleString(),
+    size: item.size,
   }));
 
   return NextResponse.json({ id: cart.id, cartItems });

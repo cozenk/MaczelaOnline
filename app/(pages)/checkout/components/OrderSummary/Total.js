@@ -10,17 +10,17 @@ export default function Total() {
   return (
     <div className="mt-10 border-t-2 pt-5">
       <div className="computation flex flex-col gap-y-4 border-b-2 pb-5">
-        <div className="flex justify-between text-gray-900">
+        <div className="flex justify-between ">
           <p>Subtotal</p>
           <p className="text-lg">{cart.totalPriceDisplay}</p>
         </div>
-        <div className="flex justify-between text-gray-900">
+        <div className="flex justify-between ">
           <p>Shipping</p>
           <p className="text-lg">₱{shippingFee}</p>
         </div>
       </div>
 
-      <div className="flex justify-between py-5 text-xl font-semibold text-gray-900">
+      <div className="flex justify-between py-5 text-xl font-semibold ">
         <p>Total</p>
         <input
           type="hidden"

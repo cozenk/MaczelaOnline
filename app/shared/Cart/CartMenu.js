@@ -18,13 +18,13 @@ export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
         <a href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
           <span className="sr-only">My Cart</span>
 
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-lg font-bold  dark:text-white">
             My <span className="">Cart</span>
           </span>
         </a>
         <button
           type="button"
-          className="-m-2.5 rounded-md p-2.5 text-gray-700"
+          className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-white"
           onClick={closeCartMenu}
         >
           <span className="sr-only">Close menu</span>
@@ -37,11 +37,11 @@ export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
           <>
             <CartItems />
             <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-              <div className="flex justify-between font-medium text-gray-900">
+              <div className="flex justify-between font-medium  dark:text-white">
                 <p>Subtotal</p>
                 <p className="text-xl">{cart.totalPriceDisplay}</p>
               </div>
-              <p className="mt-0.5 text-sm text-gray-500">
+              <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
                 Shipping and taxes calculated at checkout.
               </p>
               <div className="mt-6">

@@ -1,7 +1,15 @@
 import Image from "next/image";
 import ActionButtons from "./ActionButtons";
 
-export default function Pizza({ id, href, imageSrc, imageAlt, name, price }) {
+export default function Pizza({
+  id,
+  href,
+  imageSrc,
+  imageAlt,
+  name,
+  price,
+  size,
+}) {
   return (
     <div>
       <a href={href} className="group">
@@ -17,10 +25,14 @@ export default function Pizza({ id, href, imageSrc, imageAlt, name, price }) {
       </a>
       <div className="flex flex-col gap-3">
         <div className="flex items-baseline justify-between">
-          <h3 className="mt-4 text-lg  text-gray-700">{name}</h3>
-          <p className="mt-1 text-lg font-bold text-gray-900">₱{price}</p>
+          <h3 className="mt-4 text-lg  text-gray-700 dark:text-gray-200">
+            {name}
+          </h3>
+          <p className="mt-1 text-lg font-bold  dark:text-white">₱{price}</p>
         </div>
-        <ActionButtons pizza={{ id, href, imageSrc, imageAlt, name, price }} />
+        <ActionButtons
+          pizza={{ id, href, imageSrc, imageAlt, name, price, size }}
+        />
       </div>
     </div>
   );

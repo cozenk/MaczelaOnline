@@ -35,7 +35,7 @@ CREATE TABLE users (
 	province VARCHAR(255),
 	postal_code VARCHAR(10),
 	role VARCHAR(10) NOT NULL,
-	created_at TIMESTAMP WITH TIME ZONE
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE pizza (
@@ -67,7 +67,7 @@ CREATE TABLE cart_items (
 CREATE TABLE orders (
 	id SERIAL PRIMARY KEY,
 	status VARCHAR(255),
-	placed_date TIMESTAMP WITH TIME ZONE,
+	placed_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	is_completed BOOLEAN DEFAULT false,
 	user_id INT REFERENCES users(id) ON DELETE CASCADE,
 	total_price DECIMAL(10, 2),
@@ -96,5 +96,5 @@ To insert a pizza _(Edit as you need)_:
 
 ```sql
 INSERT INTO pizza (name,  image_url, category, description, price, size)
-VALUS ('All Veggies', '/pizza-menu/1.jpg', 'Best sellers', 'Some description', 298, 'Medium 10"');
+VALUES ('All Veggies', '/pizza-menu/1.jpg', 'Best sellers', 'Some description', 298, 'Medium 10"');
 ```

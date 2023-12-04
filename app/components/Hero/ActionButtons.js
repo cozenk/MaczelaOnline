@@ -17,7 +17,7 @@ export default function ActionButtons({ className = "" }) {
       {!isSignedIn ? (
         <Link
           href="/login"
-          className="text-sm font-semibold leading-6 text-gray-900"
+          className="text-sm font-semibold leading-6  dark:text-white"
         >
           Login to save orders <span aria-hidden="true">→</span>
         </Link>

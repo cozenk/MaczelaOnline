@@ -68,14 +68,14 @@ export default function UserAuth({ className = "" }) {
               {user ? (
                 <>
                   <div className="info mb-4 flex flex-col gap-2 text-sm">
-                    <div>
+                    <div className="text-black">
                       <span className="text-gray-600">Name:</span>{" "}
                       {user.first_name} {user.last_name}
                     </div>
-                    <div>
+                    <div className="text-black">
                       <span className="text-gray-600">Email:</span> {user.email}
                     </div>
-                    <div>
+                    <div className="text-black">
                       <span className="text-gray-600">Mobile number: </span>{" "}
                       {user.mobile_number || (
                         <span className="cursor-pointer text-green-700">

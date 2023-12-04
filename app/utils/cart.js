@@ -26,11 +26,11 @@ export async function updateBackendCart(cartId, cartItems) {
   if (cartItems.length) {
     await sql`DELETE FROM cart_items;`;
 
-    const query = `INSERT INTO cart_items (cart_id, pizza_id, name, price, quantity, image_url)
+    const query = `INSERT INTO cart_items (cart_id, pizza_id, name, price, quantity, image_url, size)
 VALUES
 ${cartItems.map(
   (item) =>
-    `('${cartId}', '${item.pizzaId}', '${item.name}', ${item.price}, ${item.quantity}, '${item.imageSrc}')
+    `('${cartId}', '${item.pizzaId}', '${item.name}', ${item.price}, ${item.quantity}, '${item.imageSrc}', '${item.size}')
 `,
 )} RETURNING *;`;
 

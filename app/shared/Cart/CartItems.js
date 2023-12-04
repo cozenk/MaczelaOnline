@@ -33,8 +33,8 @@ export default function CartItems({ imageSize }) {
                 />
                 <div>
                   <h2 className="text-lg font-medium">{item.name}</h2>
-                  <span className="variant text-md text-gray-600">
-                    Medium 10"
+                  <span className="variant text-md text-gray-600 dark:text-gray-400">
+                    {item.size}
                   </span>
                 </div>
               </div>
@@ -43,7 +43,7 @@ export default function CartItems({ imageSize }) {
                 <h2 className="mr-2 text-lg font-medium">
                   {item.displayPrice}
                 </h2>
-                <div className="quantity-control flex w-28 items-center justify-between rounded-full border border-black px-2 py-1">
+                <div className="quantity-control flex w-28 items-center justify-between rounded-full border border-black px-2 py-1 dark:border-white">
                   <MinusIcon
                     onClick={() => {
                       if (item.quantity === 1) {
@@ -56,7 +56,7 @@ export default function CartItems({ imageSize }) {
                           quantity: item.quantity - 1,
                         });
                     }}
-                    className="w-5 cursor-pointer text-gray-600 hover:text-gray-400"
+                    className="w-5 cursor-pointer text-gray-600 hover:text-gray-400 dark:text-gray-400 hover:dark:text-gray-200"
                   />{" "}
                   {item.quantity}{" "}
                   <PlusIcon
@@ -65,7 +65,7 @@ export default function CartItems({ imageSize }) {
                         quantity: item.quantity + 1,
                       })
                     }
-                    className="w-5 cursor-pointer text-gray-600 hover:text-gray-400"
+                    className="w-5 cursor-pointer text-gray-600 hover:text-gray-400 dark:text-gray-400 hover:dark:text-gray-200"
                   />
                 </div>
               </div>
