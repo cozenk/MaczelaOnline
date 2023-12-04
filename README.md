@@ -2,13 +2,29 @@
 
 **Running the app locally..**
 
-First, run the development server:
+**If it's your first time running the app**, make sure you get the correct env variables first.
+_Skip this step if you already set env variables already_
+
+```bash
+vercel env pull
+```
+
+Vercel will prompt you to link the project first.
+_Skip this step if you already set env variables already_
+
+```bash
+vercel link
+```
+
+---
+
+To run the development server:
 
 ```bash
 npm run dev
 ```
 
-**Then, to ensure user authentication works well**, open the ngrok application and type in.
+To ensure user authentication works well, open the ngrok application and type in.
 
 ```powershell
 ngrok http 3000
