@@ -1,5 +1,11 @@
 import { sql } from "@vercel/postgres";
 
+export async function getAllPizzas() {
+  const { rows } = await sql`SELECT * FROM pizza ;`;
+
+  return rows;
+}
+
 export async function getPizzasByCategory(category) {
   if (category) {
     const query = `SELECT * FROM pizza WHERE category = $1;`;
