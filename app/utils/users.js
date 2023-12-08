@@ -7,6 +7,12 @@ export async function getAllUsers() {
   return rows;
 }
 
+export async function getAllCustomers() {
+  const { rows } = await sql`SELECT * FROM users WHERE role = 'CUSTOMER';`;
+
+  return rows;
+}
+
 export async function getCurrentUser() {
   const clerkUser = await currentUser();
 
@@ -18,7 +24,17 @@ export async function getCurrentUser() {
   const { rows } = await sql.query(query, data);
 
   if (rows.length) {
-    return rows[0];
+    const user = rows[0];
+
+    const getFullName = () => {
+      if (user.first_name && user.last_name) {
+        return `${user.first_name} ${user.last_name}`;
+      }
+
+      return null;
+    };
+
+    return { ...user, full_name: getFullName() };
   }
 
   throw new Error("Can't find the user");

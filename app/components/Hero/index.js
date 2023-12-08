@@ -23,7 +23,7 @@ export default function Hero() {
         <div className="relative flex w-full flex-wrap items-center justify-center lg:justify-between">
           <div className="text max-w-lg">
             <h1 className="mb-10 text-center text-6xl font-bold tracking-tight  dark:text-white md:text-left">
-              Garantisong fresh na may{" "}
+              Garantisadong fresh na may{" "}
               <span className="text-red-500">pagmamahal ♥️</span>
             </h1>
             <p className="mt-6 hidden text-lg italic leading-8 text-black dark:text-white lg:block">

@@ -13,3 +13,5 @@ export async function getPizzasByCategory(category) {
     return rows;
   }
 }
+
+// TODO: CRUD operations for pizza table

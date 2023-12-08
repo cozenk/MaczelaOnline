@@ -16,6 +16,7 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
 } from "@heroicons/react/24/outline";
+import Modal from "@shared/Modal";
 
 export default function Checkout() {
   const { cart } = useContext(CartContext);
@@ -40,33 +41,31 @@ export default function Checkout() {
   return (
     <>
       {state.orderSubmitted ? (
-        <div className="fixed inset-0 z-50 bg-gray-500 bg-opacity-75 transition-opacity">
-          <div className="overlay-content absolute left-1/2 top-1/2 flex w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-between rounded-xl  bg-white p-14">
-            <div className="text-center text-black">
-              <h2 className="text-2xl font-semibold tracking-wide">
-                Order submitted
-              </h2>
-              <p className="mt-2 text-lg">
-                We will contact you shortly to confirm your order
-              </p>
-            </div>
-
-            <div className="mt-6 flex w-full flex-wrap items-center gap-5">
-              <Link
-                href={"/my-orders"}
-                className="flex w-full items-center justify-center gap-2 rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700"
-              >
-                See my orders <ShoppingBagIcon className="w-6" />
-              </Link>
-              <Link
-                href={"/"}
-                className="flex w-full items-center justify-center gap-2 font-medium text-black hover:text-gray-500"
-              >
-                Back to home <HomeIcon className="w-6" />
-              </Link>
-            </div>
+        <Modal>
+          <div className="text-center text-black">
+            <h2 className="text-2xl font-semibold tracking-wide">
+              Order submitted
+            </h2>
+            <p className="mt-2 text-lg">
+              We will contact you shortly to confirm your order
+            </p>
           </div>
-        </div>
+
+          <div className="mt-6 flex w-full flex-wrap items-center gap-5">
+            <Link
+              href={"/my-orders"}
+              className="flex w-full items-center justify-center gap-2 rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700"
+            >
+              See my orders <ShoppingBagIcon className="w-6" />
+            </Link>
+            <Link
+              href={"/"}
+              className="flex w-full items-center justify-center gap-2 font-medium text-black hover:text-gray-500"
+            >
+              Back to home <HomeIcon className="w-6" />
+            </Link>
+          </div>
+        </Modal>
       ) : null}
 
       {cart.cartItems.length > 0 ? (

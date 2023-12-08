@@ -22,7 +22,7 @@ body {
 input {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  background: rgb(var(--background));
+  background: rgb(var(--background)) !important;
   color: rgb(var(--foreground-rgb)) !important;
 }
 

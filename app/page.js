@@ -5,6 +5,7 @@ import Nav from "@shared/Navigation/Nav";
 import NavProvider from "@providers/NavProvider";
 
 const bestSellers = [
+  //TODO: Pizza static data reference
   {
     id: 1,
     name: "All Veggies",
