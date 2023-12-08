@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { CellAction } from "./cell-action"
+import { ColumnDef } from "@tanstack/react-table";
+import { CellAction } from "./cell-action";
 
 export const columns = [
   {
@@ -26,6 +26,6 @@ export const columns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />
-  }
-]
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
+];

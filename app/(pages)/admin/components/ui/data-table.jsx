@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -14,20 +14,16 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "(pages)/admin/components/ui/table"
+} from "(pages)/admin/components/ui/table";
 
-
-export function DataTable({
-  columns,
-  data,
-}) {
+export function DataTable({ columns, data }) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
-  console.log(table.getCoreRowModel)
+  console.log(table.getCoreRowModel);
 
   return (
     <div className="rounded-md border">
@@ -42,10 +38,10 @@ export function DataTable({
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -74,5 +70,5 @@ export function DataTable({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
