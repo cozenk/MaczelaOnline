@@ -9,7 +9,7 @@ import { useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "(pages)/admin/components/ui/data-table";
 
-export const ProductsClient = (data) => {
+export const ProductsClient = ({ data }) => {
   const params = useParams();
   const router = useRouter();
 
