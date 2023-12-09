@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "(pages)/admin/components/ui/dropdown-menu";
 import { useState } from "react";
-import { Edit, KeyRound, MoreHorizontal, Trash } from "lucide-react";
+import { Edit, EyeIcon, MoreHorizontal, Trash } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import { Button } from "(pages)/admin/components/ui/button";
@@ -48,13 +48,13 @@ export const CellAction = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => {}}>
+            <EyeIcon className="mr-2 h-4 w-4 " />
+            View
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <Edit className="mr-2 h-4 w-4 " />
             Update
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>
-            <KeyRound className="mr-2 h-4 w-4 " />
-            Reset Password
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenDelete(true)}>
             <Trash className="mr-2 h-4 w-4 " />

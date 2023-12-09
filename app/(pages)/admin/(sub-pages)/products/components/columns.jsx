@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { CellAction } from "./cell-action";
 
-export const columns = [
+export const productsColumns = [
   {
     accessorKey: "image_url",
     header: "Image",
@@ -48,6 +48,21 @@ export const columns = [
   {
     accessorKey: "variants",
     header: "Variants",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellAction data={row.original} />,
+  },
+];
+
+export const variantsColumns = [
+  {
+    accessorKey: "name",
+    header: "Variant",
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
   },
   {
     id: "actions",
