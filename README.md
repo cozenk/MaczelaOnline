@@ -24,17 +24,6 @@ To run the development server:
 npm run dev
 ```
 
-To ensure user authentication works well, open the ngrok application and type in.
-
-```powershell
-ngrok http 3000
-```
-
-Then, copy the Forwarding url from ngrok's app terminal and update the Webhook endpoint in [Clerk's dashboard](https://dashboard.clerk.com/apps/app_2YxPo2d6glgTYGgrBUFeKjhQ9wz/instances/ins_2YxPoFDr8tsV1kDsYp8NjBoWz9r/webhooks)
-![Alt text](./public/docs/ngrok.png)
-
-Now users should be able to login or create a new account in the [app](http://localhost:3000) 😁.
-
 ---
 
 **SQL Queries**

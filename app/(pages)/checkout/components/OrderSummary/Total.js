@@ -24,7 +24,7 @@ export default function Total() {
         <p>Total</p>
         <input
           type="hidden"
-          name="total-price"
+          name="total_price"
           value={cart.totalPrice + shippingFee}
         />
         <p className="">₱{cart.totalPrice + shippingFee}</p>

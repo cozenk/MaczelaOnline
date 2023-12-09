@@ -2,7 +2,7 @@
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import UserAuth from "../UserAuth";
+import UserAuth from "./UserAuth";
 import icon from "@assets/icon.png";
 import SlideMenu from "./SlideMenu";
 import { useContext, useEffect } from "react";
@@ -49,10 +49,7 @@ export default function MobileMenu({ navigation = [] }) {
               </a>
             ))}
           </div>
-          <UserAuth
-            key={"mobile-menu"}
-            className="mt-5 !flex w-fit flex-col items-start gap-y-10"
-          />
+          <UserAuth className="mt-5 !flex w-fit flex-col items-start gap-y-10" />
         </div>
       </div>
     </SlideMenu>

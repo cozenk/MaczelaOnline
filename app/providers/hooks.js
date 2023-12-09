@@ -1,4 +1,3 @@
-import { useCurrentUser } from "@shared/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import { useEffect } from "react";

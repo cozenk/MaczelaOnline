@@ -2,9 +2,49 @@ import { currentUser } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
 
 export async function getAllUsers() {
-  const { rows } = await sql`SELECT * FROM users;`;
+  const { rows } =
+    await sql`SELECT * FROM users ORDER BY role DESC, created_at DESC;`;
 
-  return rows;
+  if (rows.length) {
+    return rows.map((user) => {
+      return {
+        ...user,
+        full_name: getFullName(user),
+        address: getFullAddress(user),
+      };
+    });
+  }
+  return [];
+}
+
+export async function updateUserInfo(userId, newUserInfo) {
+  const query = `SELECT * FROM users WHERE id = $1;`;
+  const data = [userId];
+
+  const { rows: userRows } = await sql.query(query, data);
+
+  if (userRows.length) {
+    const user = userRows[0];
+
+    const columns = Object.keys(newUserInfo);
+
+    const query = `UPDATE users
+    SET ${columns.map((column, index) => ` ${column} = $${index + 1}`)}
+    WHERE id = ${user.id} RETURNING *;
+    `;
+    const data = Object.values(newUserInfo);
+
+    try {
+      const { rows } = await sql.query(query, data);
+      if (rows.length) return rows[0];
+
+      throw new Error("Error updating user");
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  } else {
+    throw new Error("Cannot find update user as it doesn't exist");
+  }
 }
 
 export async function getAllCustomers() {
@@ -26,18 +66,37 @@ export async function getCurrentUser() {
   if (rows.length) {
     const user = rows[0];
 
-    const getFullName = () => {
-      if (user.first_name && user.last_name) {
-        return `${user.first_name} ${user.last_name}`;
-      }
-
-      return null;
+    return {
+      ...user,
+      full_name: getFullName(user),
+      address: getFullAddress(user),
     };
-
-    return { ...user, full_name: getFullName() };
   }
 
   throw new Error("Can't find the user");
+}
+
+export async function getUserById(userId = null) {
+  if (userId) {
+    const query = `SELECT * FROM users WHERE id = $1;`;
+    const data = [userId];
+
+    const { rows } = await sql.query(query, data);
+
+    if (rows.length) {
+      const user = rows[0];
+
+      return {
+        ...user,
+        full_name: getFullName(user),
+        address: getFullAddress(user),
+      };
+    }
+
+    throw new Error("Can't find user");
+  }
+
+  return null;
 }
 
 export async function initUserCart(userId) {
@@ -93,3 +152,30 @@ export async function deleteDbUser(clerkId) {
 
   throw new Error("Can't delete user as it doesn't exist");
 }
+
+const getFullName = (user = null) => {
+  if (!user) return null;
+
+  if (user.first_name && user.last_name) {
+    return `${user.first_name} ${user.last_name}`;
+  }
+
+  if (user.first_name) {
+    return user.first_name;
+  }
+
+  if (user.last_name) {
+    return user.last_name;
+  }
+
+  return null;
+};
+
+const getFullAddress = (user = null) => {
+  if (!user) return null;
+
+  if (user.street_address && user.city && user.province && user.postal_code)
+    return `${user.street_address}, ${user.city}, ${user.province}, ${user.postal_code}`;
+
+  return null;
+};

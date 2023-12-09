@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CartProvider from "./CartProvider";
 import { useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import NavProvider from "./NavProvider";
 
 export default function Providers({ children }) {
   const [client] = useState(new QueryClient());
@@ -11,7 +12,9 @@ export default function Providers({ children }) {
   return (
     <QueryClientProvider client={client}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <CartProvider>{children}</CartProvider>
+      <NavProvider>
+        <CartProvider>{children}</CartProvider>
+      </NavProvider>
     </QueryClientProvider>
   );
 }

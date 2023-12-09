@@ -1,20 +1,16 @@
-import { getCurrentUser, updateUserInfo } from "@utils/users";
-import { NextResponse } from "next/server";
+"use server";
 
-export async function GET() {
-  const user = await getCurrentUser();
+import { updateUserInfo } from "@utils/users";
+import { revalidatePath } from "next/cache";
 
-  return NextResponse.json(user);
-}
-
-export async function PATCH(req) {
-  const formData = await req.formData();
+export async function saveUserInfo(prevState, formData) {
   if (formData) {
     const user_id = formData.get("user_id");
-    const email = formData.get("email");
     const first_name = formData.get("first_name");
     const last_name = formData.get("last_name");
     const mobile_number = formData.get("mobile_number").replace(/\s/g, "");
+
+    const email = formData.get("email");
 
     const street_address = formData.get("street_address");
     const city = formData.get("city");
@@ -34,15 +30,31 @@ export async function PATCH(req) {
       province,
       postal_code,
     };
-
     try {
-      const user = await updateUserInfo(user_id, {
+      await updateUserInfo(user_id, {
         ...newUserInfo,
         ...newShippingAddress,
       });
-      return NextResponse.json(user);
+
+      revalidatePath("/");
+      revalidatePath("/admin/users");
+
+      return {
+        infoSaved: true,
+        isError: false,
+      };
     } catch (error) {
-      throw error;
+      console.error(error);
+
+      return {
+        infoSaved: false,
+        isError: true,
+      };
     }
   }
+
+  return {
+    infoSaved: false,
+    isError: true,
+  };
 }

@@ -1,10 +1,11 @@
-import { getCurrentUser, updateUserInfo } from "@utils/users";
+import { getUserById, updateUserInfo } from "@utils/users";
 import { NextResponse } from "next/server";
 
-export async function GET() {
-  const user = await getCurrentUser();
+export async function GET(req, { params }) {
+  const user = await getUserById(params.id);
+  if (user) return NextResponse.json(user);
 
-  return NextResponse.json(user);
+  return null;
 }
 
 export async function PATCH(req) {
