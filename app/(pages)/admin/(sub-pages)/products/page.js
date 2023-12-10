@@ -13,8 +13,6 @@ export default async function AdminProducts() {
   return (
     <TabsContent value="products" className="space-y-4">
       <ProductsTable data={sortedPizzabyId} />
-      <Separator />
-      <VariantsTable data={variants} />
     </TabsContent>
   );
 }

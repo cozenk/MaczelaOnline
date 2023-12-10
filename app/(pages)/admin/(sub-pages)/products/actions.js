@@ -18,6 +18,7 @@ export async function savePizzaInfo(prevState, formData) {
     const description = formData.get("description");
     const price = formData.get("price");
     const size = formData.get("size");
+    const variant = formData.get("variant");
 
     const newInfo = {
       name,
