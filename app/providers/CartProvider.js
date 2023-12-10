@@ -48,11 +48,11 @@ export default function CartProvider({ children }) {
       ...cart,
       cartItems: filtered.map((item) => ({
         ...item,
-        displayPrice: `₱${Number(item.price).toLocaleString()}`,
+        displayPrice: `₱${parseFloat(item.price).toLocaleString()}`,
       })),
       totalItems: filtered.reduce((total, item) => total + item.quantity, 0),
       totalPrice,
-      totalPriceDisplay: `₱${totalPrice}`,
+      totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
     };
   }, [cart, cartBackend]);
 

@@ -68,7 +68,10 @@ export default function UpdatePizzaModal({
               />
             </div>
           </div>
-          <ImageField setIsReadyToSubmit={setIsReadyToSubmit} />
+          <ImageField
+            defaultImageUrl={pizza.image_url}
+            setIsReadyToSubmit={setIsReadyToSubmit}
+          />
           <div className="mb-2">
             <label
               htmlFor="category"

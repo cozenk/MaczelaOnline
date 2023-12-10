@@ -4,10 +4,13 @@ import { UploadButton } from "@utils/uploadthing";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function ImageField({ setIsReadyToSubmit = () => {} }) {
+export default function ImageField({
+  defaultImageUrl = "",
+  setIsReadyToSubmit = () => {},
+}) {
   const [uploadedImage, setUploadedImage] = useState({
     name: "",
-    url: "",
+    url: defaultImageUrl,
   });
 
   return (

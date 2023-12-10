@@ -10,7 +10,7 @@ export async function GET() {
     price: item.price,
     pizzaId: item.pizza_id,
     imageSrc: item.image_url,
-    price: Number(item.price).toLocaleString(),
+    price: Number(item.price),
     size: item.size,
   }));
 

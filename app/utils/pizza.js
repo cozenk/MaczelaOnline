@@ -6,6 +6,19 @@ export async function getAllPizzas() {
   return rows;
 }
 
+export async function getPizzaById(pizzaId = "") {
+  if (pizzaId) {
+    const query = `SELECT * FROM pizza WHERE id = $1;`;
+    const data = [pizzaId];
+
+    const { rows } = await sql.query(query, data);
+
+    if (rows.length) return rows[0];
+
+    throw new Error("Can't find Pizza");
+  }
+}
+
 export async function getPizzasByCategory(category) {
   if (category) {
     const query = `SELECT * FROM pizza WHERE category = $1;`;

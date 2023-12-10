@@ -66,7 +66,7 @@ export default async function Orders() {
                   <h2>
                     Order total (+ shipping fee):{" "}
                     <span className="text-lg font-semibold text-green-700 dark:text-green-400">
-                      ₱{Number(order.total_price).toLocaleString()}
+                      ₱{parseFloat(order.total_price).toLocaleString()}
                     </span>
                   </h2>
                   <h2>
