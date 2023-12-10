@@ -79,11 +79,11 @@ export async function updatePizza(pizzaId, newInfo) {
 export async function deletePizza(pizzaId) {
   const selectQuery = `SELECT * FROM pizza WHERE id = $1;`;
   const data = [pizzaId];
-
+  
   const { rows } = await sql.query(selectQuery, data);
   if (rows.length) {
     const name = rows[0].name;
-    const deleteQuery = "DELETE FROM users WHERE id = $1";
+    const deleteQuery = "DELETE FROM pizza WHERE id = $1";
     await sql.query(deleteQuery, data);
     return { name };
   }

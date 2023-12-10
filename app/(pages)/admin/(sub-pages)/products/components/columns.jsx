@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { CellAction } from "./cell-action";
+import { CellAction, VariantCellAction } from "./cell-action";
+import { ImageDown } from "lucide-react";
 
 export const productsColumns = [
   {
@@ -10,13 +11,15 @@ export const productsColumns = [
     cell: ({ row }) => {
       const image_url = row.getValue("image_url");
 
-      return (
+      return (image_url ?
         <Image
           src={image_url}
           width={100}
           height={100}
           className="h-[6rem] w-[6rem] rounded-lg object-cover"
         />
+        :
+        <ImageDown width={100} height={100} />
       );
     },
   },
@@ -66,6 +69,6 @@ export const variantsColumns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <VariantCellAction data={row.original} />,
   },
 ];

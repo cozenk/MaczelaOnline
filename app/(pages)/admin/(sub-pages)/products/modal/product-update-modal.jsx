@@ -2,19 +2,21 @@
 
 import Modal from "@shared/Modal";
 import { useContext, useEffect } from "react";
-import { savePizzaInfo } from "../actions";
+import { updatePizzaInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { useFormState } from "react-dom";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "(pages)/admin/components/ui/button";
 
-export default function AddPizzaModal({
+export default function UpdatePizzaModal({
   show,
   onClose,
+  initialData = null,
   user = null,
   focusTo = "",
   modalStyles = "",
 }) {
-  const [state, formAction] = useFormState(savePizzaInfo, {
+  const [state, formAction] = useFormState(updatePizzaInfo, {
     infoSaved: false,
   });
 
@@ -63,6 +65,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.name}
                         type="text"
                         name="name"
                         id="name"
@@ -93,6 +96,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.category}
                         type="text"
                         name="category"
                         id="category"
@@ -111,6 +115,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.description}
                         type="text"
                         name="description"
                         id="description"
@@ -129,6 +134,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.price}
                         type="text"
                         name="price"
                         id="price"
@@ -147,6 +153,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.size}
                         type="text"
                         name="size"
                         id="size"
@@ -158,8 +165,11 @@ export default function AddPizzaModal({
 
 
         </div>
-
-        <SubmitButton />
+        {
+            initialData ? ( <SubmitButton /> ) :
+                <Button disabled={true}/>
+        }
+        
       </form>
     </Modal>
   );

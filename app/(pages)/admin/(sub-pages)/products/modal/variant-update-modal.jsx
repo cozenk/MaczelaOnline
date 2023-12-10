@@ -2,19 +2,21 @@
 
 import Modal from "@shared/Modal";
 import { useContext, useEffect } from "react";
-import { savePizzaInfo } from "../actions";
+import { updatePizzaInfo, updateVariantInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { useFormState } from "react-dom";
 import Skeleton from "react-loading-skeleton";
+import { Button } from "(pages)/admin/components/ui/button";
 
-export default function AddPizzaModal({
+export default function UpdateVariantModal({
   show,
   onClose,
+  initialData = null,
   user = null,
   focusTo = "",
   modalStyles = "",
 }) {
-  const [state, formAction] = useFormState(savePizzaInfo, {
+  const [state, formAction] = useFormState(updateVariantInfo, {
     infoSaved: false,
   });
 
@@ -63,57 +65,10 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.name}
                         type="text"
                         name="name"
                         id="name"
-                        required
-                        className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                </div>
-            </div>
-            <div className="mb-2">
-                <label
-                    htmlFor="imageurl"
-                    className="block text-sm font-medium leading-6 "
-                >
-                    Image
-                </label>
-            
-                <div className="mt-1">
-                    <Skeleton height={35} />
-                </div>
-            </div>
-            <div className="mb-2">
-                <label
-                    htmlFor="category"
-                    className="block text-sm font-medium leading-6 "
-                >
-                    Category
-                </label>
-            
-                <div className="mt-1">
-                    <input
-                        type="text"
-                        name="category"
-                        id="category"
-                        required
-                        className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                </div>
-            </div>
-            <div className="mb-2">
-                <label
-                    htmlFor="description"
-                    className="block text-sm font-medium leading-6 "
-                >
-                    Description
-                </label>
-            
-                <div className="mt-1">
-                    <input
-                        type="text"
-                        name="description"
-                        id="description"
                         required
                         className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -129,6 +84,7 @@ export default function AddPizzaModal({
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.price}
                         type="text"
                         name="price"
                         id="price"
@@ -139,17 +95,18 @@ export default function AddPizzaModal({
             </div>
             <div className="mb-2">
                 <label
-                    htmlFor="size"
+                    htmlFor="pizza_id"
                     className="block text-sm font-medium leading-6 "
                 >
-                    Size
+                    Pizza
                 </label>
             
                 <div className="mt-1">
                     <input
+                        defaultValue={initialData.pizza_id}
                         type="text"
-                        name="size"
-                        id="size"
+                        name="pizza_id"
+                        id="pizza_id"
                         required
                         className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -158,8 +115,11 @@ export default function AddPizzaModal({
 
 
         </div>
-
-        <SubmitButton />
+        {
+            initialData ? ( <SubmitButton /> ) :
+                <Button disabled={true}/>
+        }
+        
       </form>
     </Modal>
   );
