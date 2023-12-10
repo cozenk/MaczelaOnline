@@ -1,5 +1,7 @@
+import { withUt } from "uploadthing/tw";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default withUt({
   content: [
     "./pages/**/*.{js,jsx}",
     "./components/**/*.{js,jsx}",
@@ -35,4 +37,4 @@ module.exports = {
     require("tailwindcss-animate"),
     require("@tailwindcss/aspect-ratio"),
   ],
-};
+});

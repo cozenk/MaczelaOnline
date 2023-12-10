@@ -1,5 +1,33 @@
 import { sql } from "@vercel/postgres";
-import { getCurrentUser } from "./users";
+import { getAllCustomers, getCurrentUser, getUserById } from "./users";
+
+export async function getAllOrders() {
+  const query = `SELECT * FROM orders ORDER BY placed_date DESC;`;
+
+  const { rows: orderRows } = await sql.query(query);
+
+  if (orderRows.length) {
+    const ordersWithItemsAndCustomer = Promise.all(
+      orderRows.map(async (order) => {
+        const query = `SELECT * FROM order_items WHERE order_id = $1;`;
+        const data = [order.id];
+        const { rows: orderItems } = await sql.query(query, data);
+
+        const customer = await getUserById(order.user_id);
+
+        return {
+          ...order,
+          items: orderItems.length ? orderItems : [],
+          customer: customer,
+        };
+      }),
+    );
+
+    return await ordersWithItemsAndCustomer;
+  }
+
+  return [];
+}
 
 export async function getCurrentUserOrders() {
   const user = await getCurrentUser();
@@ -34,6 +62,8 @@ export async function createOrder(
   userId,
   { cartItems, totalPrice, totalItems },
 ) {
+  console.log(userId, cartItems, totalPrice, totalItems);
+
   const query = `INSERT INTO orders (user_id, status, total_price, total_items) VALUES($1, $2, $3, $4) RETURNING *;`;
   const data = [userId, "PLACED", totalPrice, totalItems];
 
@@ -46,6 +76,22 @@ export async function createOrder(
   }
 
   return undefined;
+}
+
+export async function deleteOrder(orderId) {
+  if (orderId) {
+    const selectQuery = `SELECT * FROM orders WHERE id = $1;`;
+    const data = [orderId];
+    const { rows } = await sql.query(selectQuery, data);
+
+    if (rows.length) {
+      const deleteQuery = "DELETE FROM orders WHERE id = $1";
+      await sql.query(deleteQuery, data);
+      return { orderId };
+    }
+
+    throw new Error("Can't delete order as it doesn't exist");
+  }
 }
 
 export async function createOrderItems(orderId, orderItems) {

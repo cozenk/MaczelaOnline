@@ -20,6 +20,7 @@
     "@tanstack/react-query": "^5.8.7",
     "@tanstack/react-query-devtools": "^5.8.9",
     "@tanstack/react-table": "^8.10.7",
+    "@uploadthing/react": "^6.0.2",
     "@vercel/postgres": "^0.5.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -32,7 +33,8 @@
     "recharts": "^2.10.3",
     "svix": "^1.14.0",
     "tailwind-merge": "^2.1.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.0.4"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",

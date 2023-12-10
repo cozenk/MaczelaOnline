@@ -1,42 +1,29 @@
 "use client";
 
 import Modal from "@shared/Modal";
-import { useContext, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { updatePizzaInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { useFormState } from "react-dom";
-import Skeleton from "react-loading-skeleton";
-import Select from 'react-select';
+import ImageField from "../components/ImageField";
 
 export default function UpdatePizzaModal({
   show,
   onClose,
   pizza = null,
-  focusTo = "",
   modalStyles = "",
 }) {
   const [state, formAction] = useFormState(updatePizzaInfo, {
     infoSaved: false,
   });
 
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(true);
+
   const variantOptions = [
     { value: 'Medium 10"', label: 'Medium 10"' },
     { value: 'Large 12"', label: 'Large 12"' },
-    { value: 'Super 20"', label: 'Super 20"' }
-  ]
-
-  useEffect(() => {
-    if (focusTo) {
-      const element = document.getElementById(focusTo);
-
-      if (element) {
-        element.focus();
-        element.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [focusTo]);
+    { value: 'Super 20"', label: 'Super 20"' },
+  ];
 
   useEffect(() => {
     if (show) document.body.style.overflowY = "hidden";
@@ -81,18 +68,7 @@ export default function UpdatePizzaModal({
               />
             </div>
           </div>
-          <div className="mb-2">
-            <label
-              htmlFor="imageurl"
-              className="block text-sm font-medium leading-6 "
-            >
-              Image
-            </label>
-
-            <div className="mt-1">
-              <Skeleton height={35} />
-            </div>
-          </div>
+          <ImageField setIsReadyToSubmit={setIsReadyToSubmit} />
           <div className="mb-2">
             <label
               htmlFor="category"
@@ -161,14 +137,14 @@ export default function UpdatePizzaModal({
               defaultValue={pizza.size}
               name="size"
               id="size"
-              className="dark:bg-black dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              className="dark:rign-gray-black block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
             >
               <option value={`Medium 10"`}>Medium 10"</option>
               <option value={`Large 12"`}>Large 12"</option>
               <option value={`Super 20"`}>Super 20"</option>
             </select>
           </div>
-          <div className="mb-2">
+          {/* <div className="mb-2">
             <label
               htmlFor="variant"
               className="block text-sm font-medium leading-6 "
@@ -176,17 +152,17 @@ export default function UpdatePizzaModal({
               Variant
             </label>
             <Select
-              defaultValue={[variantOptions[0],variantOptions[2]]}
+              defaultValue={[variantOptions[0], variantOptions[2]]}
               closeMenuOnSelect={false}
               isMulti
               name="variant"
               options={variantOptions}
-              className="basic-multi-select dark:text-black overlay-content"
+              className="basic-multi-select overlay-content dark:text-black"
               classNamePrefix="select"
             />
-          </div>
+          </div> */}
         </div>
-        <SubmitButton />
+        <SubmitButton disabled={!isReadyToSubmit} />
       </form>
     </Modal>
   );

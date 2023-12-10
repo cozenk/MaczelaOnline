@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -16,7 +15,7 @@ import {
   TableRow,
 } from "(pages)/admin/components/ui/table";
 
-export function DataTable({ columns, data }) {
+export function DataTable({ columns, data, tbodyId = "" }) {
   const table = useReactTable({
     data,
     columns,
@@ -44,7 +43,7 @@ export function DataTable({ columns, data }) {
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody id={tbodyId}>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow

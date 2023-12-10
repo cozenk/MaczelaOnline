@@ -1,4 +1,5 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { formatDate } from "@utils/date";
 import { getCurrentUserOrders } from "@utils/orders";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,17 +52,7 @@ export default async function Orders() {
                       {" "}
                       Date placed:{" "}
                     </label>
-                    <span className="">
-                      {new Date(order.placed_date).toLocaleString("en-PH", {
-                        timeZone: "Asia/Manila",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                        second: "numeric",
-                      })}
-                    </span>
+                    <span className="">{formatDate(order.placed_date)}</span>
                   </div>
                   <div>
                     <label className="text-gray-700 dark:text-gray-400">

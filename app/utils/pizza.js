@@ -36,7 +36,7 @@ export async function createPizza({
     const { rows } = await sql.query(query, data);
 
     if (rows.length) {
-      return { name, imageUrl, category, description, price, size };
+      return { name, image_url, category, description, price, size };
     }
 
     return null;

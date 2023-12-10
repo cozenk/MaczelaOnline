@@ -12,8 +12,7 @@ import { revalidatePath } from "next/cache";
 export async function savePizzaInfo(prevState, formData) {
   if (formData) {
     const name = formData.get("name");
-    // const image_url = formData.get("image_url");
-    const image_url = "/pizza-menu/1.jpg";
+    const image_url = formData.get("image_url");
     const category = formData.get("category");
     const description = formData.get("description");
     const price = formData.get("price");
@@ -59,8 +58,7 @@ export async function updatePizzaInfo(prevState, formData) {
   if (formData) {
     const pizzaId = formData.get("pizza_id");
     const name = formData.get("name");
-    // const imageUrl = formData.get("image_url");
-    const image_url = "/pizza-menu/1.jpg";
+    const image_url = formData.get("image_url");
     const category = formData.get("category");
     const description = formData.get("description");
     const price = formData.get("price");
