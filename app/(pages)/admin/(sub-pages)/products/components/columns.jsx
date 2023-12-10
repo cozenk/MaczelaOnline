@@ -11,14 +11,14 @@ export const productsColumns = [
     cell: ({ row }) => {
       const image_url = row.getValue("image_url");
 
-      return (image_url ?
+      return image_url ? (
         <Image
           src={image_url}
           width={100}
           height={100}
           className="h-[6rem] w-[6rem] rounded-lg object-cover"
         />
-        :
+      ) : (
         <ImageDown width={100} height={100} />
       );
     },
@@ -54,7 +54,7 @@ export const productsColumns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <CellAction data={row.original} />,
+    cell: ({ row }) => <CellAction pizza={row.original} />,
   },
 ];
 
@@ -69,6 +69,6 @@ export const variantsColumns = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <VariantCellAction data={row.original} />,
+    cell: ({ row }) => <VariantCellAction pizza={row.original} />,
   },
 ];

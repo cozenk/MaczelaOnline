@@ -22,7 +22,7 @@ export async function getPizzasByCategory(category) {
 
 export async function createPizza({
   name = null,
-  imageUrl = null,
+  image_url = null,
   category = null,
   description = null,
   price = null,
@@ -30,7 +30,7 @@ export async function createPizza({
 }) {
   const query = `INSERT INTO pizza (name, image_url, category, description, price, size)
   VALUES($1, $2, $3, $4, $5, $6) RETURNING *;`;
-  const data = [name, imageUrl, category, description, price, size];
+  const data = [name, image_url, category, description, price, size];
 
   try {
     const { rows } = await sql.query(query, data);
@@ -79,11 +79,11 @@ export async function updatePizza(pizzaId, newInfo) {
 export async function deletePizza(pizzaId) {
   const selectQuery = `SELECT * FROM pizza WHERE id = $1;`;
   const data = [pizzaId];
-  
+
   const { rows } = await sql.query(selectQuery, data);
   if (rows.length) {
     const name = rows[0].name;
-    const deleteQuery = "DELETE FROM pizza WHERE id = $1";
+    const deleteQuery = "DELETE FROM pizza WHERE id = $1 RETURNING *";
     await sql.query(deleteQuery, data);
     return { name };
   }

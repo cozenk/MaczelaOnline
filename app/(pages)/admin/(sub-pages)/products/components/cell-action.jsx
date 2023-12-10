@@ -10,25 +10,25 @@ import {
 } from "(pages)/admin/components/ui/dropdown-menu";
 import { useState, useEffect } from "react";
 import { Edit, EyeIcon, MoreHorizontal, Trash } from "lucide-react";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { Button } from "(pages)/admin/components/ui/button";
 import UpdatePizzaModal from "../modal/product-update-modal";
 import { deletePizzaInfo, deleteVariantInfo } from "../actions";
 import UpdateVariantModal from "../modal/variant-update-modal";
+import Link from "next/link";
 
-export const CellAction = ({ data }) => {
+export const CellAction = ({ pizza = null }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
-
-  useEffect(() => {
-    console.log('Open Modal', openUpdate);
-  }, [openUpdate])
-
 
   return (
     <>
-      <UpdatePizzaModal show={openUpdate} onClose={() => setOpenUpdate(false)} initialData={data}/>
-      
+      <UpdatePizzaModal
+        show={openUpdate}
+        onClose={() => setOpenUpdate(false)}
+        pizza={pizza}
+      />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -39,19 +39,29 @@ export const CellAction = ({ data }) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => {}}>
-            <EyeIcon className="mr-2 h-4 w-4 " />
-            View
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenUpdate(true)}>
+          <Link href={`/pizza/${pizza.id}`}>
+            <DropdownMenuItem>
+              <EyeIcon className="mr-2 h-4 w-4 " />
+              View
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuItem
+            className="modal-trigger"
+            onClick={() => setOpenUpdate(true)}
+          >
             <Edit className="mr-2 h-4 w-4 " />
             Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {
-            if(confirm(`Are you sure to delete this (${data.name}) pizza?`) == true){
-              deletePizzaInfo(data.id, data.name)
-            }
-          }}>
+          <DropdownMenuItem
+            onClick={() => {
+              if (
+                confirm(`Are you sure to delete this (${pizza.name}) pizza?`) ==
+                true
+              ) {
+                deletePizzaInfo(pizza.id, pizza.name);
+              }
+            }}
+          >
             <Trash className="mr-2 h-4 w-4 " />
             Delete
           </DropdownMenuItem>
@@ -61,18 +71,17 @@ export const CellAction = ({ data }) => {
   );
 };
 
-export const VariantCellAction = ({ data }) => {
+export const VariantCellAction = ({ pizza = null }) => {
   const [openUpdate, setOpenUpdate] = useState(false);
-
-  useEffect(() => {
-    console.log('Open Modal', openUpdate);
-  }, [openUpdate])
-
 
   return (
     <>
-      <UpdateVariantModal show={openUpdate} onClose={() => setOpenUpdate(false)} initialData={data}/>
-      
+      <UpdateVariantModal
+        show={openUpdate}
+        onClose={() => setOpenUpdate(false)}
+        pizza={pizza}
+      />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -91,11 +100,17 @@ export const VariantCellAction = ({ data }) => {
             <Edit className="mr-2 h-4 w-4 " />
             Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {
-            if(confirm(`Are you sure to delete this (${data.name}) variant?`) == true){
-              deleteVariantInfo(data.id, data.name)
-            }
-          }}>
+          <DropdownMenuItem
+            onClick={() => {
+              if (
+                confirm(
+                  `Are you sure to delete this (${pizza.name}) variant?`,
+                ) == true
+              ) {
+                deleteVariantInfo(pizza.id, pizza.name);
+              }
+            }}
+          >
             <Trash className="mr-2 h-4 w-4 " />
             Delete
           </DropdownMenuItem>

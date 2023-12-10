@@ -2,26 +2,30 @@
 // TODO: Call SQL Queries from @utils
 
 import { createPizza, updatePizza, deletePizza } from "@utils/pizza";
-import { createPizzaVariant, deletePizzaVariant, updatePizzaVariant } from "@utils/pizza_variant";
+import {
+  createPizzaVariant,
+  deletePizzaVariant,
+  updatePizzaVariant,
+} from "@utils/pizza_variant";
 import { revalidatePath } from "next/cache";
 
 export async function savePizzaInfo(prevState, formData) {
   if (formData) {
     const name = formData.get("name");
-    const imageUrl = formData.get("image_url");
+    // const image_url = formData.get("image_url");
+    const image_url = "/pizza-menu/1.jpg";
     const category = formData.get("category");
     const description = formData.get("description");
     const price = formData.get("price");
     const size = formData.get("size");
 
-
     const newInfo = {
-        name,
-        imageUrl,
-        category,
-        description,
-        price,
-        size,
+      name,
+      image_url,
+      category,
+      description,
+      price,
+      size,
     };
 
     try {
@@ -50,27 +54,28 @@ export async function savePizzaInfo(prevState, formData) {
   };
 }
 
-export async function updatePizzaInfo (prevState, formData) {
+export async function updatePizzaInfo(prevState, formData) {
   if (formData) {
+    const pizzaId = formData.get("pizza_id");
     const name = formData.get("name");
     // const imageUrl = formData.get("image_url");
+    const image_url = "/pizza-menu/1.jpg";
     const category = formData.get("category");
     const description = formData.get("description");
     const price = formData.get("price");
     const size = formData.get("size");
 
-
-    const newInfo = {
-        name,
-        // imageUrl,
-        category,
-        description,
-        price,
-        size,
+    const newPizzaInfo = {
+      name,
+      image_url,
+      category,
+      description,
+      price,
+      size,
     };
 
     try {
-      await updatePizza(pizzaId,newInfo);
+      await updatePizza(pizzaId, newPizzaInfo);
 
       revalidatePath("/");
       revalidatePath("/admin/products");
@@ -95,9 +100,8 @@ export async function updatePizzaInfo (prevState, formData) {
   };
 }
 
-export async function deletePizzaInfo (pizzaId, name) {
+export async function deletePizzaInfo(pizzaId, name) {
   try {
-    
     await deletePizza(pizzaId);
 
     revalidatePath("/");
@@ -107,14 +111,12 @@ export async function deletePizzaInfo (pizzaId, name) {
       infoSaved: true,
       isError: false,
     };
-
   } catch (error) {
     return {
       infoSaved: false,
       isError: true,
     };
   }
-
 }
 
 // Variants Actions
@@ -125,11 +127,10 @@ export async function saveVariantInfo(prevState, formData) {
     const price = formData.get("price");
     const pizza_id = formData.get("pizza_id");
 
-
     const newInfo = {
-        name,
-        price,
-        pizza_id,
+      name,
+      price,
+      pizza_id,
     };
 
     try {
@@ -158,21 +159,20 @@ export async function saveVariantInfo(prevState, formData) {
   };
 }
 
-export async function updateVariantInfo (prevState, formData) {
+export async function updateVariantInfo(prevState, formData) {
   if (formData) {
     const name = formData.get("name");
     const price = formData.get("price");
     const pizza_id = formData.get("pizza_id");
 
-
     const newInfo = {
-        name,
-        price,
-        pizza_id,
+      name,
+      price,
+      pizza_id,
     };
 
     try {
-      await updatePizzaVariant(pizzaId,newInfo);
+      await updatePizzaVariant(pizzaId, newInfo);
 
       revalidatePath("/");
       revalidatePath("/admin/products");
@@ -197,9 +197,8 @@ export async function updateVariantInfo (prevState, formData) {
   };
 }
 
-export async function deleteVariantInfo (id, name) {
+export async function deleteVariantInfo(id, name) {
   try {
-    
     await deletePizzaVariant(id);
 
     revalidatePath("/");
@@ -209,12 +208,10 @@ export async function deleteVariantInfo (id, name) {
       infoSaved: true,
       isError: false,
     };
-
   } catch (error) {
     return {
       infoSaved: false,
       isError: true,
     };
   }
-
 }
