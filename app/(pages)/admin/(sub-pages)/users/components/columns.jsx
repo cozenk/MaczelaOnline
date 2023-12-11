@@ -5,9 +5,7 @@ import {
   AvatarImage,
   AvatarFallback,
 } from "(pages)/admin/components/ui/avatar";
-import { CellAction } from "./cell-action";
-
-// import { CellAction } from "./cell-action";
+import { CellAction } from "./CellAction";
 
 export const columns = [
   {

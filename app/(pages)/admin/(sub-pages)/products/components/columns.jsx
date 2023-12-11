@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { CellAction, VariantCellAction } from "./cell-action";
+import { CellAction } from "./CellAction";
 import { ImageDown } from "lucide-react";
 
-export const productsColumns = [
+export const columns = [
   {
     accessorKey: "image_url",
     header: "Image",
@@ -55,20 +55,5 @@ export const productsColumns = [
   {
     id: "actions",
     cell: ({ row }) => <CellAction pizza={row.original} />,
-  },
-];
-
-export const variantsColumns = [
-  {
-    accessorKey: "name",
-    header: "Variant",
-  },
-  {
-    accessorKey: "price",
-    header: "Price",
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => <VariantCellAction pizza={row.original} />,
   },
 ];

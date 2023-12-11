@@ -19,7 +19,7 @@ export function useGetAllUsers() {
 
 export function useCurrentUser() {
   const fetchCurrentUser = async () => {
-    return (await fetch("/api/users/me")).json();
+    return (await fetch("/api/users/me", { cache: "reload" })).json();
   };
 
   const {

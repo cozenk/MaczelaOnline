@@ -1,7 +1,7 @@
 import { DataTable as OrdersTable } from "(pages)/admin/components/ui/data-table";
 import { TabsContent } from "(pages)/admin/components/ui/tabs";
 import { getAllOrders } from "@utils/orders";
-import { columns } from "./components/columns";
+import { columns } from "./components/Columns";
 
 export default async function AdminOrders() {
   const orders = await getAllOrders();

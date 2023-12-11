@@ -8,14 +8,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { NavContext } from "@providers/NavProvider";
+import { CartContext } from "@providers/CartProvider";
 
 export default function UserNavigation({ user }) {
-  const {
-    resetClientCart,
-    showUserNavigation,
-    setShowUserNavigation,
-    showEditUserInfo,
-  } = useContext(NavContext);
+  const { showUserNavigation, setShowUserNavigation, showEditUserInfo } =
+    useContext(NavContext);
+
+  const { resetClientCart } = useContext(CartContext);
 
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -46,7 +45,7 @@ export default function UserNavigation({ user }) {
         setShowUserNavigation={setShowUserNavigation}
       />
       {showUserNavigation ? (
-        <div className="navigation absolute bottom-0 right-0 z-50 w-[300%] max-w-[30rem] translate-x-[60%] translate-y-[100%] rounded-xl border border-gray-300 bg-white p-5 md:translate-x-0">
+        <div className="navigation absolute bottom-0 right-0 z-50 w-max max-w-[30rem] translate-x-[60%] translate-y-[100%] overflow-x-auto rounded-xl border border-gray-300 bg-white p-5 md:translate-x-0">
           {user ? (
             <>
               <div className="info mb-4 flex flex-col gap-2 text-sm">
@@ -133,7 +132,7 @@ export default function UserNavigation({ user }) {
                   )}
                 </div>
                 <div className="my-2 flex flex-col gap-y-2">
-                  {user.role === "ADMIN" && pathname !== "/admin" ? (
+                  {user.role === "ADMIN" && !pathname.includes("/admin") ? (
                     <Link
                       href={"/admin"}
                       className="text-base text-black underline hover:text-gray-600"
@@ -152,10 +151,10 @@ export default function UserNavigation({ user }) {
               </div>
               <SignOutButton
                 signOutCallback={() => {
-                  resetClientCart();
                   queryClient.invalidateQueries({
                     queryKey: ["current-user"],
                   });
+                  resetClientCart();
                 }}
               >
                 <h2 className="cursor-pointer text-red-600 hover:text-red-700">

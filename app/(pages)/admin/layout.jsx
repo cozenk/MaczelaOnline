@@ -21,7 +21,7 @@ export async function generateMetadata() {
 export default async function AdminLayout({ children }) {
   const user = await getCurrentUser();
 
-  if (user.role !== "ADMIN") {
+  if (user?.role !== "ADMIN") {
     redirect("/");
   }
 

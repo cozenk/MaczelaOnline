@@ -1,3 +1,4 @@
+import { useCurrentUser } from "@shared/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import { useEffect } from "react";
@@ -53,6 +54,8 @@ export function useBackendCartMutation() {
 }
 
 export function useFetchCartBackend({ initialState, clientCart }) {
+  const { user, isLoading } = useCurrentUser();
+
   const { data: cartBackend } = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
@@ -69,6 +72,7 @@ export function useFetchCartBackend({ initialState, clientCart }) {
       return { ...clientCart, status: "NOT_LOGGED_IN" };
     },
     initialData: initialState,
+    enabled: !!user && !isLoading,
   });
 
   return cartBackend;

@@ -1,7 +1,8 @@
 "use client";
 
 import { formatDate } from "@utils/date";
-import { CellAction } from "./cell-action";
+import { CellAction } from "./CellAction";
+import Link from "next/link";
 
 export const columns = [
   {
@@ -32,9 +33,12 @@ export const columns = [
     cell: ({ row }) => {
       const customer = row.getValue("customer");
       return (
-        <p className="cursor-pointer underline hover:text-gray-400">
+        <Link
+          href={`/admin/users/?highlight=${customer.id}`}
+          className="cursor-pointer underline hover:text-gray-400"
+        >
           {customer.full_name || customer.email}
-        </p>
+        </Link>
       );
     },
   },

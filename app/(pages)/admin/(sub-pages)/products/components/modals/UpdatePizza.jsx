@@ -2,19 +2,22 @@
 
 import Modal from "@shared/Modal";
 import { useEffect, useState } from "react";
-import { savePizzaInfo } from "../actions";
+import { updatePizzaInfo } from "../../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { useFormState } from "react-dom";
-import ImageField from "../components/ImageField";
+import ImageField from "../ImageField";
 
-export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
-  const [state, formAction] = useFormState(savePizzaInfo, {
+export default function UpdatePizzaModal({
+  show,
+  onClose,
+  pizza = null,
+  modalStyles = "",
+}) {
+  const [state, formAction] = useFormState(updatePizzaInfo, {
     infoSaved: false,
   });
 
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(true);
-
-  const [priceValue, setPriceValue] = useState("");
 
   const variantOptions = [
     { value: 'Medium 10"', label: 'Medium 10"' },
@@ -38,7 +41,7 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
   return (
     <Modal className={modalStyles} show={show} onClose={onClose}>
       <header className="mb-10 text-xl font-bold uppercase">
-        Add New Pizza
+        Update a Pizza
       </header>
 
       <form action={formAction} className="mx-auto ">
@@ -50,9 +53,13 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
             >
               Pizza Name
             </label>
+            {pizza ? (
+              <input type="hidden" name="pizza_id" value={pizza.id} />
+            ) : null}
 
             <div className="mt-1">
               <input
+                defaultValue={pizza.name}
                 type="text"
                 name="name"
                 id="name"
@@ -61,7 +68,10 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
               />
             </div>
           </div>
-          <ImageField setIsReadyToSubmit={setIsReadyToSubmit} />
+          <ImageField
+            defaultImageUrl={pizza.image_url}
+            setIsReadyToSubmit={setIsReadyToSubmit}
+          />
           <div className="mb-2">
             <label
               htmlFor="category"
@@ -72,11 +82,11 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
 
             <div className="mt-1">
               <input
+                defaultValue={pizza.category}
                 type="text"
                 name="category"
                 id="category"
                 required
-                defaultValue={"Best sellers"}
                 className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             </div>
@@ -91,6 +101,7 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
 
             <div className="mt-1">
               <input
+                defaultValue={pizza.description}
                 type="text"
                 name="description"
                 id="description"
@@ -109,13 +120,8 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
 
             <div className="mt-1">
               <input
+                defaultValue={pizza.price}
                 type="text"
-                value={priceValue}
-                onChange={(e) => {
-                  const priceRegex = /^(\d+(\.\d{1,2})?)?$/;
-                  if (priceRegex.test(e.target.value))
-                    setPriceValue(e.target.value);
-                }}
                 name="price"
                 id="price"
                 required
@@ -131,14 +137,11 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
               Size
             </label>
             <select
-              defaultValue={`Medium 10"`}
+              defaultValue={pizza.size}
               name="size"
               id="size"
               className="dark:rign-gray-black block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
             >
-              <option selected disabled>
-                Select Size
-              </option>
               <option value={`Medium 10"`}>Medium 10"</option>
               <option value={`Large 12"`}>Large 12"</option>
               <option value={`Super 20"`}>Super 20"</option>
@@ -152,7 +155,7 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
               Variant
             </label>
             <Select
-              defaultValue={[variantOptions[0]]}
+              defaultValue={[variantOptions[0], variantOptions[2]]}
               closeMenuOnSelect={false}
               isMulti
               name="variant"
@@ -162,7 +165,6 @@ export default function AddPizzaModal({ show, onClose, modalStyles = "" }) {
             />
           </div> */}
         </div>
-
         <SubmitButton disabled={!isReadyToSubmit} />
       </form>
     </Modal>

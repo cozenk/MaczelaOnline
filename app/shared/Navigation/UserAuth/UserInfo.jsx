@@ -10,7 +10,7 @@ export default function UserInfo({
 }) {
   return (
     <>
-      {user ? user.first_name || user.email : "Guest"}
+      {user ? user.full_name || user.email : "Guest"}
       {user?.image_url ? (
         <Image
           onClick={() => setShowUserNavigation((prev) => !prev)}

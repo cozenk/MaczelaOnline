@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
+import { redirect } from "next/navigation";
 
 export async function getAllUsers() {
   const { rows } =
@@ -54,26 +55,30 @@ export async function getAllCustomers() {
 }
 
 export async function getCurrentUser() {
-  const clerkUser = await currentUser();
+  try {
+    const clerkUser = await currentUser();
 
-  if (!clerkUser) return console.log("Not logged in");
+    if (!clerkUser) return null;
 
-  const query = `SELECT * FROM users WHERE clerk_id = $1;`;
-  const data = [clerkUser.id];
+    const query = `SELECT * FROM users WHERE clerk_id = $1;`;
+    const data = [clerkUser.id];
 
-  const { rows } = await sql.query(query, data);
+    const { rows } = await sql.query(query, data);
 
-  if (rows.length) {
-    const user = rows[0];
+    if (rows.length) {
+      const user = rows[0];
 
-    return {
-      ...user,
-      full_name: getFullName(user),
-      address: getFullAddress(user),
-    };
+      return {
+        ...user,
+        full_name: getFullName(user),
+        address: getFullAddress(user),
+      };
+    }
+
+    throw new Error("Can't find the user");
+  } catch (error) {
+    redirect("/");
   }
-
-  throw new Error("Can't find the user");
 }
 
 export async function getUserById(userId = null) {
@@ -147,10 +152,31 @@ export async function deleteDbUser(clerkId) {
     const email = rows[0].email;
     const deleteQuery = "DELETE FROM users WHERE clerk_id = $1";
     await sql.query(deleteQuery, data);
+
     return { email };
   }
 
   throw new Error("Can't delete user as it doesn't exist");
+}
+
+export async function makeUserAdmin(userId) {
+  const query = "SELECT * FROM users WHERE id = $1";
+  const data = [userId];
+
+  const { rows } = await sql.query(query, data);
+
+  if (rows.length) {
+    const updateQuery = "UPDATE users SET role = $1 WHERE id = $2 RETURNING *";
+    const updateData = ["ADMIN", userId];
+
+    const { rows: updatedUserRows } = await sql.query(updateQuery, updateData);
+
+    if (updatedUserRows.length) return updatedUserRows[0];
+
+    throw new Error("Can't update user to admin");
+  }
+
+  throw new Error("Can't update user. User doesn't exist");
 }
 
 const getFullName = (user = null) => {
