@@ -4,11 +4,11 @@ import { getLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import { useEffect } from "react";
 
 export function useSyncLocalStorageCartToComputedCart({
-  setCart,
   computedCart,
+  setCart,
 }) {
-  // Only sync guest cart (not backend cart) to local storage
   useEffect(() => {
+    // Only sync guest cart (not backend cart) to local storage
     if (
       computedCart.status === "LOADING" &&
       computedCart.status !== "BACKEND_CART"
@@ -39,13 +39,18 @@ export function useBackendCartMutation() {
   const queryClient = useQueryClient();
 
   const cartBackendMutation = useMutation({
-    mutationFn: async (cart) => {
-      await fetch("/api/cart/sync", {
+    mutationFn: (cart) => {
+      fetch("/api/cart/sync", {
         method: "POST",
         body: JSON.stringify({
           cartId: cart.id,
           cartItems: cart.cartItems,
         }),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["cart"],
       });
     },
   });
@@ -54,7 +59,7 @@ export function useBackendCartMutation() {
 }
 
 export function useFetchCartBackend({ initialState, clientCart }) {
-  const { user, isLoading } = useCurrentUser();
+  const { user } = useCurrentUser();
 
   const { data: cartBackend } = useQuery({
     queryKey: ["cart"],
@@ -72,7 +77,7 @@ export function useFetchCartBackend({ initialState, clientCart }) {
       return { ...clientCart, status: "NOT_LOGGED_IN" };
     },
     initialData: initialState,
-    enabled: !!user && !isLoading,
+    enabled: !!user,
   });
 
   return cartBackend;

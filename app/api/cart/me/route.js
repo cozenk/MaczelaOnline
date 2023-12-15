@@ -12,6 +12,7 @@ export async function GET() {
     imageSrc: item.image_url,
     price: Number(item.price),
     size: item.size,
+    typedQuantity: null,
   }));
 
   return NextResponse.json({ id: cart.id, cartItems });

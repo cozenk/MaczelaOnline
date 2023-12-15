@@ -23,7 +23,7 @@ export async function getCurrentUserCart() {
 }
 
 export async function updateBackendCart(cartId, cartItems) {
-  if (cartItems.length) {
+  if (cartItems?.length) {
     await sql`DELETE FROM cart_items;`;
 
     const query = `INSERT INTO cart_items (cart_id, pizza_id, name, price, quantity, image_url, size)
@@ -37,5 +37,7 @@ ${cartItems.map(
     const { rows } = await sql.query(query);
 
     return rows;
+  } else {
+    await sql`DELETE FROM cart_items;`;
   }
 }

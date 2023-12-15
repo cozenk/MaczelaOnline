@@ -77,7 +77,8 @@ export async function getCurrentUser() {
 
     throw new Error("Can't find the user");
   } catch (error) {
-    redirect("/");
+    console.error(error);
+    throw error;
   }
 }
 

@@ -3,10 +3,10 @@
 import { setLocalStorageItem } from "@utils/localStorage";
 import { createContext, useMemo, useState } from "react";
 import {
+  useSyncLocalStorageCartToComputedCart,
   useBackendCartMutation,
   useFetchCartBackend,
   useSyncClientCartToBackendCart,
-  useSyncLocalStorageCartToComputedCart,
 } from "./hooks";
 
 export const CartContext = createContext({});
@@ -25,24 +25,19 @@ export default function CartProvider({ children }) {
   const backendCartMutation = useBackendCartMutation();
 
   const computedCart = useMemo(() => {
-    if (cartBackend.status === "BACKEND_CART") {
+    if (cart.status === "BACKEND_CART") {
       backendCartMutation.mutate({
         id: cartBackend.id,
         cartItems: cart.cartItems,
       });
     }
 
-    const totalPrice = cart.cartItems.reduce(
+    const filtered = cart.cartItems.filter((item) => item.quantity >= 1);
+
+    const totalPrice = filtered.reduce(
       (total, item) => total + item.price * item.quantity,
       0,
     );
-
-    const filtered = cart.cartItems.filter((item) => {
-      if (item.quantity >= 1) {
-        return item;
-      }
-      return null;
-    });
 
     return {
       ...cart,
@@ -54,7 +49,10 @@ export default function CartProvider({ children }) {
       totalPrice,
       totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
     };
-  }, [cart, cartBackend]);
+  }, [cart, cartBackend.id]);
+
+  const getPizzaById = (pizzaId) =>
+    computedCart.cartItems.find((item) => item.pizzaId === pizzaId);
 
   const addToCart = ({
     id,
@@ -66,6 +64,8 @@ export default function CartProvider({ children }) {
     size,
   }) => {
     if (name && price && quantity) {
+      console.log("ADD ITEM");
+
       const newItem = {
         pizzaId: id,
         name,
@@ -75,6 +75,7 @@ export default function CartProvider({ children }) {
         imageSrc,
         imageAlt,
         size,
+        typedQuantity: null,
       };
 
       setCart((cart) => ({
@@ -85,6 +86,7 @@ export default function CartProvider({ children }) {
   };
 
   const updateCartItem = (pizzaId, propertiesToUpdate) => {
+    console.log("UPDATE ITEM");
     if (pizzaId) {
       const updatedCartItems = cart.cartItems.map((item) => {
         if (item.pizzaId === pizzaId)
@@ -104,16 +106,37 @@ export default function CartProvider({ children }) {
     }
   };
 
+  const updateItemTypedQuantity = (pizzaId, typedQuantity) => {
+    const updatedCartItems = cart.cartItems.map((item) => {
+      if (item.pizzaId === pizzaId)
+        return {
+          ...item,
+          typedQuantity,
+        };
+
+      return item;
+    });
+
+    setCart((cart) => ({
+      ...cart,
+      cartItems: updatedCartItems,
+    }));
+  };
+
   const resetClientCart = () => {
     setCart(initialState);
     setLocalStorageItem("cart", initialState);
+  };
+
+  const removeAllCartItems = () => {
+    setCart((cart) => ({ ...cart, cartItems: [] }));
   };
 
   const showCartMenu = () => setCart((cart) => ({ ...cart, showMenu: true }));
   const closeCartMenu = () => setCart((cart) => ({ ...cart, showMenu: false }));
 
   useSyncLocalStorageCartToComputedCart({ computedCart, setCart });
-  useSyncClientCartToBackendCart({ cartBackend, resetClientCart, setCart });
+  useSyncClientCartToBackendCart({ cartBackend, setCart });
 
   return (
     <CartContext.Provider
@@ -124,6 +147,9 @@ export default function CartProvider({ children }) {
         showCartMenu,
         closeCartMenu,
         resetClientCart,
+        updateItemTypedQuantity,
+        getPizzaById,
+        removeAllCartItems,
       }}
     >
       {children}

@@ -4,26 +4,25 @@ import { CartContext } from "@providers/CartProvider";
 import { useContext, useState } from "react";
 
 export default function ActionButtons({ pizza = null }) {
-  const { addToCart, updateCartItem, showCartMenu, cart } =
+  const { addToCart, updateCartItem, showCartMenu, getPizzaById } =
     useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
 
   const addOrUpdate = () => {
-    const existingProduct = cart.cartItems.find(
-      (item) => item.pizzaId === pizza.id,
-    );
-    if (existingProduct) {
-      updateCartItem(pizza.id, {
-        quantity: existingProduct.quantity + quantity,
+    const existingPizza = getPizzaById(pizza.id);
+
+    if (existingPizza) {
+      updateCartItem(existingPizza.pizzaId, {
+        quantity: existingPizza.quantity + 1,
       });
     } else {
       addToCart({
         id: pizza.id,
         name: pizza.name,
         price: pizza.price,
-        quantity,
-        imageSrc: pizza.image_url,
-        imageAlt: pizza.description,
+        quantity: 1,
+        imageSrc: pizza.imageSrc,
+        imageAlt: pizza.imageAlt,
         size: pizza.size,
       });
     }
