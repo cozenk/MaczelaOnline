@@ -37,7 +37,5 @@ ${cartItems.map(
     const { rows } = await sql.query(query);
 
     return rows;
-  } else {
-    await sql`DELETE FROM cart_items;`;
   }
 }
