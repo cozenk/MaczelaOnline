@@ -1,4 +1,4 @@
-import UserAuth from "@shared/UserAuth";
+import UserAuth from "@shared/Navigation/UserAuth";
 import { getCurrentUser } from "@utils/users";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +7,8 @@ import { Tabs } from "./components/ui/tabs";
 import icon from "@assets/icon.png";
 import { MainNav } from "./components/main-nav";
 import { redirect } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
+import { Suspense } from "react";
 
 export async function generateMetadata() {
   const user = await getCurrentUser();
@@ -19,7 +21,7 @@ export async function generateMetadata() {
 export default async function AdminLayout({ children }) {
   const user = await getCurrentUser();
 
-  if (user.role !== "ADMIN") {
+  if (user?.role !== "ADMIN") {
     redirect("/");
   }
 
@@ -40,7 +42,9 @@ export default async function AdminLayout({ children }) {
             {/* <Search />
               <UserNav /> */}
 
-            <UserAuth hideCart />
+            <Suspense fallback={<Skeleton width={200} height={30} />}>
+              <UserAuth hideCart />
+            </Suspense>
           </div>
         </div>
       </div>

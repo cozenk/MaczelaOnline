@@ -3,10 +3,10 @@
 import { setLocalStorageItem } from "@utils/localStorage";
 import { createContext, useMemo, useState } from "react";
 import {
+  useSyncLocalStorageCartToComputedCart,
   useBackendCartMutation,
   useFetchCartBackend,
   useSyncClientCartToBackendCart,
-  useSyncLocalStorageCartToComputedCart,
 } from "./hooks";
 
 export const CartContext = createContext({});
@@ -25,7 +25,7 @@ export default function CartProvider({ children }) {
   const backendCartMutation = useBackendCartMutation();
 
   const computedCart = useMemo(() => {
-    if (cartBackend.status === "BACKEND_CART") {
+    if (cart.status === "BACKEND_CART") {
       backendCartMutation.mutate({
         id: cartBackend.id,
         cartItems: cart.cartItems,
@@ -37,24 +37,23 @@ export default function CartProvider({ children }) {
       0,
     );
 
-    const filtered = cart.cartItems.filter((item) => {
-      if (item.quantity >= 1) {
-        return item;
-      }
-      return null;
-    });
-
     return {
       ...cart,
-      cartItems: filtered.map((item) => ({
+      cartItems: cart.cartItems.map((item) => ({
         ...item,
-        displayPrice: `₱${Number(item.price).toLocaleString()}`,
+        displayPrice: `₱${parseFloat(item.price).toLocaleString()}`,
       })),
-      totalItems: filtered.reduce((total, item) => total + item.quantity, 0),
+      totalItems: cart.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      ),
       totalPrice,
-      totalPriceDisplay: `₱${totalPrice}`,
+      totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
     };
-  }, [cart, cartBackend]);
+  }, [cart, cartBackend.id]);
+
+  const getPizzaById = (pizzaId) =>
+    computedCart.cartItems.find((item) => item.pizzaId === pizzaId);
 
   const addToCart = ({
     id,
@@ -66,6 +65,8 @@ export default function CartProvider({ children }) {
     size,
   }) => {
     if (name && price && quantity) {
+      console.log("ADD ITEM");
+
       const newItem = {
         pizzaId: id,
         name,
@@ -75,6 +76,7 @@ export default function CartProvider({ children }) {
         imageSrc,
         imageAlt,
         size,
+        typedQuantity: null,
       };
 
       setCart((cart) => ({
@@ -85,7 +87,13 @@ export default function CartProvider({ children }) {
   };
 
   const updateCartItem = (pizzaId, propertiesToUpdate) => {
+    console.log("UPDATE ITEM");
     if (pizzaId) {
+      if (propertiesToUpdate.quantity < 1) {
+        removeCartItemById(pizzaId);
+        return;
+      }
+
       const updatedCartItems = cart.cartItems.map((item) => {
         if (item.pizzaId === pizzaId)
           return {
@@ -104,16 +112,46 @@ export default function CartProvider({ children }) {
     }
   };
 
+  const updateItemTypedQuantity = (pizzaId, typedQuantity) => {
+    const updatedCartItems = cart.cartItems.map((item) => {
+      if (item.pizzaId === pizzaId)
+        return {
+          ...item,
+          typedQuantity,
+        };
+
+      return item;
+    });
+
+    setCart((cart) => ({
+      ...cart,
+      cartItems: updatedCartItems,
+    }));
+  };
+
   const resetClientCart = () => {
     setCart(initialState);
     setLocalStorageItem("cart", initialState);
+  };
+
+  const removeAllCartItems = () => {
+    setCart((cart) => ({ ...cart, cartItems: [] }));
+  };
+
+  const removeCartItemById = (pizzaId = "") => {
+    setCart((cart) => {
+      return {
+        ...cart,
+        cartItems: cart.cartItems.filter((item) => item.pizzaId !== pizzaId),
+      };
+    });
   };
 
   const showCartMenu = () => setCart((cart) => ({ ...cart, showMenu: true }));
   const closeCartMenu = () => setCart((cart) => ({ ...cart, showMenu: false }));
 
   useSyncLocalStorageCartToComputedCart({ computedCart, setCart });
-  useSyncClientCartToBackendCart({ cartBackend, resetClientCart, setCart });
+  useSyncClientCartToBackendCart({ cartBackend, setCart });
 
   return (
     <CartContext.Provider
@@ -124,6 +162,10 @@ export default function CartProvider({ children }) {
         showCartMenu,
         closeCartMenu,
         resetClientCart,
+        updateItemTypedQuantity,
+        getPizzaById,
+        removeAllCartItems,
+        removeCartItemById,
       }}
     >
       {children}

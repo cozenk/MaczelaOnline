@@ -147,9 +147,7 @@ export default function Home() {
   return (
     <main className="overflow-x-hidden">
       <header className="absolute inset-x-0 top-0 z-50">
-        <NavProvider>
-          <Nav />
-        </NavProvider>
+        <Nav />
       </header>
 
       <Hero />

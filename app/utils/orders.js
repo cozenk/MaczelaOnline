@@ -1,21 +1,43 @@
 import { sql } from "@vercel/postgres";
-import { getCurrentUser } from "./users";
+import { getAllCustomers, getCurrentUser, getUserById } from "./users";
+
+export async function getAllOrders() {
+  const { rows: orderRows } =
+    await sql`SELECT * FROM orders ORDER BY placed_date DESC;`;
+
+  if (orderRows.length) {
+    const ordersWithItemsAndCustomer = Promise.all(
+      orderRows.map(async (order) => {
+        const { rows: orderItems } =
+          await sql`SELECT * FROM order_items WHERE order_id = ${order.id};`;
+
+        const customer = await getUserById(order.user_id);
+
+        return {
+          ...order,
+          items: orderItems.length ? orderItems : [],
+          customer: customer,
+        };
+      }),
+    );
+
+    return await ordersWithItemsAndCustomer;
+  }
+
+  return [];
+}
 
 export async function getCurrentUserOrders() {
   const user = await getCurrentUser();
 
-  const query = `SELECT * FROM orders WHERE user_id = $1 ORDER BY placed_date DESC;`;
-  const data = [user.id];
-
-  const { rows: orderRows } = await sql.query(query, data);
+  const { rows: orderRows } =
+    await sql`SELECT * FROM orders WHERE user_id = ${user.id} ORDER BY placed_date DESC;`;
 
   if (orderRows.length) {
     const ordersWithItems = Promise.all(
       orderRows.map(async (order) => {
-        const query = `SELECT * FROM order_items WHERE order_id = $1;`;
-        const data = [order.id];
-
-        const { rows: orderItemRows } = await sql.query(query, data);
+        const { rows: orderItemRows } =
+          await sql`SELECT * FROM order_items WHERE order_id = ${order.id};`;
 
         return {
           ...order,
@@ -34,6 +56,8 @@ export async function createOrder(
   userId,
   { cartItems, totalPrice, totalItems },
 ) {
+  console.log(userId, cartItems, totalPrice, totalItems);
+
   const query = `INSERT INTO orders (user_id, status, total_price, total_items) VALUES($1, $2, $3, $4) RETURNING *;`;
   const data = [userId, "PLACED", totalPrice, totalItems];
 
@@ -46,6 +70,22 @@ export async function createOrder(
   }
 
   return undefined;
+}
+
+export async function deleteOrder(orderId) {
+  if (orderId) {
+    const { rows } = await sql`SELECT * FROM orders WHERE id = ${orderId};`;
+
+    if (rows.length) {
+      const deleteQuery = "DELETE FROM orders WHERE id = $1";
+      const data = [orderId];
+
+      await sql.query(deleteQuery, data);
+      return { orderId };
+    }
+
+    throw new Error("Can't delete order as it doesn't exist");
+  }
 }
 
 export async function createOrderItems(orderId, orderItems) {

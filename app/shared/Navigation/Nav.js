@@ -1,15 +1,17 @@
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
-import UserAuth from "../UserAuth";
+import UserAuth from "./UserAuth";
 import icon from "@assets/icon.png";
 import Bars from "./Bars";
+import { Suspense } from "react";
+import Skeleton from "react-loading-skeleton";
 
 const navigation = [
   { name: "Socials", href: "#" },
   { name: "Contact Us", href: "#" },
 ];
 
-export default function Nav() {
+export default async function Nav() {
   return (
     <>
       <nav
@@ -38,8 +40,13 @@ export default function Nav() {
           ))}
         </div>
 
-        <UserAuth key={"nav"} />
+        <div className={`mr-5 hidden gap-10 md:flex md:justify-end lg:flex-1`}>
+          <Suspense fallback={<Skeleton width={200} height={30} />}>
+            <UserAuth />
+          </Suspense>
+        </div>
       </nav>
+
       <MobileMenu navigation={navigation} />
     </>
   );
