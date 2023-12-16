@@ -2,16 +2,14 @@ import { sql } from "@vercel/postgres";
 import { getAllCustomers, getCurrentUser, getUserById } from "./users";
 
 export async function getAllOrders() {
-  const query = `SELECT * FROM orders ORDER BY placed_date DESC;`;
-
-  const { rows: orderRows } = await sql.query(query);
+  const { rows: orderRows } =
+    await sql`SELECT * FROM orders ORDER BY placed_date DESC;`;
 
   if (orderRows.length) {
     const ordersWithItemsAndCustomer = Promise.all(
       orderRows.map(async (order) => {
-        const query = `SELECT * FROM order_items WHERE order_id = $1;`;
-        const data = [order.id];
-        const { rows: orderItems } = await sql.query(query, data);
+        const { rows: orderItems } =
+          await sql`SELECT * FROM order_items WHERE order_id = ${order.id};`;
 
         const customer = await getUserById(order.user_id);
 
@@ -32,18 +30,14 @@ export async function getAllOrders() {
 export async function getCurrentUserOrders() {
   const user = await getCurrentUser();
 
-  const query = `SELECT * FROM orders WHERE user_id = $1 ORDER BY placed_date DESC;`;
-  const data = [user.id];
-
-  const { rows: orderRows } = await sql.query(query, data);
+  const { rows: orderRows } =
+    await sql`SELECT * FROM orders WHERE user_id = ${user.id} ORDER BY placed_date DESC;`;
 
   if (orderRows.length) {
     const ordersWithItems = Promise.all(
       orderRows.map(async (order) => {
-        const query = `SELECT * FROM order_items WHERE order_id = $1;`;
-        const data = [order.id];
-
-        const { rows: orderItemRows } = await sql.query(query, data);
+        const { rows: orderItemRows } =
+          await sql`SELECT * FROM order_items WHERE order_id = ${order.id};`;
 
         return {
           ...order,
@@ -80,12 +74,12 @@ export async function createOrder(
 
 export async function deleteOrder(orderId) {
   if (orderId) {
-    const selectQuery = `SELECT * FROM orders WHERE id = $1;`;
-    const data = [orderId];
-    const { rows } = await sql.query(selectQuery, data);
+    const { rows } = await sql`SELECT * FROM orders WHERE id = ${orderId};`;
 
     if (rows.length) {
       const deleteQuery = "DELETE FROM orders WHERE id = $1";
+      const data = [orderId];
+
       await sql.query(deleteQuery, data);
       return { orderId };
     }

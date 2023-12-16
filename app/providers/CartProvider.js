@@ -32,20 +32,21 @@ export default function CartProvider({ children }) {
       });
     }
 
-    const filtered = cart.cartItems.filter((item) => item.quantity >= 1);
-
-    const totalPrice = filtered.reduce(
+    const totalPrice = cart.cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0,
     );
 
     return {
       ...cart,
-      cartItems: filtered.map((item) => ({
+      cartItems: cart.cartItems.map((item) => ({
         ...item,
         displayPrice: `₱${parseFloat(item.price).toLocaleString()}`,
       })),
-      totalItems: filtered.reduce((total, item) => total + item.quantity, 0),
+      totalItems: cart.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0,
+      ),
       totalPrice,
       totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
     };
@@ -88,6 +89,11 @@ export default function CartProvider({ children }) {
   const updateCartItem = (pizzaId, propertiesToUpdate) => {
     console.log("UPDATE ITEM");
     if (pizzaId) {
+      if (propertiesToUpdate.quantity < 1) {
+        removeCartItemById(pizzaId);
+        return;
+      }
+
       const updatedCartItems = cart.cartItems.map((item) => {
         if (item.pizzaId === pizzaId)
           return {
@@ -132,6 +138,15 @@ export default function CartProvider({ children }) {
     setCart((cart) => ({ ...cart, cartItems: [] }));
   };
 
+  const removeCartItemById = (pizzaId = "") => {
+    setCart((cart) => {
+      return {
+        ...cart,
+        cartItems: cart.cartItems.filter((item) => item.pizzaId !== pizzaId),
+      };
+    });
+  };
+
   const showCartMenu = () => setCart((cart) => ({ ...cart, showMenu: true }));
   const closeCartMenu = () => setCart((cart) => ({ ...cart, showMenu: false }));
 
@@ -150,6 +165,7 @@ export default function CartProvider({ children }) {
         updateItemTypedQuantity,
         getPizzaById,
         removeAllCartItems,
+        removeCartItemById,
       }}
     >
       {children}

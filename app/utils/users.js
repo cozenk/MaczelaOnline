@@ -1,6 +1,5 @@
 import { currentUser } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
-import { redirect } from "next/navigation";
 
 export async function getAllUsers() {
   const { rows } =
@@ -19,10 +18,8 @@ export async function getAllUsers() {
 }
 
 export async function updateUserInfo(userId, newUserInfo) {
-  const query = `SELECT * FROM users WHERE id = $1;`;
-  const data = [userId];
-
-  const { rows: userRows } = await sql.query(query, data);
+  const { rows: userRows } =
+    await sql`SELECT * FROM users WHERE id = ${userId};`;
 
   if (userRows.length) {
     const user = userRows[0];
@@ -60,10 +57,8 @@ export async function getCurrentUser() {
 
     if (!clerkUser) return null;
 
-    const query = `SELECT * FROM users WHERE clerk_id = $1;`;
-    const data = [clerkUser.id];
-
-    const { rows } = await sql.query(query, data);
+    const { rows } =
+      await sql`SELECT * FROM users WHERE clerk_id = ${clerkUser.id};`;
 
     if (rows.length) {
       const user = rows[0];
@@ -75,7 +70,7 @@ export async function getCurrentUser() {
       };
     }
 
-    throw new Error("Can't find the user");
+    return null;
   } catch (error) {
     console.error(error);
     throw error;
@@ -84,10 +79,7 @@ export async function getCurrentUser() {
 
 export async function getUserById(userId = null) {
   if (userId) {
-    const query = `SELECT * FROM users WHERE id = $1;`;
-    const data = [userId];
-
-    const { rows } = await sql.query(query, data);
+    const { rows } = await sql`SELECT * FROM users WHERE id = ${userId};`;
 
     if (rows.length) {
       const user = rows[0];
@@ -145,13 +137,11 @@ export async function createDbUser({
 }
 
 export async function deleteDbUser(clerkId) {
-  const selectQuery = `SELECT * FROM users WHERE clerk_id = $1;`;
-  const data = [clerkId];
-
-  const { rows } = await sql.query(selectQuery, data);
+  const { rows } = await sql`SELECT * FROM users WHERE clerk_id = ${clerkId};`;
   if (rows.length) {
     const email = rows[0].email;
     const deleteQuery = "DELETE FROM users WHERE clerk_id = $1";
+    const data = [clerkId];
     await sql.query(deleteQuery, data);
 
     return { email };
@@ -161,10 +151,7 @@ export async function deleteDbUser(clerkId) {
 }
 
 export async function makeUserAdmin(userId) {
-  const query = "SELECT * FROM users WHERE id = $1";
-  const data = [userId];
-
-  const { rows } = await sql.query(query, data);
+  const { rows } = await sql`SELECT * FROM users WHERE id = ${userId}`;
 
   if (rows.length) {
     const updateQuery = "UPDATE users SET role = $1 WHERE id = $2 RETURNING *";

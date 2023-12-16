@@ -6,7 +6,6 @@ export async function getAllPizzaVariant() {
   return rows;
 }
 
-
 export async function createPizzaVariant({
   name = null,
   price = null,
@@ -31,10 +30,8 @@ export async function createPizzaVariant({
 }
 
 export async function updatePizzaVariant(id, newInfo) {
-  const query = `SELECT * FROM pizza_variants WHERE id = $1;`;
-  const data = [id];
-
-  const { rows: variantRows } = await sql.query(query, data);
+  const { rows: variantRows } =
+    await sql`SELECT * FROM pizza_variants WHERE id = ${id};`;
 
   if (variantRows.length) {
     const variant = variantRows[0];
@@ -61,18 +58,14 @@ export async function updatePizzaVariant(id, newInfo) {
 }
 
 export async function deletePizzaVariant(id) {
-  const selectQuery = `SELECT * FROM pizza_variants WHERE id = $1;`;
-  const data = [id];
-  
-  const { rows } = await sql.query(selectQuery, data);
+  const { rows } = await sql`SELECT * FROM pizza_variants WHERE id = ${id};`;
   if (rows.length) {
     const name = rows[0].name;
     const deleteQuery = "DELETE FROM pizza_variants WHERE id = $1";
+    const data = [id];
     await sql.query(deleteQuery, data);
     return { name };
   }
 
   throw new Error("Can't delete pizza as it doesn't exist");
 }
-
-// TODO: CRUD operations for pizza table

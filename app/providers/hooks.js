@@ -44,7 +44,7 @@ export function useBackendCartMutation() {
         method: "POST",
         body: JSON.stringify({
           cartId: cart.id,
-          cartItems: cart.cartItems,
+          cartItems: cart.status === "LOADING" ? null : cart.cartItems,
         }),
       });
     },

@@ -4,17 +4,14 @@ import { getCurrentUser } from "./users";
 export async function getCurrentUserCart() {
   const user = await getCurrentUser();
 
-  const query = `SELECT * FROM cart WHERE user_id = $1;`;
-  const data = [user.id];
-  const { rows: cartRows } = await sql.query(query, data);
+  const { rows: cartRows } =
+    await sql`SELECT * FROM cart WHERE user_id = ${user.id};`;
 
   if (cartRows.length) {
     const cart = cartRows[0];
 
-    const query = `SELECT * FROM cart_items WHERE cart_id = $1;`;
-    const data = [cart.id];
-
-    const { rows: cartItemRows } = await sql.query(query, data);
+    const { rows: cartItemRows } =
+      await sql`SELECT * FROM cart_items WHERE cart_id = ${cart.id};`;
 
     if (cartItemRows.length) return { id: cart.id, cartItems: cartItemRows };
 
@@ -22,8 +19,13 @@ export async function getCurrentUserCart() {
   }
 }
 
-export async function updateBackendCart(cartId, cartItems) {
-  if (cartItems?.length) {
+export async function updateBackendCart(cartId, cartItems = null) {
+  console.log("ITEMS: ", cartItems);
+  if (cartItems === null) {
+    return null;
+  }
+
+  if (cartItems.length) {
     await sql`DELETE FROM cart_items;`;
 
     const query = `INSERT INTO cart_items (cart_id, pizza_id, name, price, quantity, image_url, size)
@@ -37,5 +39,7 @@ ${cartItems.map(
     const { rows } = await sql.query(query);
 
     return rows;
+  } else {
+    await sql`DELETE FROM cart_items;`;
   }
 }

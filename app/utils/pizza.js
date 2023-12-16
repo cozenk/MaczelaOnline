@@ -1,17 +1,14 @@
 import { sql } from "@vercel/postgres";
 
 export async function getAllPizzas() {
-  const { rows } = await sql`SELECT * FROM pizza ;`;
+  const { rows } = await sql`SELECT * FROM pizza;`;
 
   return rows;
 }
 
 export async function getPizzaById(pizzaId = "") {
   if (pizzaId) {
-    const query = `SELECT * FROM pizza WHERE id = $1;`;
-    const data = [pizzaId];
-
-    const { rows } = await sql.query(query, data);
+    const { rows } = await sql`SELECT * FROM pizza WHERE id = ${pizzaId};`;
 
     if (rows.length) return rows[0];
 
@@ -21,10 +18,8 @@ export async function getPizzaById(pizzaId = "") {
 
 export async function getPizzasByCategory(category) {
   if (category) {
-    const query = `SELECT * FROM pizza WHERE category = $1;`;
-    const data = [category];
-
-    const { rows } = await sql.query(query, data);
+    const { rows } =
+      await sql`SELECT * FROM pizza WHERE category = ${category}`;
 
     if (!rows.length)
       return console.log(`No exiting pizzas by category of ${category}`);
@@ -60,10 +55,8 @@ export async function createPizza({
 }
 
 export async function updatePizza(pizzaId, newInfo) {
-  const query = `SELECT * FROM pizza WHERE id = $1;`;
-  const data = [pizzaId];
-
-  const { rows: pizzaRows } = await sql.query(query, data);
+  const { rows: pizzaRows } =
+    await sql`SELECT * FROM pizza WHERE id = $${pizzaId};`;
 
   if (pizzaRows.length) {
     const pizza = pizzaRows[0];
@@ -90,13 +83,11 @@ export async function updatePizza(pizzaId, newInfo) {
 }
 
 export async function deletePizza(pizzaId) {
-  const selectQuery = `SELECT * FROM pizza WHERE id = $1;`;
-  const data = [pizzaId];
-
-  const { rows } = await sql.query(selectQuery, data);
+  const { rows } = await sql`SELECT * FROM pizza WHERE id = ${pizzaId};`;
   if (rows.length) {
     const name = rows[0].name;
     const deleteQuery = "DELETE FROM pizza WHERE id = $1 RETURNING *";
+    const data = [pizzaId];
     await sql.query(deleteQuery, data);
     return { name };
   }
