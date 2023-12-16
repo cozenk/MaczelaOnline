@@ -1,13 +1,14 @@
 "use client";
 
 import { setLocalStorageItem } from "@utils/localStorage";
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import {
   useSyncLocalStorageCartToComputedCart,
   useBackendCartMutation,
   useFetchCartBackend,
   useSyncClientCartToBackendCart,
 } from "./hooks";
+import { useIsMutating } from "@tanstack/react-query";
 
 export const CartContext = createContext({});
 
@@ -21,17 +22,13 @@ const initialState = {
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState(initialState);
 
-  const cartBackend = useFetchCartBackend({ initialState, clientCart: cart });
+  const { data: cartBackend } = useFetchCartBackend({
+    initialState,
+    clientCart: cart,
+  });
   const backendCartMutation = useBackendCartMutation();
 
   const computedCart = useMemo(() => {
-    if (cart.status === "BACKEND_CART") {
-      backendCartMutation.mutate({
-        id: cartBackend.id,
-        cartItems: cart.cartItems,
-      });
-    }
-
     const totalPrice = cart.cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
       0,
@@ -50,7 +47,16 @@ export default function CartProvider({ children }) {
       totalPrice,
       totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
     };
-  }, [cart, cartBackend.id]);
+  }, [cart]);
+
+  useEffect(() => {
+    if (computedCart.status === "BACKEND_CART") {
+      backendCartMutation.mutate({
+        id: cartBackend.id,
+        cartItems: computedCart.cartItems,
+      });
+    }
+  }, [computedCart.status, cartBackend.id, computedCart.cartItems]);
 
   const getPizzaById = (pizzaId) =>
     computedCart.cartItems.find((item) => item.pizzaId === pizzaId);
@@ -65,8 +71,6 @@ export default function CartProvider({ children }) {
     size,
   }) => {
     if (name && price && quantity) {
-      console.log("ADD ITEM");
-
       const newItem = {
         pizzaId: id,
         name,
@@ -87,7 +91,6 @@ export default function CartProvider({ children }) {
   };
 
   const updateCartItem = (pizzaId, propertiesToUpdate) => {
-    console.log("UPDATE ITEM");
     if (pizzaId) {
       if (propertiesToUpdate.quantity < 1) {
         removeCartItemById(pizzaId);

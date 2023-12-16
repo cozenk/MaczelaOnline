@@ -1,5 +1,4 @@
-import { useCurrentUser } from "@shared/hooks";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getLocalStorageItem, setLocalStorageItem } from "@utils/localStorage";
 import { useEffect } from "react";
 
@@ -32,25 +31,18 @@ export function useSyncClientCartToBackendCart({ cartBackend, setCart }) {
         status: cartBackend.status,
       }));
     }
-  }, [cartBackend]);
+  }, [cartBackend.status, cartBackend.cartItems]);
 }
 
 export function useBackendCartMutation() {
-  const queryClient = useQueryClient();
-
   const cartBackendMutation = useMutation({
     mutationFn: (cart) => {
       fetch("/api/cart/sync", {
         method: "POST",
         body: JSON.stringify({
           cartId: cart.id,
-          cartItems: cart.status === "LOADING" ? null : cart.cartItems,
+          cartItems: cart.cartItems,
         }),
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["cart"],
       });
     },
   });
@@ -59,12 +51,12 @@ export function useBackendCartMutation() {
 }
 
 export function useFetchCartBackend({ initialState, clientCart }) {
-  const { user } = useCurrentUser();
-
-  const { data: cartBackend } = useQuery({
+  return useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
-      const fetchedCart = await (await fetch("/api/cart/me")).json();
+      const fetchedCart = await (
+        await fetch("/api/cart/me", { cache: "no-store" })
+      ).json();
       if (fetchedCart) {
         return {
           ...clientCart,
@@ -77,8 +69,5 @@ export function useFetchCartBackend({ initialState, clientCart }) {
       return { ...clientCart, status: "NOT_LOGGED_IN" };
     },
     initialData: initialState,
-    enabled: !!user,
   });
-
-  return cartBackend;
 }

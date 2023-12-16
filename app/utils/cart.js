@@ -20,9 +20,8 @@ export async function getCurrentUserCart() {
 }
 
 export async function updateBackendCart(cartId, cartItems = null) {
-  console.log("ITEMS: ", cartItems);
   if (cartItems === null) {
-    return null;
+    throw new Error("Cart items can't be null");
   }
 
   if (cartItems.length) {
@@ -40,6 +39,7 @@ ${cartItems.map(
 
     return rows;
   } else {
-    await sql`DELETE FROM cart_items;`;
+    const { rows } = await sql`DELETE FROM cart_items RETURNING *;`;
+    return rows;
   }
 }

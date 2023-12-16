@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function POST(req, res) {
   const { cartId, cartItems } = await req.json();
-  const updatedCartItems = await updateBackendCart(cartId, cartItems);
-  if (updatedCartItems) return NextResponse.json(updatedCartItems);
-
-  return new NextResponse("", { status: 500 });
+  try {
+    const updatedCartItems = await updateBackendCart(cartId, cartItems);
+    return NextResponse.json(updatedCartItems);
+  } catch (error) {
+    return new NextResponse(error.message, { status: 500 });
+  }
 }
