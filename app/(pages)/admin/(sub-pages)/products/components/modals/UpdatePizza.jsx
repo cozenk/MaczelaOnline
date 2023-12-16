@@ -45,7 +45,7 @@ export default function UpdatePizzaModal({
       </header>
 
       <form action={formAction} className="mx-auto ">
-        <div className=" mb-5 w-96 gap-x-6 gap-y-3 ">
+        <div className="mb-5 w-96 gap-x-6 gap-y-3 ">
           <div className="mb-2">
             <label
               htmlFor="name"

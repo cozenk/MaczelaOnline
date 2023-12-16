@@ -8,20 +8,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "(pages)/admin/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 
 import { Button } from "(pages)/admin/components/ui/button";
 import Modal from "@shared/Modal";
 import Image from "next/image";
-import { deleteOrderAction } from "../actions";
+import { useFormState } from "react-dom";
+
+import { deleteOrderAction, updateOrderInfo } from "../actions";
+import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 
 export const CellAction = ({ row = null }) => {
   const order = row.original;
 
+  const [state, formAction] = useFormState(updateOrderInfo, {
+    infoSaved: false,
+  });
+
   const [modals, setModals] = useState({
     showOrderItems: false,
-    showEditOrder: false,
+    showUpdateOrder: false,
   });
 
   const showOrderItemsModal = () =>
@@ -30,11 +37,31 @@ export const CellAction = ({ row = null }) => {
       showOrderItems: true,
     }));
 
+  const showUpdateOrderModal = () =>
+    setModals((modals) => ({
+      ...modals,
+      showUpdateOrder: true,
+    }));
+
   const closeOrderItemsModal = () =>
     setModals((modals) => ({
       ...modals,
       showOrderItems: false,
     }));
+
+  const closeUpdateOrderModal = () =>
+    setModals((modals) => ({
+      ...modals,
+      showUpdateOrder: false,
+    }));
+
+  useEffect(() => {
+    if (state.infoSaved) {
+      closeUpdateOrderModal();
+
+      state.infoSaved = false;
+    }
+  }, [state.infoSaved]);
 
   return (
     <>
@@ -75,6 +102,53 @@ export const CellAction = ({ row = null }) => {
         </div>
       </Modal>
 
+      <Modal show={modals.showUpdateOrder} onClose={closeUpdateOrderModal}>
+        <header className="mb-10 text-xl font-bold uppercase">
+          Edit Order
+        </header>
+        <form action={formAction} className="mx-auto ">
+          <div className="mb-5 w-96 gap-x-6 gap-y-3 ">
+            <input
+              type="hidden"
+              id="order_id"
+              name="order_id"
+              value={order.id}
+            />
+
+            <div>
+              Status:{" "}
+              <select
+                name="order_status"
+                id="order_status"
+                className="w-28 dark:bg-black"
+                defaultValue={order.status}
+              >
+                <option value={"PLACED"}>TO CONFIRM</option>
+                <option value={"CONFIRMED"}>CONFIRMED</option>
+                <option value={"PREPARING"}>PREPARING</option>
+                <option value={"OTW"}>OTW</option>
+                <option value={"DELIVERED"}>DELIVERED</option>
+              </select>
+            </div>
+
+            <div>
+              Is paid:{" "}
+              <select
+                name="is_completed"
+                id="is_completed"
+                className="w-28 dark:bg-black"
+                defaultValue={order.is_completed}
+              >
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </select>
+            </div>
+          </div>
+          <SubmitButton
+            disabled={!state.infoSaved && !state.infoSaved === undefined}
+          />
+        </form>
+      </Modal>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -91,6 +165,13 @@ export const CellAction = ({ row = null }) => {
           >
             <Edit className="mr-2 h-4 w-4" />
             View Items
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="modal-trigger"
+            onClick={showUpdateOrderModal}
+          >
+            <Edit className="mr-2 h-4 w-4" />
+            Update Order
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={async () => {

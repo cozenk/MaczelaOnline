@@ -3,6 +3,7 @@
 import { formatDate } from "@utils/date";
 import { CellAction } from "./CellAction";
 import Link from "next/link";
+import { Badge } from "(pages)/admin/components/ui/badge";
 
 export const columns = [
   {
@@ -15,7 +16,18 @@ export const columns = [
     cell: ({ row }) => {
       const status = row.getValue("status");
 
-      return status === "PLACED" ? "TO CONFIRM" : status;
+      const getVariant = () => {
+        if (status === "PLACED") return "destructive";
+        if (status === "CONFIRMED") return "outline";
+        if (status === "DELIVERED") return "success";
+        return "secondary";
+      };
+
+      return (
+        <Badge variant={getVariant()}>
+          {status === "PLACED" ? "TO CONFIRM" : status}
+        </Badge>
+      );
     },
   },
   {
@@ -24,7 +36,14 @@ export const columns = [
     cell: ({ row }) => {
       const is_completed = row.getValue("is_completed");
 
-      return is_completed ? "YES" : "NO";
+      const getVariant = () => {
+        if (is_completed) return "success";
+        return "secondary";
+      };
+
+      return (
+        <Badge variant={getVariant()}>{is_completed ? "YES" : "NO"}</Badge>
+      );
     },
   },
   {

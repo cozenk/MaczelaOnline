@@ -8,7 +8,6 @@ import {
   useFetchCartBackend,
   useSyncClientCartToBackendCart,
 } from "./hooks";
-import { useIsMutating } from "@tanstack/react-query";
 
 export const CartContext = createContext({});
 

@@ -3,6 +3,8 @@ import { TabsContent } from "(pages)/admin/components/ui/tabs";
 import { getAllOrders } from "@utils/orders";
 import { columns } from "./components/Columns";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminOrders() {
   const orders = await getAllOrders();
 

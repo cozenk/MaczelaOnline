@@ -56,7 +56,7 @@ export async function createPizza({
 
 export async function updatePizza(pizzaId, newInfo) {
   const { rows: pizzaRows } =
-    await sql`SELECT * FROM pizza WHERE id = $${pizzaId};`;
+    await sql`SELECT * FROM pizza WHERE id = ${pizzaId};`;
 
   if (pizzaRows.length) {
     const pizza = pizzaRows[0];
