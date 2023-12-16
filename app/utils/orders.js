@@ -52,6 +52,34 @@ export async function getCurrentUserOrders() {
   return [];
 }
 
+export async function updateOrder(orderId, newInfo) {
+  const { rows: orderRows } =
+    await sql`SELECT * FROM orders WHERE id = ${orderId};`;
+
+  if (orderRows.length) {
+    const order = orderRows[0];
+
+    const columns = Object.keys(newInfo);
+
+    const query = `UPDATE orders
+    SET ${columns.map((column, index) => ` ${column} = $${index + 1}`)}
+    WHERE id = ${order.id} RETURNING *;
+    `;
+    const data = Object.values(newInfo);
+
+    try {
+      const { rows } = await sql.query(query, data);
+      if (rows.length) return rows[0];
+
+      throw new Error("Error updating order");
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  } else {
+    throw new Error("Cannot find update order as it doesn't exist");
+  }
+}
+
 export async function createOrder(
   userId,
   { cartItems, totalPrice, totalItems },
