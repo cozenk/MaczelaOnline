@@ -47,7 +47,10 @@ export default async function Nav() {
         </div>
       </nav>
 
-      <MobileMenu navigation={navigation} />
+      <MobileMenu
+        navigation={navigation}
+        userAuth={<UserAuth cartStyles="!mt-5" />}
+      />
     </>
   );
 }

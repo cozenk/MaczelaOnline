@@ -4,13 +4,13 @@ import Client from "./Client";
 
 export const dynamic = "force-dynamic";
 
-export default async function UserAuth({ hideCart = false }) {
+export default async function UserAuth({ hideCart = false, cartStyles = "" }) {
   const user = await getCurrentUser();
 
   return (
     <>
       <Client user={user} />
-      {!hideCart ? <Cart /> : null}
+      {!hideCart ? <Cart styles={cartStyles} /> : null}
     </>
   );
 }

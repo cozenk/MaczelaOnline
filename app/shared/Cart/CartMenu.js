@@ -76,9 +76,11 @@ export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
             </div>
           </>
         ) : (
-          <div className="flex flex-col items-center gap-y-4 px-12 pt-12 text-center">
+          <div className="flex flex-col items-center gap-y-4 pt-12 text-center">
             <ShoppingCartIcon className="w-32" />
-            <h2 className="text-2xl">Add to cart na 'yan inzaaan 👉👈🥺</h2>
+            <h2 className="w-[70%] text-2xl md:w-[80%]">
+              Add to cart na 'yan inzaaan 👉👈🥺
+            </h2>
           </div>
         )}
       </div>

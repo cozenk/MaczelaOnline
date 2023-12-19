@@ -5,6 +5,7 @@ export default function SlideMenu({
   isOpen = false,
   closeMenu = () => {},
   children,
+  menuStyles = "",
 }) {
   return (
     <Transition.Root as={Fragment} show={isOpen}>
@@ -21,7 +22,9 @@ export default function SlideMenu({
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity dark:bg-black dark:bg-opacity-75" />
         </Transition.Child>
 
-        <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full">
+        <div
+          className={`pointer-events-none fixed inset-y-0 right-0 flex max-w-full`}
+        >
           <Transition.Child
             as={Fragment}
             enter="transform transition ease-in-out duration-500"
@@ -32,9 +35,7 @@ export default function SlideMenu({
             leaveTo="translate-x-full"
           >
             <Dialog.Panel
-              className={
-                "pointer-events-auto h-full w-full overflow-y-auto bg-white px-6 py-6 outline outline-black dark:bg-black  dark:outline-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10"
-              }
+              className={`pointer-events-auto h-full w-full overflow-y-auto bg-white px-6 py-6 outline outline-black dark:bg-black  dark:outline-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${menuStyles}`}
             >
               {children}
             </Dialog.Panel>
