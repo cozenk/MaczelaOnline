@@ -21,7 +21,7 @@ export default function MobileMenu({ navigation = [], userAuth = null }) {
     <SlideMenu
       isOpen={mobileMenuOpen}
       closeMenu={closeMobileMenu}
-      menuStyles="overflow-visible"
+      menuStyles="overflow-x-visible"
     >
       <div className="flex items-center justify-between gap-x-20">
         <a href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
