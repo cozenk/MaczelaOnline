@@ -15,7 +15,7 @@ export default async function Nav() {
   return (
     <>
       <nav
-        className="navbar fixed flex w-full items-center justify-between p-6 lg:px-8"
+        className="navbar fixed z-50 flex w-full items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">

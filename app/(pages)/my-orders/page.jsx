@@ -5,7 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default async function Orders() {
+export const dynamic = "force-dynamic";
+
+export default async function Orders({ searchParams }) {
+  const { highlight } = searchParams;
+
   const orders = await getCurrentUserOrders();
 
   const totalAmountSpent = orders.reduce(
@@ -29,7 +33,7 @@ export default async function Orders() {
 
         <div className="text-right">
           <h2 className="text-lg">Total amount spent for pizzas: </h2>
-          <span className=" text-2xl font-bold text-green-700 dark:text-green-400">
+          <span className=" text-2xl font-bold text-green-700 dark:text-green-500">
             ₱{totalAmountSpent}
           </span>
         </div>
@@ -38,24 +42,31 @@ export default async function Orders() {
       <section className="orders mt-10 flex flex-col items-start gap-20 border-t border-t-gray-300 py-10">
         {orders.length > 0 ? (
           orders.map((order) => (
-            <div className="w-full rounded-lg bg-gray-100 px-10 py-5 dark:bg-gray-800">
+            <div
+              key={order.id}
+              className={`w-full rounded-lg  bg-gray-100 px-10 py-5 dark:bg-gray-800 ${
+                highlight === String(order.id)
+                  ? "bg-gray-800 text-white dark:bg-gray-100 dark:text-black"
+                  : ""
+              }`}
+            >
               <div className="order-info flex flex-wrap items-start justify-between gap-y-2">
                 <div className="left-info">
                   <div>
-                    <label className="text-gray-700 dark:text-gray-400">
+                    <label className="text-gray-500 dark:text-gray-400">
                       Order ID:
                     </label>{" "}
                     <span className="underline">{order.id}</span>
                   </div>
                   <div>
-                    <label className="text-gray-700 dark:text-gray-400">
+                    <label className="text-gray-500 dark:text-gray-400">
                       {" "}
                       Date placed:{" "}
                     </label>
                     <span className="">{formatDate(order.placed_date)}</span>
                   </div>
                   <div>
-                    <label className="text-gray-700 dark:text-gray-400">
+                    <label className="text-gray-500 dark:text-gray-400">
                       {" "}
                       Status:{" "}
                     </label>
@@ -65,13 +76,13 @@ export default async function Orders() {
                 <div className="right-info">
                   <h2>
                     Order total (+ shipping fee):{" "}
-                    <span className="text-lg font-semibold text-green-700 dark:text-green-400">
+                    <span className="text-lg font-semibold text-green-700 dark:text-green-500">
                       ₱{parseFloat(order.total_price).toLocaleString()}
                     </span>
                   </h2>
                   <h2>
                     Total pizzas:{" "}
-                    <span className="text-lg font-semibold text-green-700 dark:text-green-400">
+                    <span className="text-lg font-semibold text-green-700 dark:text-green-500">
                       {order.total_items}
                     </span>
                   </h2>
@@ -80,7 +91,7 @@ export default async function Orders() {
 
               <div className="items flex flex-wrap items-center gap-10">
                 {order.items.map((item) => (
-                  <div className="mt-5 rounded-lg pb-5">
+                  <div key={item.id} className="mt-5 rounded-lg pb-5">
                     <div className="h-60 w-60 overflow-hidden rounded-lg bg-gray-200">
                       <Link href={`/pizza/${item.pizza_id}`}>
                         <Image
