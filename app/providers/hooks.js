@@ -69,5 +69,7 @@ export function useFetchCartBackend({ initialState, clientCart }) {
       return { ...clientCart, status: "NOT_LOGGED_IN" };
     },
     initialData: initialState,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 }
