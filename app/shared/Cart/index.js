@@ -5,14 +5,14 @@ import { CartContext } from "@providers/CartProvider";
 import { useContext } from "react";
 import CartMenu from "./CartMenu";
 
-export default function Cart() {
+export default function Cart({ styles = "" }) {
   const { cart, showCartMenu, closeCartMenu } = useContext(CartContext);
 
   return (
     <>
       <button
         onClick={showCartMenu}
-        className="relative mt-[2px] text-sm font-semibold leading-6  dark:text-white"
+        className={`relative mt-[2px] text-sm font-semibold leading-6 dark:text-white ${styles}`}
       >
         <ShoppingCartIcon className="h-7 w-7" />
         <span

@@ -9,7 +9,7 @@ import { useContext, useEffect } from "react";
 import { NavContext } from "@providers/NavProvider";
 import { CartContext } from "@providers/CartProvider";
 
-export default function MobileMenu({ navigation = [] }) {
+export default function MobileMenu({ navigation = [], userAuth = null }) {
   const { cart } = useContext(CartContext);
   const { mobileMenuOpen, closeMobileMenu } = useContext(NavContext);
 
@@ -18,8 +18,12 @@ export default function MobileMenu({ navigation = [] }) {
   }, [cart.showMenu]);
 
   return (
-    <SlideMenu isOpen={mobileMenuOpen} closeMenu={closeMobileMenu}>
-      <div className="flex items-center justify-between">
+    <SlideMenu
+      isOpen={mobileMenuOpen}
+      closeMenu={closeMobileMenu}
+      menuStyles="overflow-visible"
+    >
+      <div className="flex items-center justify-between gap-x-20">
         <a href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
           <span className="sr-only">Your Company</span>
           <Image src={icon} width={35} height={35} alt="brand icon" />
@@ -43,13 +47,13 @@ export default function MobileMenu({ navigation = [] }) {
               <a
                 key={item.name}
                 href={item.href}
-                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  hover:bg-gray-50"
+                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:text-gray-300"
               >
                 {item.name}
               </a>
             ))}
           </div>
-          <UserAuth className="mt-5 !flex w-fit flex-col items-start gap-y-10" />
+          {userAuth ? userAuth : null}
         </div>
       </div>
     </SlideMenu>
