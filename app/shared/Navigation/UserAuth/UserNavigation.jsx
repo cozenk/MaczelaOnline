@@ -45,7 +45,7 @@ export default function UserNavigation({ user }) {
         setShowUserNavigation={setShowUserNavigation}
       />
       {showUserNavigation ? (
-        <div className="navigation absolute bottom-0 right-0 z-50 w-max max-w-[30rem] translate-x-[-30%] translate-y-[100%] overflow-x-auto rounded-xl border border-gray-300 bg-white p-5">
+        <div className="navigation absolute bottom-0 right-0 z-50 w-max max-w-[30rem] translate-x-[-30%] translate-y-[100%] overflow-x-auto rounded-xl border border-gray-300 bg-white p-5 md:translate-x-[0%]">
           {user ? (
             <>
               <div className="info mb-4 flex flex-col gap-2 text-sm">

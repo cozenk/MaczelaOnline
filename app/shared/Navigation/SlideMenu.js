@@ -35,7 +35,9 @@ export default function SlideMenu({
             leaveTo="translate-x-full"
           >
             <Dialog.Panel
-              className={`pointer-events-auto h-full w-full overflow-y-auto bg-white px-6 py-6 outline outline-black dark:bg-black  dark:outline-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${menuStyles}`}
+              className={`pointer-events-auto h-full w-full bg-white px-6 py-6 outline outline-black dark:bg-black  dark:outline-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 ${
+                menuStyles ? menuStyles : "overflow-y-auto"
+              }`}
             >
               {children}
             </Dialog.Panel>
