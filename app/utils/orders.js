@@ -27,6 +27,27 @@ export async function getAllOrders() {
   return [];
 }
 
+export async function getCurrentUserRecentOrder() {
+  const user = await getCurrentUser();
+
+  const { rows } =
+    await sql`SELECT * FROM orders WHERE user_id = ${user.id} ORDER BY placed_date DESC LIMIT 1;`;
+
+  if (rows.length) {
+    const order = rows[0];
+
+    const { rows: orderItemRows } =
+      await sql`SELECT * FROM order_items WHERE order_id = ${order.id};`;
+
+    return {
+      ...order,
+      items: orderItemRows.length ? orderItemRows : [],
+    };
+  }
+
+  return null;
+}
+
 export async function getCurrentUserOrders() {
   const user = await getCurrentUser();
 

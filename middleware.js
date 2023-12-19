@@ -11,7 +11,12 @@ export default authMiddleware({
     "/api/users",
     "/api/uploadthing",
   ],
-  apiRoutes: ["/api/users/me", "/api/cart/me", "/api/users/:id"],
+  apiRoutes: [
+    "/api/users/me",
+    "/api/cart/me",
+    "/api/users/:id",
+    "/api/orders/my-recent",
+  ],
 });
 
 export const config = {

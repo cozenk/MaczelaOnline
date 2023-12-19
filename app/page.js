@@ -3,6 +3,7 @@ import ProductLists from "components/PizzaLists";
 import { pizzaMenuImages } from "@assets/pizza-menu";
 import Nav from "@shared/Navigation/Nav";
 import NavProvider from "@providers/NavProvider";
+import OrderTracker from "components/OrderTracker";
 
 const bestSellers = [
   //TODO: Pizza static data reference
@@ -148,6 +149,8 @@ export default function Home() {
     <main className="overflow-x-hidden">
       <header className="absolute inset-x-0 top-0 z-50">
         <Nav />
+
+        <OrderTracker />
       </header>
 
       <Hero />
