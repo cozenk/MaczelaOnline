@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { CellAction } from "./CellAction";
 import { ImageDown } from "lucide-react";
+import { formatPrice } from "@utils/formatters";
 
 export const columns = [
   {
@@ -41,7 +42,7 @@ export const columns = [
     cell: ({ row }) => {
       const price = row.getValue("price");
 
-      return <div>₱{price}</div>;
+      return <div>{formatPrice(price)}</div>;
     },
   },
   {
@@ -51,6 +52,21 @@ export const columns = [
   {
     accessorKey: "variants",
     header: "Variants",
+    cell: ({ row }) => {
+      const variants = row.getValue("variants").sort((a, b) => a.id - b.id);
+
+      if (!variants.length) return <div>No Variants</div>;
+
+      return (
+        <ul className="list-disc">
+          {variants.map((variant) => (
+            <li key={variant.id}>
+              {variant.name} | {formatPrice(variant.price)}
+            </li>
+          ))}
+        </ul>
+      );
+    },
   },
   {
     id: "actions",

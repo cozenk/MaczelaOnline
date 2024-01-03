@@ -8,6 +8,7 @@ import {
   useFetchCartBackend,
   useSyncClientCartToBackendCart,
 } from "./hooks";
+import { formatPrice } from "@utils/formatters";
 
 export const CartContext = createContext({});
 
@@ -37,14 +38,14 @@ export default function CartProvider({ children }) {
       ...cart,
       cartItems: cart.cartItems.map((item) => ({
         ...item,
-        displayPrice: `₱${parseFloat(item.price).toLocaleString()}`,
+        displayPrice: formatPrice(item.price),
       })),
       totalItems: cart.cartItems.reduce(
         (total, item) => total + item.quantity,
         0,
       ),
       totalPrice,
-      totalPriceDisplay: `₱${parseFloat(totalPrice).toLocaleString()}`,
+      totalPriceDisplay: formatPrice(totalPrice),
     };
   }, [cart]);
 

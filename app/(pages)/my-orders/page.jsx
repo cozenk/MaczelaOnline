@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { formatDate } from "@utils/date";
+import { formatDate, formatPrice } from "@utils/formatters";
 import { getCurrentUserOrders } from "@utils/orders";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,7 +34,7 @@ export default async function Orders({ searchParams }) {
         <div className="text-right">
           <h2 className="text-lg">Total amount spent for pizzas: </h2>
           <span className=" text-2xl font-bold text-green-700 dark:text-green-500">
-            ₱{totalAmountSpent}
+            {formatPrice(totalAmountSpent)}
           </span>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default async function Orders({ searchParams }) {
                   <h2>
                     Order total (+ shipping fee):{" "}
                     <span className="text-lg font-semibold text-green-700 dark:text-green-500">
-                      ₱{parseFloat(order.total_price).toLocaleString()}
+                      {formatPrice(order.total_price)}
                     </span>
                   </h2>
                   <h2>
@@ -112,7 +112,7 @@ export default async function Orders({ searchParams }) {
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="price-quantity">
-                          ₱{item.price}{" "}
+                          {formatPrice(item.price)}{" "}
                           <span className="ml-2 text-gray-600">
                             x{item.quantity}
                           </span>
@@ -120,7 +120,7 @@ export default async function Orders({ searchParams }) {
                         <div className="total">
                           Total:{" "}
                           <span className="font-semibold text-green-700 dark:text-green-500">
-                            ₱{item.quantity * item.price}
+                            {formatPrice(item.quantity * item.price)}
                           </span>
                         </div>
                       </div>

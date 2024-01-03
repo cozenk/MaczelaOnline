@@ -48,7 +48,7 @@ export async function updatePizzaVariant(id, newInfo) {
       const { rows } = await sql.query(query, data);
       if (rows.length) return rows[0];
 
-      throw new Error("Error updating pizza");
+      throw new Error("Error updating pizza variant");
     } catch (error) {
       throw new Error(error.message);
     }
@@ -68,4 +68,9 @@ export async function deletePizzaVariant(id) {
   }
 
   throw new Error("Can't delete pizza as it doesn't exist");
+}
+
+export async function deleteAllPizzaVariants(pizza_id) {
+  if (pizza_id)
+    await sql`DELETE FROM pizza_variants WHERE pizza_id = ${pizza_id};`;
 }

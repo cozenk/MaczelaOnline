@@ -1,9 +1,13 @@
 "use client";
 
 import { CartContext } from "@providers/CartProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
-export default function ActionButtons({ pizza }) {
+export default function ActionButtons({
+  pizza,
+  selectedVariant = null,
+  onSelectVariant = () => {},
+}) {
   const { addToCart, updateCartItem, showCartMenu, getPizzaById } =
     useContext(CartContext);
 
@@ -12,13 +16,14 @@ export default function ActionButtons({ pizza }) {
 
     if (existingPizza) {
       updateCartItem(existingPizza.pizzaId, {
+        price: selectedVariant.price || pizza.price,
         quantity: existingPizza.quantity + 1,
       });
     } else {
       addToCart({
         id: pizza.id,
         name: pizza.name,
-        price: pizza.price,
+        price: selectedVariant.price || pizza.price,
         quantity: 1,
         imageSrc: pizza.imageSrc,
         imageAlt: pizza.imageAlt,
@@ -42,14 +47,32 @@ export default function ActionButtons({ pizza }) {
           Select size:
         </span>
         <select
-          defaultValue={pizza.size}
+          value={selectedVariant.name || pizza.size}
           name="size"
           id="size"
           className="w-28 dark:bg-black"
+          onChange={(e) => {
+            onSelectVariant({
+              name: e.target.value,
+              price:
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "data-price",
+                ),
+            });
+          }}
         >
-          <option value={`Medium 10"`}>Medium 10"</option>
-          <option value={`Large 12"`}>Large 12"</option>
-          <option value={`Super 20"`}>Super 20"</option>
+          <option value={pizza.size}>{pizza.size}</option>
+          {pizza.variants.length > 0
+            ? pizza.variants.map((variant) => (
+                <option
+                  key={variant.id}
+                  value={variant.name}
+                  data-price={variant.price}
+                >
+                  {variant.name}
+                </option>
+              ))
+            : null}
         </select>
       </div>
     </div>

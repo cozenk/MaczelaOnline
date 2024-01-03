@@ -3,6 +3,7 @@
 import { Button } from "(pages)/admin/components/ui/button";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { CartContext } from "@providers/CartProvider";
+import { priceRegex } from "@utils/regex";
 import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import { useContext } from "react";
@@ -79,7 +80,6 @@ export default function CartItems({ imageSize }) {
                     size={1}
                     className="pl-3"
                     onChange={(e) => {
-                      const priceRegex = /^(\d+(\.\d{1,2})?)?$/;
                       if (priceRegex.test(e.target.value))
                         updateItemTypedQuantity(
                           item.pizzaId,

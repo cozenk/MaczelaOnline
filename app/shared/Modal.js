@@ -14,7 +14,8 @@ export default function Modal({
       const handler = (e) => {
         if (
           !e.target.closest(".overlay-content") &&
-          !e.target.closest(".modal-trigger")
+          !e.target.closest(".modal-trigger") &&
+          e.target.tagName !== "BUTTON"
         ) {
           onClose();
         }
