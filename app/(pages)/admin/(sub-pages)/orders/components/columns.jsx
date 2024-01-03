@@ -62,6 +62,10 @@ export const columns = [
     },
   },
   {
+    accessorKey: "shipping_address",
+    header: "Shipping Address",
+  },
+  {
     accessorKey: "placed_date",
     header: "Placed at",
     cell: ({ row }) => {

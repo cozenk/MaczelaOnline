@@ -39,13 +39,14 @@ export default function ShippingAddress({ user = null }) {
           <div className="mt-2">
             {user ? (
               <input
+                disabled
                 required
-                defaultValue={user.city}
+                defaultValue={"Marikina"}
                 type="text"
                 name="city"
                 id="city"
                 autoComplete="city"
-                className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:opacity-50 sm:text-sm sm:leading-6"
               />
             ) : (
               <Skeleton height={35} />
@@ -63,13 +64,14 @@ export default function ShippingAddress({ user = null }) {
           <div className="mt-2">
             {user ? (
               <input
+                disabled
                 required
-                defaultValue={user.province}
+                defaultValue={"Rizal"}
                 type="text"
                 name="province"
                 id="province"
                 autoComplete="province"
-                className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 shadow-sm  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:opacity-50 sm:text-sm sm:leading-6"
               />
             ) : (
               <Skeleton height={35} />
@@ -87,13 +89,14 @@ export default function ShippingAddress({ user = null }) {
           <div className="mt-2">
             {user ? (
               <input
+                disabled
                 required
-                defaultValue={user.postal_code}
+                defaultValue={"1800"}
                 type="text"
                 name="postal_code"
                 id="postal_code"
                 autoComplete="postal_code"
-                className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 shadow-sm  ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 disabled:opacity-50 sm:text-sm sm:leading-6"
               />
             ) : (
               <Skeleton height={35} />

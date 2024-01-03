@@ -35,7 +35,7 @@ export default function OrderTracker() {
 
   return recentOrder.status === "DELIVERED" ? (
     <HoverCard openDelay={300} closeDelay={100}>
-      <HoverCardTrigger className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+83px)]">
+      <HoverCardTrigger className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+107px)]">
         <Badge
           variant={"success"}
           className={"rounded-br-none rounded-tr-none text-sm"}
@@ -50,7 +50,7 @@ export default function OrderTracker() {
       </HoverCardContent>
     </HoverCard>
   ) : (
-    <div className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+83px)] space-y-3 rounded-bl-xl rounded-tl-xl border-b-2 border-l-2 border-t-2 border-white bg-black/50 px-5 py-2 text-white">
+    <div className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+107px)] space-y-3 rounded-bl-xl rounded-tl-xl border-b-2 border-l-2 border-t-2 border-white bg-black/50 px-5 py-2 text-white">
       <div>
         Recent order:{" "}
         <Link

@@ -110,12 +110,10 @@ export async function updateOrder(orderId, newInfo) {
 
 export async function createOrder(
   userId,
-  { cartItems, totalPrice, totalItems },
+  { cartItems, totalPrice, totalItems, shippingAddress },
 ) {
-  console.log(userId, cartItems, totalPrice, totalItems);
-
-  const query = `INSERT INTO orders (user_id, status, total_price, total_items) VALUES($1, $2, $3, $4) RETURNING *;`;
-  const data = [userId, "PLACED", totalPrice, totalItems];
+  const query = `INSERT INTO orders (user_id, status, total_price, total_items, shipping_address) VALUES($1, $2, $3, $4, $5) RETURNING *;`;
+  const data = [userId, "PLACED", totalPrice, totalItems, shippingAddress];
 
   const { rows } = await sql.query(query, data);
 

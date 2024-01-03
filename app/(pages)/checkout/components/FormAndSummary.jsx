@@ -32,7 +32,7 @@ export default function FormAndSummary({ user = null }) {
   }, []);
 
   return (
-    <div className="bg-[url('/pattern-light.png')] bg-[length:70rem_41rem] bg-center bg-repeat dark:bg-[url('/pattern-dark.png')]">
+    <div>
       {cart.cartItems.length > 0 ? (
         <>
           <Modal show={state.orderSubmitted}>

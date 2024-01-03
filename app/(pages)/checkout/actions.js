@@ -14,6 +14,11 @@ export async function submitOrder(cartItems = [], prevState, formData) {
     const totalPrice = formData.get("total_price");
     const totalItems = formData.get("total-items");
 
+    const street_address = formData.get("street_address");
+    const city = formData.get("city");
+    const province = formData.get("province");
+    const postal_code = formData.get("postal_code");
+
     const contactInformation = {
       userId,
       firstName,
@@ -22,10 +27,20 @@ export async function submitOrder(cartItems = [], prevState, formData) {
       email,
     };
 
+    const shippingInformation = {
+      street_address,
+      city: "Marikina",
+      province: "Rizal",
+      postal_code: "1800",
+    };
+
+    const shippingAddress = `${shippingInformation.street_address}, ${shippingInformation.city}, ${shippingInformation.province}, ${shippingInformation.postal_code}`;
+
     const createdOrder = await createOrder(userId, {
       cartItems,
       totalPrice,
       totalItems,
+      shippingAddress,
     });
 
     revalidatePath("/my-orders");
