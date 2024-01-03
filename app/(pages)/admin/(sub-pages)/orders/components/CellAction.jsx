@@ -18,6 +18,7 @@ import { useFormState } from "react-dom";
 
 import { deleteOrderAction, updateOrderInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
+import { formatPrice } from "@utils/formatters";
 
 export const CellAction = ({ row = null }) => {
   const order = row.original;
@@ -70,10 +71,7 @@ export const CellAction = ({ row = null }) => {
           <div>
             <div>
               Total price:{" "}
-              <span>
-                ₱{parseFloat(order.total_price).toLocaleString()} (+ Shipping
-                fee)
-              </span>
+              <span>{formatPrice(order.total_price)} (+ Shipping fee)</span>
             </div>
             <div>
               Total items: <span>x{order.total_items}</span>
@@ -94,9 +92,7 @@ export const CellAction = ({ row = null }) => {
                   <span>x{item.quantity}</span>
                 </div>
               </div>
-              <div>
-                ₱{parseFloat(item.price * item.quantity).toLocaleString()}
-              </div>
+              <div>{formatPrice(item.price * item.quantity)}</div>
             </div>
           ))}
         </div>

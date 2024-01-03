@@ -19,7 +19,7 @@ export default function Hero() {
           }}
         />
       </div>
-      <div className="relative z-20 w-full px-10 py-24 md:py-32 lg:px-28">
+      <div className="relative z-20 w-full px-10 py-24 md:py-32 lg:px-28 2xl:px-40">
         <div className="relative flex w-full flex-wrap items-center justify-center lg:justify-between">
           <div className="text max-w-lg">
             <h1 className="mb-10 text-center text-6xl font-bold tracking-tight  dark:text-white md:text-left">
@@ -37,7 +37,7 @@ export default function Hero() {
           <Image
             src={pizzaHero}
             alt="hero image of a pizza"
-            className="max-w-md object-contain"
+            className="max-w-md object-contain 2xl:max-w-lg"
           />
           <ActionButtons className="flex lg:hidden" />
         </div>

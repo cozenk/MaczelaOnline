@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDate } from "@utils/date";
+import { formatDate, formatPrice } from "@utils/formatters";
 import { CellAction } from "./CellAction";
 import Link from "next/link";
 import { Badge } from "(pages)/admin/components/ui/badge";
@@ -72,7 +72,7 @@ export const columns = [
     accessorKey: "total_price",
     header: "Total Price",
     cell: ({ row }) => {
-      return `₱${parseFloat(row.getValue("total_price")).toLocaleString()}`;
+      return formatPrice(row.getValue("total_price"));
     },
   },
   {

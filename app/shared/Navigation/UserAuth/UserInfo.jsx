@@ -25,7 +25,7 @@ export default function UserInfo({
       ) : (
         <UserCircleIcon
           onClick={() => setShowUserNavigation((prev) => !prev)}
-          className="user-profile-img w-8"
+          className="user-profile-img w-8 cursor-pointer"
         />
       )}
     </>

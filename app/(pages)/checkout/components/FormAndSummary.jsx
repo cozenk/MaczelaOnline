@@ -32,7 +32,7 @@ export default function FormAndSummary({ user = null }) {
   }, []);
 
   return (
-    <div>
+    <div className="bg-[url('/pattern-light.png')] bg-[length:70rem_41rem] bg-center bg-repeat dark:bg-[url('/pattern-dark.png')]">
       {cart.cartItems.length > 0 ? (
         <>
           <Modal show={state.orderSubmitted}>
@@ -65,7 +65,7 @@ export default function FormAndSummary({ user = null }) {
             action={formAction}
             className="grid grid-cols-1 items-center lg:grid-cols-2"
           >
-            <div className="overflow-y-auto px-8 pb-16 pt-10 lg:h-[100vh] lg:px-16">
+            <div className="overflow-y-auto bg-white/50 px-8 pb-16 pt-10 backdrop-blur-sm dark:bg-black/50 lg:h-[100vh] lg:px-16">
               <div className="mb-12 flex items-center gap-2">
                 <Image src={icon} width={35} height={35} alt="brand-icon" />
                 <span className="text-2xl font-semibold">
@@ -77,7 +77,7 @@ export default function FormAndSummary({ user = null }) {
               <ShippingAddress user={user} />
               {/* <BillingAddress /> */}
             </div>
-            <div className="overflow-y-auto bg-gray-50 px-8 py-16 dark:bg-gray-800 lg:h-[100vh] lg:px-20">
+            <div className="bg-gray-50/59 dark:bg-gray-800/59 overflow-y-auto px-8 py-16 backdrop-blur-sm lg:h-[100vh] lg:px-20">
               <OrderSummary />
             </div>
           </form>

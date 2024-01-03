@@ -1,6 +1,6 @@
 import Image from "next/image";
-import ActionButtons from "./ActionButtons";
 import { ImageDown } from "lucide-react";
+import Info from "./Info";
 
 export default function Pizza({
   id,
@@ -10,6 +10,7 @@ export default function Pizza({
   name,
   price,
   size,
+  variants = [],
 }) {
   return (
     <div>
@@ -28,17 +29,16 @@ export default function Pizza({
           )}
         </div>
       </a>
-      <div className="flex flex-col gap-3">
-        <div className="flex items-baseline justify-between">
-          <h3 className="mt-4 text-lg  text-gray-700 dark:text-gray-200">
-            {name}
-          </h3>
-          <p className="mt-1 text-lg font-bold  dark:text-white">₱{price}</p>
-        </div>
-        <ActionButtons
-          pizza={{ id, href, imageSrc, imageAlt, name, price, size }}
-        />
-      </div>
+      <Info
+        id={id}
+        href={href}
+        imageAlt={imageAlt}
+        imageSrc={imageSrc}
+        name={name}
+        price={price}
+        size={size}
+        variants={variants}
+      />
     </div>
   );
 }

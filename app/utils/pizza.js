@@ -3,14 +3,40 @@ import { sql } from "@vercel/postgres";
 export async function getAllPizzas() {
   const { rows } = await sql`SELECT * FROM pizza;`;
 
-  return rows;
+  if (rows.length) {
+    const pizzasWithVariants = Promise.all(
+      rows.map(async (pizza) => {
+        const { rows: variants } =
+          await sql`SELECT * FROM pizza_variants WHERE pizza_id = ${pizza.id};`;
+
+        return {
+          ...pizza,
+          variants: variants.length ? variants : [],
+        };
+      }),
+    );
+
+    return await pizzasWithVariants;
+  }
+
+  return [];
 }
 
 export async function getPizzaById(pizzaId = "") {
   if (pizzaId) {
     const { rows } = await sql`SELECT * FROM pizza WHERE id = ${pizzaId};`;
 
-    if (rows.length) return rows[0];
+    if (rows.length) {
+      const pizza = rows[0];
+
+      const { rows: variants } =
+        await sql`SELECT * FROM pizza_variants WHERE pizza_id = ${pizza.id};`;
+
+      return {
+        ...pizza,
+        variants: variants.length ? variants : [],
+      };
+    }
 
     throw new Error("Can't find Pizza");
   }
@@ -24,7 +50,21 @@ export async function getPizzasByCategory(category) {
     if (!rows.length)
       return console.log(`No exiting pizzas by category of ${category}`);
 
-    return rows;
+    if (rows.length) {
+      const pizzasWithVariants = Promise.all(
+        rows.map(async (pizza) => {
+          const { rows: variants } =
+            await sql`SELECT * FROM pizza_variants WHERE pizza_id = ${pizza.id};`;
+
+          return {
+            ...pizza,
+            variants: variants.length ? variants : [],
+          };
+        }),
+      );
+
+      return await pizzasWithVariants;
+    }
   }
 }
 
@@ -44,7 +84,7 @@ export async function createPizza({
     const { rows } = await sql.query(query, data);
 
     if (rows.length) {
-      return { name, image_url, category, description, price, size };
+      return rows[0];
     }
 
     return null;
@@ -94,5 +134,3 @@ export async function deletePizza(pizzaId) {
 
   throw new Error("Can't delete pizza as it doesn't exist");
 }
-
-// TODO: CRUD operations for pizza table

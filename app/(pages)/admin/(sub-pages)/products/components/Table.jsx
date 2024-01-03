@@ -9,7 +9,7 @@ import { columns } from "./Columns";
 import { DataTable } from "(pages)/admin/components/ui/data-table";
 import AddPizzaModal from "./modals/AddPiza";
 
-export const ProductsTable = ({ pizzas }) => {
+export function ProductsTable({ pizzas }) {
   const [showAddPizzaModal, setShowAddPizzaModal] = useState(false);
 
   return (
@@ -34,4 +34,4 @@ export const ProductsTable = ({ pizzas }) => {
       <DataTable searchKey="name" columns={columns} data={pizzas} />
     </>
   );
-};
+}

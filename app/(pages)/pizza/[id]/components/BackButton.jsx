@@ -11,7 +11,7 @@ export default function BackButton() {
       onClick={() => {
         routere.back();
       }}
-      className="flex w-full items-center gap-2 pl-40 font-medium hover:text-gray-500"
+      className="flex w-fit items-center gap-2 pl-40 font-medium hover:text-gray-500"
     >
       <ArrowLeftIcon width={20} /> Go back
     </button>

@@ -9,8 +9,11 @@ import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { ShoppingBagIcon } from "lucide-react";
 import { Chart } from "./chart";
 import { RecentSales } from "(pages)/admin/components/recent-sales";
+import { getAllPendingOrders } from "@utils/orders";
 
-export default function Overview() {
+export default async function Overview() {
+  const pendingOrders = await getAllPendingOrders();
+
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -34,7 +37,7 @@ export default function Overview() {
             <ShoppingBagIcon width={16} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
+            <div className="text-2xl font-bold">{pendingOrders.length}</div>
             {/* <p className="text-muted-foreground text-xs">
                       +201 since last hour
                     </p> */}

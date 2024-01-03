@@ -7,6 +7,7 @@ import {
   HoverCardTrigger,
 } from "(pages)/admin/components/ui/hover-card";
 import { useQuery } from "@tanstack/react-query";
+import { formatPrice } from "@utils/formatters";
 import Link from "next/link";
 
 export default function OrderTracker() {
@@ -79,7 +80,7 @@ export default function OrderTracker() {
       <div>
         Total:{" "}
         <span className="font-bold">
-          ₱{recentOrder.total_price} (
+          {formatPrice(recentOrder.total_price)} (
           {recentOrder.is_completed ? "Paid" : "To pay"})
         </span>
       </div>

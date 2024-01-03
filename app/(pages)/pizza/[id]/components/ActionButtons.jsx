@@ -3,7 +3,11 @@
 import { CartContext } from "@providers/CartProvider";
 import { useContext, useState } from "react";
 
-export default function ActionButtons({ pizza = null }) {
+export default function ActionButtons({
+  pizza = null,
+  selectedVariant = null,
+  onSelectVariant = () => {},
+}) {
   const { addToCart, updateCartItem, showCartMenu, getPizzaById } =
     useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
@@ -13,13 +17,14 @@ export default function ActionButtons({ pizza = null }) {
 
     if (existingPizza) {
       updateCartItem(existingPizza.pizzaId, {
+        price: selectedVariant.price || pizza.price,
         quantity: existingPizza.quantity + 1,
       });
     } else {
       addToCart({
         id: pizza.id,
         name: pizza.name,
-        price: pizza.price,
+        price: selectedVariant.price || pizza.price,
         quantity: 1,
         imageSrc: pizza.imageSrc,
         imageAlt: pizza.imageAlt,
@@ -32,22 +37,38 @@ export default function ActionButtons({ pizza = null }) {
 
   return (
     <div>
-      <div class="mb-8 flex items-center">
-        <h2 class="w-16 text-xl font-bold dark:text-gray-400">Size:</h2>
-        <div class="-mx-2 -mb-2 flex flex-wrap">
-          <button class="mb-2 mr-1 w-11 border py-1 hover:border-teal-400 hover:text-teal-600 dark:border-gray-400 dark:text-gray-400 dark:hover:border-gray-300">
-            {pizza.size}
-          </button>
-          <button class="mb-2 mr-1 w-11 border py-1 hover:border-teal-400 hover:text-teal-600 dark:border-gray-400 dark:text-gray-400 dark:hover:border-gray-300">
-            S
-          </button>
-          <button class="mb-2 mr-1 w-11 border py-1 hover:border-teal-400 hover:text-teal-600 dark:border-gray-400 dark:text-gray-400 dark:hover:border-gray-300">
-            M
-          </button>
-          <button class="mb-2 mr-1 w-11 border py-1 hover:border-teal-400 hover:text-teal-600 dark:border-gray-400 dark:text-gray-400 dark:hover:border-gray-300">
-            XS
-          </button>
-        </div>
+      <div className="sizes mb-10 flex items-center gap-2 text-black dark:text-white">
+        <span className="w-16 text-xl font-bold dark:text-gray-400">
+          Select size:
+        </span>
+        <select
+          value={selectedVariant.name || pizza.size}
+          name="size"
+          id="size"
+          className="w-28 dark:bg-black"
+          onChange={(e) => {
+            onSelectVariant({
+              name: e.target.value,
+              price:
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "data-price",
+                ),
+            });
+          }}
+        >
+          <option value={pizza.size}>{pizza.size}</option>
+          {pizza.variants.length > 0
+            ? pizza.variants.map((variant) => (
+                <option
+                  key={variant.id}
+                  value={variant.name}
+                  data-price={variant.price}
+                >
+                  {variant.name}
+                </option>
+              ))
+            : null}
+        </select>
       </div>
       <div class="mb-8 w-32 ">
         <label

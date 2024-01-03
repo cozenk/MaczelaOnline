@@ -6,6 +6,8 @@ import { updatePizzaInfo } from "../../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { useFormState } from "react-dom";
 import ImageField from "../ImageField";
+import VariantFields from "./VariantFields";
+import { useRouter } from "next/navigation";
 
 export default function UpdatePizzaModal({
   show,
@@ -13,17 +15,21 @@ export default function UpdatePizzaModal({
   pizza = null,
   modalStyles = "",
 }) {
-  const [state, formAction] = useFormState(updatePizzaInfo, {
-    infoSaved: false,
-  });
-
+  const router = useRouter();
   const [isReadyToSubmit, setIsReadyToSubmit] = useState(true);
 
-  const variantOptions = [
-    { value: 'Medium 10"', label: 'Medium 10"' },
-    { value: 'Large 12"', label: 'Large 12"' },
-    { value: 'Super 20"', label: 'Super 20"' },
-  ];
+  const [openedVariantFields, setOpenedVariantFiedls] = useState(
+    pizza.variants.sort((a, b) => a.id - b.id),
+  );
+
+  const updatePizzaInfoWithVariants = updatePizzaInfo.bind(
+    null,
+    openedVariantFields,
+  );
+
+  const [state, formAction] = useFormState(updatePizzaInfoWithVariants, {
+    infoSaved: false,
+  });
 
   useEffect(() => {
     if (show) document.body.style.overflowY = "hidden";
@@ -33,6 +39,7 @@ export default function UpdatePizzaModal({
   useEffect(() => {
     if (state.infoSaved) {
       onClose();
+      router.refresh();
 
       state.infoSaved = false;
     }
@@ -147,23 +154,10 @@ export default function UpdatePizzaModal({
               <option value={`Super 20"`}>Super 20"</option>
             </select>
           </div>
-          {/* <div className="mb-2">
-            <label
-              htmlFor="variant"
-              className="block text-sm font-medium leading-6 "
-            >
-              Variant
-            </label>
-            <Select
-              defaultValue={[variantOptions[0], variantOptions[2]]}
-              closeMenuOnSelect={false}
-              isMulti
-              name="variant"
-              options={variantOptions}
-              className="basic-multi-select overlay-content dark:text-black"
-              classNamePrefix="select"
-            />
-          </div> */}
+          <VariantFields
+            openedFields={openedVariantFields}
+            setOpenedFiedls={setOpenedVariantFiedls}
+          />
         </div>
         <SubmitButton disabled={!isReadyToSubmit} />
       </form>

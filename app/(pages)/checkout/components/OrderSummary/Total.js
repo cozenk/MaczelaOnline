@@ -1,6 +1,7 @@
 "use client";
 
 import { CartContext } from "@providers/CartProvider";
+import { formatPrice } from "@utils/formatters";
 import { useContext } from "react";
 
 export default function Total() {
@@ -16,7 +17,7 @@ export default function Total() {
         </div>
         <div className="flex justify-between ">
           <p>Shipping</p>
-          <p className="text-lg">₱{shippingFee}</p>
+          <p className="text-lg">{formatPrice(shippingFee)}</p>
         </div>
       </div>
 
@@ -27,7 +28,7 @@ export default function Total() {
           name="total_price"
           value={cart.totalPrice + shippingFee}
         />
-        <p className="">₱{cart.totalPrice + shippingFee}</p>
+        <p className="">{formatPrice(cart.totalPrice + shippingFee)}</p>
       </div>
     </div>
   );

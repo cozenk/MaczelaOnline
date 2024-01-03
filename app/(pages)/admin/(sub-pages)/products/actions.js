@@ -4,12 +4,11 @@
 import { createPizza, updatePizza, deletePizza } from "@utils/pizza";
 import {
   createPizzaVariant,
-  deletePizzaVariant,
-  updatePizzaVariant,
+  deleteAllPizzaVariants,
 } from "@utils/pizza_variant";
 import { revalidatePath } from "next/cache";
 
-export async function savePizzaInfo(prevState, formData) {
+export async function addNewPizza(variants = [], prevState, formData) {
   if (formData) {
     const name = formData.get("name");
     const image_url = formData.get("image_url");
@@ -17,7 +16,6 @@ export async function savePizzaInfo(prevState, formData) {
     const description = formData.get("description");
     const price = formData.get("price");
     const size = formData.get("size");
-    const variant = formData.get("variant");
 
     const newInfo = {
       name,
@@ -29,7 +27,20 @@ export async function savePizzaInfo(prevState, formData) {
     };
 
     try {
-      await createPizza(newInfo);
+      const { id } = await createPizza(newInfo);
+      if (variants.length) {
+        const createdPizzaVariants = Promise.all(
+          variants.map(async (variant) => {
+            createPizzaVariant({
+              pizza_id: id,
+              name: variant.name,
+              price: variant.price,
+            });
+          }),
+        );
+
+        await createdPizzaVariants;
+      }
 
       revalidatePath("/");
       revalidatePath("/admin/products");
@@ -54,7 +65,7 @@ export async function savePizzaInfo(prevState, formData) {
   };
 }
 
-export async function updatePizzaInfo(prevState, formData) {
+export async function updatePizzaInfo(variants = [], prevState, formData) {
   if (formData) {
     const pizzaId = formData.get("pizza_id");
     const name = formData.get("name");
@@ -74,15 +85,41 @@ export async function updatePizzaInfo(prevState, formData) {
     };
 
     try {
-      await updatePizza(pizzaId, newPizzaInfo);
+      const { id } = await updatePizza(pizzaId, newPizzaInfo);
+      if (variants.length) {
+        await deleteAllPizzaVariants(id);
 
-      revalidatePath("/");
-      revalidatePath("/admin/products");
+        const updatedPizzaVariants = Promise.all(
+          variants.map(async (variant) => {
+            createPizzaVariant({
+              pizza_id: id,
+              name: variant.name,
+              price: variant.price,
+            });
+          }),
+        );
 
-      return {
-        infoSaved: true,
-        isError: false,
-      };
+        await updatedPizzaVariants;
+
+        revalidatePath("/");
+
+        revalidatePath("/admin/products");
+
+        return {
+          infoSaved: true,
+          isError: false,
+        };
+      } else {
+        await deleteAllPizzaVariants(id);
+
+        revalidatePath("/");
+        revalidatePath("/admin/products");
+
+        return {
+          infoSaved: true,
+          isError: false,
+        };
+      }
     } catch (error) {
       console.error(error);
 
@@ -102,103 +139,6 @@ export async function updatePizzaInfo(prevState, formData) {
 export async function deletePizzaInfo(pizzaId, name) {
   try {
     await deletePizza(pizzaId);
-
-    revalidatePath("/");
-    revalidatePath("/admin/products");
-
-    return {
-      infoSaved: true,
-      isError: false,
-    };
-  } catch (error) {
-    return {
-      infoSaved: false,
-      isError: true,
-    };
-  }
-}
-
-// Variants Actions
-
-export async function saveVariantInfo(prevState, formData) {
-  if (formData) {
-    const name = formData.get("name");
-    const price = formData.get("price");
-    const pizza_id = formData.get("pizza_id");
-
-    const newInfo = {
-      name,
-      price,
-      pizza_id,
-    };
-
-    try {
-      await createPizzaVariant(newInfo);
-
-      revalidatePath("/");
-      revalidatePath("/admin/products");
-
-      return {
-        infoSaved: true,
-        isError: false,
-      };
-    } catch (error) {
-      console.error(error);
-
-      return {
-        infoSaved: false,
-        isError: true,
-      };
-    }
-  }
-
-  return {
-    infoSaved: false,
-    isError: true,
-  };
-}
-
-export async function updateVariantInfo(prevState, formData) {
-  if (formData) {
-    const name = formData.get("name");
-    const price = formData.get("price");
-    const pizza_id = formData.get("pizza_id");
-
-    const newInfo = {
-      name,
-      price,
-      pizza_id,
-    };
-
-    try {
-      await updatePizzaVariant(pizzaId, newInfo);
-
-      revalidatePath("/");
-      revalidatePath("/admin/products");
-
-      return {
-        infoSaved: true,
-        isError: false,
-      };
-    } catch (error) {
-      console.error(error);
-
-      return {
-        infoSaved: false,
-        isError: true,
-      };
-    }
-  }
-
-  return {
-    infoSaved: false,
-    isError: true,
-  };
-}
-
-export async function deleteVariantInfo(id, name) {
-  try {
-    await deletePizzaVariant(id);
 
     revalidatePath("/");
     revalidatePath("/admin/products");

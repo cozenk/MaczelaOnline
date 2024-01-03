@@ -5,8 +5,8 @@ export default async function PizzaLists({ label = null }) {
   const pizzas = await getPizzasByCategory("Best sellers");
 
   return (
-    <div className="bg-white pb-24 pt-14 dark:bg-black">
-      <div className="mx-auto max-w-2xl px-6 pt-10 md:px-8 lg:max-w-7xl">
+    <div className="pb-24 pt-14">
+      <div className="mx-auto max-w-2xl rounded-3xl bg-white/30 px-6 py-10 backdrop-blur-sm dark:bg-black/30 md:px-8 lg:max-w-7xl">
         <h2 className="sr-only">Pizzas</h2>
 
         {label ? (
@@ -29,6 +29,7 @@ export default async function PizzaLists({ label = null }) {
                 imageSrc={pizza.image_url}
                 imageAlt={pizza.description}
                 size={pizza.size}
+                variants={pizza.variants}
               />
             ))}
         </div>

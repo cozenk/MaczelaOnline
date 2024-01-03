@@ -27,6 +27,13 @@ export async function getAllOrders() {
   return [];
 }
 
+export async function getAllPendingOrders() {
+  const { rows: pendingOrderRows } =
+    await sql`SELECT * FROM orders WHERE status = 'PLACED' ORDER BY placed_date DESC;`;
+
+  return pendingOrderRows;
+}
+
 export async function getCurrentUserRecentOrder() {
   const user = await getCurrentUser();
 

@@ -22,8 +22,6 @@ export function DataTable({ columns, data, tbodyId = "" }) {
 
   const highlight = searchParams.get("highlight");
 
-  console.log("HIGHLIGHT: ", highlight);
-
   const table = useReactTable({
     data,
     columns,
