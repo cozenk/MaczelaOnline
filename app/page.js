@@ -4,6 +4,7 @@ import { pizzaMenuImages } from "@assets/pizza-menu";
 import Nav from "@shared/Navigation/Nav";
 import NavProvider from "@providers/NavProvider";
 import OrderTracker from "components/OrderTracker";
+import OperationInfoBanner from "@shared/OperationInfoBanner";
 
 const bestSellers = [
   //TODO: Pizza static data reference
@@ -147,6 +148,7 @@ const bestSellers = [
 export default function Home() {
   return (
     <main className="overflow-x-hidden bg-[url('/pattern-light.png')] bg-[length:70rem_41rem] bg-center bg-repeat dark:bg-[url('/pattern-dark.png')]">
+      <OperationInfoBanner className="translate-y-[calc(0%+83px)]" />
       <header className="absolute inset-x-0 top-0 z-50">
         <Nav />
 
