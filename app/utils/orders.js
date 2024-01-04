@@ -143,11 +143,28 @@ export async function deleteOrder(orderId) {
 }
 
 export async function createOrderItems(orderId, orderItems) {
-  const query = `INSERT INTO order_items (order_id, pizza_id, name, price, quantity, image_url)
+  const extractPizzaId = (input = "") => {
+    if (typeof input === "string") {
+      const match = input.match(/(\d+)-\S+/);
+
+      if (match) {
+        const numberBeforeHyphen = match[1];
+        return numberBeforeHyphen; // Output: "38"
+      }
+
+      return null;
+    }
+
+    return null;
+  };
+
+  const query = `INSERT INTO order_items (order_id, pizza_id, name, price, size, quantity, image_url)
 VALUES
 ${orderItems.map(
   (item) =>
-    `('${orderId}', '${item.pizzaId}', '${item.name}', ${item.price}, ${item.quantity}, '${item.imageSrc}')
+    `('${orderId}', '${extractPizzaId(item.pizzaId) || item.pizzaId}', '${
+      item.name
+    }', ${item.price}, '${item.size}', ${item.quantity}, '${item.imageSrc}')
 `,
 )} RETURNING *;`;
 

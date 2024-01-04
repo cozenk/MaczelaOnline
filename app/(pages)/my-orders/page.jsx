@@ -46,7 +46,7 @@ export default async function Orders({ searchParams }) {
               key={order.id}
               className={`w-full rounded-lg  bg-gray-100 px-10 py-5 dark:bg-gray-800 ${
                 highlight === String(order.id)
-                  ? "bg-gray-800 text-white dark:bg-gray-100 dark:text-black"
+                  ? "bg-gray-800 text-white dark:bg-gray-200 dark:text-black"
                   : ""
               }`}
             >

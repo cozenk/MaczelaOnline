@@ -102,7 +102,7 @@ export async function updatePizzaInfo(variants = [], prevState, formData) {
         await updatedPizzaVariants;
 
         revalidatePath("/");
-
+        revalidatePath(`/pizza/${id}`);
         revalidatePath("/admin/products");
 
         return {
@@ -113,6 +113,7 @@ export async function updatePizzaInfo(variants = [], prevState, formData) {
         await deleteAllPizzaVariants(id);
 
         revalidatePath("/");
+        revalidatePath(`/pizza/${id}`);
         revalidatePath("/admin/products");
 
         return {
