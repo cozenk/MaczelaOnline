@@ -16,19 +16,31 @@ export default function ActionButtons({
     const existingPizza = getPizzaById(pizza.id);
 
     if (existingPizza) {
-      updateCartItem(existingPizza.pizzaId, {
-        price: selectedVariant.price || pizza.price,
-        quantity: existingPizza.quantity + 1,
-      });
+      if (selectedVariant.name && selectedVariant.name !== existingPizza.size) {
+        addToCart({
+          id: `${pizza.id}-${selectedVariant.name}`,
+          name: pizza.name,
+          price: selectedVariant.price,
+          quantity: quantity,
+          imageSrc: pizza.imageSrc,
+          imageAlt: pizza.imageAlt,
+          size: selectedVariant.name,
+        });
+      } else
+        updateCartItem(existingPizza.pizzaId, {
+          price: selectedVariant.price || pizza.price,
+          quantity: existingPizza.quantity + quantity,
+          size: selectedVariant.name || pizza.size,
+        });
     } else {
       addToCart({
         id: pizza.id,
         name: pizza.name,
         price: selectedVariant.price || pizza.price,
-        quantity: 1,
+        quantity: quantity,
         imageSrc: pizza.imageSrc,
         imageAlt: pizza.imageAlt,
-        size: pizza.size,
+        size: selectedVariant.name || pizza.size,
       });
     }
 
@@ -85,9 +97,11 @@ export default function ActionButtons({
             <span class="m-auto text-2xl font-thin">-</span>
           </button>
           <input
-            type="number"
+            type="text"
             class="text-md flex w-full items-center bg-gray-300 text-center font-semibold text-gray-700 placeholder-gray-700 outline-none hover:text-black focus:outline-none dark:bg-gray-900 dark:text-gray-400 dark:placeholder-gray-400"
-            defaultValue={quantity}
+            value={quantity}
+            onChange={() => {}}
+            disabled
           />
           <button
             onClick={() => setQuantity((q) => q + 1)}

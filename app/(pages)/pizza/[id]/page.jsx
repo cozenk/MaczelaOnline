@@ -1,13 +1,46 @@
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Nav from "@shared/Navigation/Nav";
 import { getPizzaById } from "@utils/pizza";
-import { HomeIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import BackButton from "./components/BackButton";
-import ActionButtons from "./components/ActionButtons";
-import { formatPrice } from "@utils/formatters";
 import Info from "./components/Info";
+
+export default async function PizzDetails({ params }) {
+  const id = params.id;
+
+  const pizza = await getPizzaById(id);
+
+  return (
+    <>
+      <header className="absolute inset-x-0 top-0 z-50">
+        <Nav />
+      </header>
+
+      <section class="overflow-hidden pb-11 pt-24">
+        <BackButton />
+
+        <div class="mx-auto max-w-6xl px-4 py-4 md:px-6 lg:py-8">
+          <div class="-mx-4 flex flex-wrap">
+            <div class="w-full px-4 md:w-1/2 ">
+              <PizzaImage url={pizza.image_url} />
+            </div>
+            <Info
+              id={pizza.id}
+              category={pizza.category}
+              description={pizza.description}
+              href={pizza.href}
+              imageAlt={pizza.description}
+              imageSrc={pizza.image_url}
+              name={pizza.name}
+              price={pizza.price}
+              size={pizza.size}
+              variants={pizza.variants}
+            />
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 
 function PizzaImage({ url = "" }) {
   return (
@@ -68,43 +101,5 @@ function PizzaImage({ url = "" }) {
       </div>
     </div> */}
     </div>
-  );
-}
-
-export default async function PizzDetails({ params }) {
-  const id = params.id;
-
-  const pizza = await getPizzaById(id);
-
-  return (
-    <>
-      <header className="absolute inset-x-0 top-0 z-50">
-        <Nav />
-      </header>
-
-      <section class="overflow-hidden pb-11 pt-24">
-        <BackButton />
-
-        <div class="mx-auto max-w-6xl px-4 py-4 md:px-6 lg:py-8">
-          <div class="-mx-4 flex flex-wrap">
-            <div class="w-full px-4 md:w-1/2 ">
-              <PizzaImage url={pizza.image_url} />
-            </div>
-            <Info
-              id={pizza.id}
-              category={pizza.category}
-              description={pizza.description}
-              href={pizza.href}
-              imageAlt={pizza.description}
-              imageSrc={pizza.image_url}
-              name={pizza.name}
-              price={pizza.price}
-              size={pizza.size}
-              variants={pizza.variants}
-            />
-          </div>
-        </div>
-      </section>
-    </>
   );
 }

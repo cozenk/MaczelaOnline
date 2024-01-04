@@ -19,9 +19,12 @@ import { useFormState } from "react-dom";
 import { deleteOrderAction, updateOrderInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { formatPrice } from "@utils/formatters";
+import { useRouter } from "next/navigation";
 
 export const CellAction = ({ row = null }) => {
   const order = row.original;
+
+  const router = useRouter();
 
   const [state, formAction] = useFormState(updateOrderInfo, {
     infoSaved: false,
@@ -59,6 +62,7 @@ export const CellAction = ({ row = null }) => {
   useEffect(() => {
     if (state.infoSaved) {
       closeUpdateOrderModal();
+      router.refresh();
 
       state.infoSaved = false;
     }
@@ -88,7 +92,10 @@ export const CellAction = ({ row = null }) => {
                   className="h-[5rem] w-[5rem] rounded-md object-cover"
                 />
                 <div className="flex gap-x-4">
-                  <h2>{item.name}</h2>
+                  <h2>
+                    {item.name} ({item.size})
+                  </h2>
+                  <span>{formatPrice(item.price)}</span>
                   <span>x{item.quantity}</span>
                 </div>
               </div>
@@ -194,6 +201,12 @@ export const CellAction = ({ row = null }) => {
                   currentRow.classList.add(twClass);
                 });
                 await deleteOrderAction(order.id);
+
+                setTimeout(() => {
+                  pendingClasses.forEach(function (twClass) {
+                    currentRow.classList.remove(twClass);
+                  });
+                }, 500);
               }
             }}
           >

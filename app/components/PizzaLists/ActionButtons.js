@@ -18,6 +18,7 @@ export default function ActionButtons({
       updateCartItem(existingPizza.pizzaId, {
         price: selectedVariant.price || pizza.price,
         quantity: existingPizza.quantity + 1,
+        size: selectedVariant.name || pizza.size,
       });
     } else {
       addToCart({
@@ -27,7 +28,7 @@ export default function ActionButtons({
         quantity: 1,
         imageSrc: pizza.imageSrc,
         imageAlt: pizza.imageAlt,
-        size: pizza.size,
+        size: selectedVariant.name || pizza.size,
       });
     }
 
