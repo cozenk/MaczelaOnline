@@ -1,39 +1,13 @@
 "use client";
 
-import { CartContext } from "@providers/CartProvider";
-import { useContext, useState } from "react";
+import { useAddOrUpdate } from "@shared/hooks";
 
 export default function ActionButtons({
   pizza,
   selectedVariant = null,
   onSelectVariant = () => {},
 }) {
-  const { addToCart, updateCartItem, showCartMenu, getPizzaById } =
-    useContext(CartContext);
-
-  const addOrUpdate = () => {
-    const existingPizza = getPizzaById(pizza.id);
-
-    if (existingPizza) {
-      updateCartItem(existingPizza.pizzaId, {
-        price: selectedVariant.price || pizza.price,
-        quantity: existingPizza.quantity + 1,
-        size: selectedVariant.name || pizza.size,
-      });
-    } else {
-      addToCart({
-        id: pizza.id,
-        name: pizza.name,
-        price: selectedVariant.price || pizza.price,
-        quantity: 1,
-        imageSrc: pizza.imageSrc,
-        imageAlt: pizza.imageAlt,
-        size: selectedVariant.name || pizza.size,
-      });
-    }
-
-    showCartMenu();
-  };
+  const addOrUpdate = useAddOrUpdate({ pizza, selectedVariant });
 
   return (
     <div className="flex items-center justify-between">

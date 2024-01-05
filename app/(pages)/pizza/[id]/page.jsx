@@ -4,6 +4,8 @@ import Image from "next/image";
 import BackButton from "./components/BackButton";
 import Info from "./components/Info";
 
+export const dynamic = "force-dynamic";
+
 export default async function PizzDetails({ params }) {
   const id = params.id;
 
@@ -15,12 +17,12 @@ export default async function PizzDetails({ params }) {
         <Nav />
       </header>
 
-      <section class="overflow-hidden pb-11 pt-24">
+      <section className="overflow-hidden pb-11 pt-24">
         <BackButton />
 
-        <div class="mx-auto max-w-6xl px-4 py-4 md:px-6 lg:py-8">
-          <div class="-mx-4 flex flex-wrap">
-            <div class="w-full px-4 md:w-1/2 ">
+        <div className="mx-auto max-w-6xl px-4 py-4 md:px-6 lg:py-8">
+          <div className="-mx-4 flex flex-wrap">
+            <div className="w-full px-4 md:w-1/2 ">
               <PizzaImage url={pizza.image_url} />
             </div>
             <Info
@@ -44,58 +46,58 @@ export default async function PizzDetails({ params }) {
 
 function PizzaImage({ url = "" }) {
   return (
-    <div class="sticky top-0 overflow-hidden ">
-      <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
+    <div className="sticky top-0 overflow-hidden ">
+      <div className="relative mb-6 lg:mb-10 lg:h-2/4 ">
         <Image
           src={url}
           alt=""
           width={200}
           height={200}
-          class="h-[30rem] w-[30rem] rounded-xl object-cover"
+          className="h-[30rem] w-[30rem] rounded-xl object-cover"
         />
       </div>
-      {/* <div class="hidden flex-wrap md:flex">
-      <div class="w-1/2 p-2 sm:w-1/4">
+      {/* <div className="hidden flex-wrap md:flex">
+      <div className="w-1/2 p-2 sm:w-1/4">
         <a
           href="#"
-          class="block border border-teal-300 hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
+          className="block border border-teal-300 hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
         >
-          <Image src={url} alt="" class="w-full object-cover lg:h-20" />
+          <Image src={url} alt="" className="w-full object-cover lg:h-20" />
         </a>
       </div>
-      <div class="w-1/2 p-2 sm:w-1/4">
+      <div className="w-1/2 p-2 sm:w-1/4">
         <a
           href="#"
-          class="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
+          className="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
         >
           <img
             src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg"
             alt=""
-            class="w-full object-cover lg:h-20"
+            className="w-full object-cover lg:h-20"
           />
         </a>
       </div>
-      <div class="w-1/2 p-2 sm:w-1/4">
+      <div className="w-1/2 p-2 sm:w-1/4">
         <a
           href="#"
-          class="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
+          className="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
         >
           <img
             src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg"
             alt=""
-            class="w-full object-cover lg:h-20"
+            className="w-full object-cover lg:h-20"
           />
         </a>
       </div>
-      <div class="w-1/2 p-2 sm:w-1/4">
+      <div className="w-1/2 p-2 sm:w-1/4">
         <a
           href="#"
-          class="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
+          className="block border border-transparent hover:border-teal-300 dark:border-transparent dark:hover:border-teal-300"
         >
           <img
             src="https://i.postimg.cc/PqYpFTfy/pexels-melvin-buezo-2529148.jpg"
             alt=""
-            class="w-full object-cover lg:h-20"
+            className="w-full object-cover lg:h-20"
           />
         </a>
       </div>

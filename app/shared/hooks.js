@@ -1,4 +1,6 @@
+import { CartContext } from "@providers/CartProvider";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useContext } from "react";
 
 export function useGetAllUsers() {
   const fetchAllUser = async () => {
@@ -99,4 +101,54 @@ export function useUserInfoMutation(userId = null) {
   });
 
   return userId ? userByIdInfoMutation : currentUserInfoMutation;
+}
+
+export function useAddOrUpdate({
+  pizza = null,
+  selectedVariant = null,
+  quantity = 1,
+}) {
+  const { getPizzaById, addToCart, updateCartItem, showCartMenu } =
+    useContext(CartContext);
+
+  return () => {
+    const existingPizza = getPizzaById(
+      selectedVariant.name
+        ? `${pizza.id}-${selectedVariant.name}`
+        : `${pizza.id}-${pizza.size}`,
+    );
+
+    if (existingPizza) {
+      if (selectedVariant.name && selectedVariant.name !== existingPizza.size) {
+        addToCart({
+          id: `${pizza.id}-${selectedVariant.name}`,
+          name: pizza.name,
+          price: selectedVariant.price,
+          quantity: quantity,
+          imageSrc: pizza.imageSrc,
+          imageAlt: pizza.imageAlt,
+          size: selectedVariant.name,
+        });
+      } else
+        updateCartItem(existingPizza.pizzaId, {
+          price: selectedVariant.price || pizza.price,
+          quantity: existingPizza.quantity + quantity,
+          size: selectedVariant.name || pizza.size,
+        });
+    } else {
+      addToCart({
+        id: selectedVariant.name
+          ? `${pizza.id}-${selectedVariant.name}`
+          : `${pizza.id}-${pizza.size}`,
+        name: pizza.name,
+        price: selectedVariant.price || pizza.price,
+        quantity: quantity,
+        imageSrc: pizza.imageSrc,
+        imageAlt: pizza.imageAlt,
+        size: selectedVariant.name || pizza.size,
+      });
+    }
+
+    showCartMenu();
+  };
 }
