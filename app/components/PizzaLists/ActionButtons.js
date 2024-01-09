@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@shared/Button";
 import { useAddOrUpdate } from "@shared/hooks";
 
 export default function ActionButtons({
@@ -11,12 +12,9 @@ export default function ActionButtons({
 
   return (
     <div className="flex items-center justify-between">
-      <button
-        onClick={addOrUpdate}
-        className="rounded-md px-2.5 py-1.5 text-sm font-semibold text-green-600 shadow-sm outline hover:bg-green-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 dark:text-green-300 dark:hover:bg-green-300 dark:hover:text-black dark:focus-visible:outline-green-300"
-      >
+      <Button variant="outline-success" size="sm" onClick={addOrUpdate}>
         Add to cart
-      </button>
+      </Button>
       <div className="sizes flex items-center justify-end gap-2 text-black dark:text-white">
         <span className="text-sm text-gray-600 dark:text-gray-400">
           Select size:

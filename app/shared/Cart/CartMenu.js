@@ -7,6 +7,7 @@ import { ShoppingCartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import CartItems from "./CartItems";
+import { Button } from "@shared/Button";
 
 export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
   const { cart } = useContext(CartContext);
@@ -22,14 +23,15 @@ export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
             My <span className="">Cart</span>
           </span>
         </a>
-        <button
-          type="button"
-          className="-m-2.5 rounded-md p-2.5 text-gray-700 dark:text-white"
+        <Button
+          className="mr-4"
           onClick={closeCartMenu}
+          variant="outline"
+          size="icon"
         >
           <span className="sr-only">Close menu</span>
           <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-        </button>
+        </Button>
       </div>
 
       <div className="content flex h-[90%] flex-col justify-between">

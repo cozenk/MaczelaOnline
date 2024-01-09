@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
+import { Button } from "@shared/Button";
 import Link from "next/link";
 
 export default function ActionButtons({ className = "" }) {
@@ -8,12 +9,10 @@ export default function ActionButtons({ className = "" }) {
 
   return (
     <div className={`mt-10 flex items-center gap-x-10 ${className}`}>
-      <a
-        href="#menu"
-        className="rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-      >
-        See the menu
-      </a>
+      <Button variant="success">
+        <a href="#menu">See the menu</a>
+      </Button>
+
       {!isSignedIn ? (
         <Link
           href="/login"

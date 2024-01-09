@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { Edit, EyeIcon, MoreHorizontal, Trash } from "lucide-react";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import UpdatePizzaModal from "./modals/UpdatePizza";
 import { deletePizzaInfo } from "../actions";
 import Link from "next/link";

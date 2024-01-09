@@ -2,7 +2,7 @@
 
 import { PlusCircle } from "lucide-react";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import { useState } from "react";
 
 import { columns } from "./Columns";
