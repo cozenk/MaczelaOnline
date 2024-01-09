@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { CartContext } from "@providers/CartProvider";
 import { priceRegex } from "@utils/regex";

@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import Modal from "@shared/Modal";
 import Image from "next/image";
 import { useFormState } from "react-dom";

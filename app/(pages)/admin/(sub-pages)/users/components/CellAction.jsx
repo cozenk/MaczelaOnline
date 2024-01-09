@@ -11,7 +11,7 @@ import {
 import { useState } from "react";
 import { Edit, KeyRound, MoreHorizontal, Trash } from "lucide-react";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import EditUserInfo from "@shared/EditUserInfo";
 import { deleteUserAction, makeUserAdminAction } from "../actions";
 import { useCurrentUser } from "@shared/hooks";

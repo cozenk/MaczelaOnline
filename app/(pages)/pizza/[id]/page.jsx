@@ -17,10 +17,10 @@ export default async function PizzDetails({ params }) {
         <Nav />
       </header>
 
-      <section className="overflow-hidden pb-11 pt-24">
+      <section className="mx-auto max-w-6xl overflow-hidden pb-11 pt-24">
         <BackButton />
 
-        <div className="mx-auto max-w-6xl px-4 py-4 md:px-6 lg:py-8">
+        <div className=" px-4 py-4 md:px-6 lg:py-8">
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4 md:w-1/2 ">
               <PizzaImage url={pizza.image_url} />

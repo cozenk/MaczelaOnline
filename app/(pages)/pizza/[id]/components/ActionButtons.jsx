@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@shared/Button";
 import { useAddOrUpdate } from "@shared/hooks";
 import { useState } from "react";
 
@@ -75,12 +76,9 @@ export default function ActionButtons({
       </div>
       <div className="-mx-4 flex flex-wrap items-center ">
         <div className="mb-4 w-full px-4 lg:mb-0 lg:w-1/2">
-          <button
-            onClick={addOrUpdate}
-            className="flex w-full items-center justify-center rounded-md border border-green-500 p-4 text-green-500 hover:border-green-600 hover:bg-green-600 hover:text-gray-100 dark:border-green-600 dark:bg-green-600 dark:text-gray-200 dark:hover:border-green-700 dark:hover:bg-green-700 dark:hover:text-gray-300"
-          >
+          <Button onClick={addOrUpdate} variant="success" size="xl">
             Add to Cart
-          </button>
+          </Button>
         </div>
         {/* <div className="mb-4 w-full px-4 lg:mb-0 lg:w-1/2">
           <button className="flex w-full items-center justify-center rounded-md border border-teal-500 p-4 text-teal-500 hover:border-teal-600 hover:bg-teal-600 hover:text-gray-100 dark:border-teal-600 dark:bg-teal-600 dark:text-gray-200 dark:hover:border-teal-700 dark:hover:bg-teal-700 dark:hover:text-gray-300">

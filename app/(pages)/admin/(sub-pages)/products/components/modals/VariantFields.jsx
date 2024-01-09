@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "(pages)/admin/components/ui/button";
+import { Button } from "@shared/Button";
 import PriceInput from "@shared/PriceInput";
 import { priceRegex } from "@utils/regex";
 import { PlusIcon, XIcon } from "lucide-react";

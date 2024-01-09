@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@utils/formatters";
 import Link from "next/link";
 
-export default function OrderTracker() {
+export default function OrderTracker({ className = "" }) {
   const { data: recentOrder, isLoading } = useQuery({
     queryKey: ["my-recent-order"],
     queryFn: async () => {
@@ -38,7 +38,9 @@ export default function OrderTracker() {
       <HoverCardTrigger className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+107px)]">
         <Badge
           variant={"success"}
-          className={"rounded-br-none rounded-tr-none text-sm"}
+          className={
+            "mt-[24px] rounded-br-none rounded-tr-none text-sm md:mt-0"
+          }
         >
           Your last order was successfuly delivered
         </Badge>
@@ -50,7 +52,7 @@ export default function OrderTracker() {
       </HoverCardContent>
     </HoverCard>
   ) : (
-    <div className="order-tracker fixed right-0 top-0 z-40 w-fit translate-y-[calc(0%+107px)] space-y-3 rounded-bl-xl rounded-tl-xl border-b-2 border-l-2 border-t-2 border-white bg-black/50 px-5 py-2 text-white">
+    <div className="order-tracker fixed right-0 top-0 z-40 mt-[25px] w-fit translate-y-[calc(0%+107px)] space-y-3 rounded-bl-xl rounded-tl-xl border-b-2 border-l-2 border-t-2 border-white bg-black/50 px-5 py-2 text-white md:mt-0">
       <div>
         Recent order:{" "}
         <Link

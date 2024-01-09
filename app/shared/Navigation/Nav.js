@@ -5,11 +5,7 @@ import icon from "@assets/icon.png";
 import Bars from "./Bars";
 import { Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "(pages)/admin/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@shared/Popover";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -135,7 +131,7 @@ export default async function Nav() {
       </nav>
 
       <MobileMenu
-        navigation={navigation}
+        socials={socials}
         userAuth={<UserAuth cartStyles="!mt-5" />}
       />
     </>
