@@ -1,3 +1,4 @@
+import MobileNumberInput from "./MobileNumberInput";
 import Section from "./Section";
 import Skeleton from "react-loading-skeleton";
 
@@ -87,19 +88,7 @@ export default function ContactInformation({ user = null }) {
             Mobile number
           </label>
           {user ? (
-            <div className="mt-2">
-              <input
-                defaultValue={user.mobile_number}
-                min={11}
-                max={11}
-                id="mobile_number"
-                name="mobile_number"
-                type="text"
-                autoComplete="mobile_number"
-                required
-                className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              />
-            </div>
+            <MobileNumberInput initialValue={user.mobile_number} />
           ) : (
             <Skeleton height={35} />
           )}
