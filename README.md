@@ -18,7 +18,27 @@ vercel link
 
 ---
 
-To run the development server:
+###To run the development server:
+
+Make sure to pull the latest code changes:
+
+```bash
+git pull
+```
+
+Make sure to install the latest dependencies
+
+```bash
+npm install
+```
+
+Make sure to pull the latest env vars
+
+```bash
+vercel env pull
+```
+
+Now you're ready to run the app
 
 ```bash
 npm run dev
