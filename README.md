@@ -26,19 +26,19 @@ Make sure to pull the latest code changes:
 git pull
 ```
 
-Make sure to install the latest dependencies
+Make sure to install the latest dependencies:
 
 ```bash
 npm install
 ```
 
-Make sure to pull the latest env vars
+Make sure to pull the latest env vars:
 
 ```bash
 vercel env pull
 ```
 
-Now you're ready to run the app
+Now you're ready to run the app:
 
 ```bash
 npm run dev
@@ -77,6 +77,13 @@ CREATE TABLE pizza (
 	size VARCHAR(255)
 );
 
+CREATE TABLE pizza_variants (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255),
+	price DECIMAL(10, 2),
+	pizza_id INT REFERENCES pizza(id) ON DELETE CASCADE
+);
+
 CREATE TABLE cart (
 	id SERIAL PRIMARY KEY,
 	user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE
@@ -100,7 +107,8 @@ CREATE TABLE orders (
 	is_completed BOOLEAN DEFAULT false,
 	user_id INT REFERENCES users(id) ON DELETE CASCADE,
 	total_price DECIMAL(10, 2),
-	total_items VARCHAR(255)
+	total_items INT,
+	shipping_address VARCHAR(255)
 );
 
 CREATE TABLE order_items (
