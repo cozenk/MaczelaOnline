@@ -1,9 +1,6 @@
-import { getPizzasByCategory } from "@utils/pizza";
 import Pizza from "./Pizza";
 
-export default async function PizzaLists({ label = null }) {
-  const pizzas = await getPizzasByCategory("Best sellers");
-
+export default async function PizzaLists({ pizzas = [], label = null }) {
   return (
     <div className="pb-24 pt-14">
       <div className="mx-auto max-w-2xl rounded-3xl bg-white/30 px-6 py-10 backdrop-blur-sm dark:bg-black/30 md:px-8 lg:max-w-7xl">
