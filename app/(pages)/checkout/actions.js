@@ -1,6 +1,7 @@
 "use server";
 
 import { createOrder } from "@utils/orders";
+import { updateUserInfo } from "@utils/users";
 import { revalidatePath } from "next/cache";
 
 export async function submitOrder(cartItems = [], prevState, formData) {
@@ -41,6 +42,10 @@ export async function submitOrder(cartItems = [], prevState, formData) {
       totalPrice,
       totalItems,
       shippingAddress,
+    });
+
+    updateUserInfo(userId, {
+      mobile_number: contactInformation.mobileNumber,
     });
 
     revalidatePath("/my-orders");
