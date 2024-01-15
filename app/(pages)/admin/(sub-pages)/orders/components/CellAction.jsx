@@ -83,7 +83,10 @@ export const CellAction = ({ row = null }) => {
           </div>
 
           {order.items.map((item) => (
-            <div className="item flex items-end justify-between">
+            <div
+              key={Math.random()}
+              className="item flex items-end justify-between"
+            >
               <div className="flex flex-col ">
                 <Image
                   src={item.image_url}
@@ -116,6 +119,12 @@ export const CellAction = ({ row = null }) => {
               id="order_id"
               name="order_id"
               value={order.id}
+            />
+            <input
+              type="hidden"
+              id="customer_email"
+              name="customer_email"
+              value={order?.customer?.email}
             />
 
             <div>
