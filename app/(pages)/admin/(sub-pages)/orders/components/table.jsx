@@ -5,7 +5,7 @@ import { Filter, FileDown } from "lucide-react";
 import { Button } from "@shared/Button";
 import { useState } from "react";
 
-import { columns } from "./columns";
+import { columns } from "./Columns";
 import { DataTable } from "(pages)/admin/components/ui/data-table";
 import FilterOrders from "./modals/FilterOrders";
 import PDFreport from "./PDFReport";
