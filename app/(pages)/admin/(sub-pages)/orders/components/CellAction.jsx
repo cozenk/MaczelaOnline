@@ -20,6 +20,7 @@ import { deleteOrderAction, updateOrderInfo } from "../actions";
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { formatPrice } from "@utils/formatters";
 import { useRouter } from "next/navigation";
+import UpdateOrder from "./modals/UpdateOrder";
 
 export const CellAction = ({ row = null }) => {
   const order = row.original;
@@ -108,59 +109,16 @@ export const CellAction = ({ row = null }) => {
         </div>
       </Modal>
 
-      <Modal show={modals.showUpdateOrder} onClose={closeUpdateOrderModal}>
-        <header className="mb-10 text-xl font-bold uppercase">
-          Edit Order
-        </header>
-        <form action={formAction} className="mx-auto ">
-          <div className="mb-5 w-96 gap-x-6 gap-y-3 ">
-            <input
-              type="hidden"
-              id="order_id"
-              name="order_id"
-              value={order.id}
-            />
-            <input
-              type="hidden"
-              id="customer_email"
-              name="customer_email"
-              value={order?.customer?.email}
-            />
+      <UpdateOrder
+        show={modals.showUpdateOrder}
+        onClose={closeUpdateOrderModal}
+        order={order}
+        formAction={formAction}
+        disabledSubmitButton={
+          !state.infoSaved && !state.infoSaved === undefined
+        }
+      />
 
-            <div>
-              Status:{" "}
-              <select
-                name="order_status"
-                id="order_status"
-                className="w-28 dark:bg-black"
-                defaultValue={order.status}
-              >
-                <option value={"PLACED"}>TO CONFIRM</option>
-                <option value={"CONFIRMED"}>CONFIRMED</option>
-                <option value={"PREPARING"}>PREPARING</option>
-                <option value={"OTW"}>OTW</option>
-                <option value={"DELIVERED"}>DELIVERED</option>
-              </select>
-            </div>
-
-            <div>
-              Is paid:{" "}
-              <select
-                name="is_completed"
-                id="is_completed"
-                className="w-28 dark:bg-black"
-                defaultValue={order.is_completed}
-              >
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-              </select>
-            </div>
-          </div>
-          <SubmitButton
-            disabled={!state.infoSaved && !state.infoSaved === undefined}
-          />
-        </form>
-      </Modal>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
