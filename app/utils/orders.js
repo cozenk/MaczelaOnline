@@ -1,9 +1,17 @@
 import { sql } from "@vercel/postgres";
 import { getAllCustomers, getCurrentUser, getUserById } from "./users";
 
-export async function getAllOrders() {
-  const { rows: orderRows } =
-    await sql`SELECT * FROM orders ORDER BY placed_date DESC;`;
+export async function getAllOrders({ status, payment_status }) {
+  const { rows: orderRows } = !status
+    ? await sql`SELECT * FROM orders ORDER BY placed_date DESC;`
+    : await sql`
+    SELECT * 
+    FROM orders 
+    WHERE 
+      status = ${status} AND
+      is_completed = ${payment_status === "paid" ? true : false}
+    ORDER BY placed_date DESC;
+  `;
 
   if (orderRows.length) {
     const ordersWithItemsAndCustomer = Promise.all(
