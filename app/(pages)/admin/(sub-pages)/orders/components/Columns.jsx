@@ -18,7 +18,7 @@ export const columns = [
 
       const getVariant = () => {
         if (status === "PLACED") return "destructive";
-        if (status === "CONFIRMED") return "outline";
+        if (status === "PREPARING") return "outline";
         if (status === "DELIVERED") return "success";
         return "secondary";
       };

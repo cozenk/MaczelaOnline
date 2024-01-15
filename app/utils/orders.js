@@ -182,3 +182,5 @@ ${orderItems.map(
 
   throw new Error(`Can't create order items for ${orderId}`);
 }
+
+export const estimatedTimeSelections = [5, 10, 20, 30, 40, 50, 60];

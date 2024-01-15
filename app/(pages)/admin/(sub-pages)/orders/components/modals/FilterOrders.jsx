@@ -65,13 +65,12 @@ export default function FilterOrders({
                 return { ...previous, status: event.target.value };
               });
             }}
-            className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-black"
+            className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
           >
             <option disabled>Select Status</option>
-            <option value={"PLACED"}>To Confirm</option>
-            <option value={"CONFIRMED"}>Confirmed</option>
-            <option value={"PREPARING"}>Preparing</option>
-            <option value={"OTW"}>On The Way</option>
+            <option value={"PLACED"}>TO CONFIRM</option>
+            <option value={"PREPARING"}>PREPARING</option>
+            <option value={"TO DELIVER"}>TO DELIVER</option>
             <option value={"DELIVERED"}>Delivered</option>
           </select>
         </div>
@@ -92,7 +91,7 @@ export default function FilterOrders({
                 return { ...previous, payment_status: event.target.value };
               });
             }}
-            className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 dark:bg-black"
+            className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
           >
             <option disabled>Select Paid Status</option>
             <option value={"paid"}>Paid</option>
