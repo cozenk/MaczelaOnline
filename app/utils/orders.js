@@ -162,9 +162,9 @@ export async function createOrderItems(orderId, orderItems) {
 VALUES
 ${orderItems.map(
   (item) =>
-    `('${orderId}', '${extractPizzaId(item.pizzaId) || item.pizzaId}', '${
+    `('${orderId}', '${extractPizzaId(item.pizzaId) || item.pizzaId}', "${
       item.name
-    }', ${item.price}, '${item.size}', ${item.quantity}, '${item.imageSrc}')
+    }", ${item.price}, '${item.size}', ${item.quantity}, '${item.imageSrc}')
 `,
 )} RETURNING *;`;
 
