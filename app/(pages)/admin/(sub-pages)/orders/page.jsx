@@ -1,4 +1,4 @@
-import { OrdersTable } from "./components/table";
+import { OrdersTable } from "./components/Table";
 import { TabsContent } from "(pages)/admin/components/ui/tabs";
 import { getAllOrders } from "@utils/orders";
 

@@ -1,6 +1,6 @@
 import { TabsContent } from "(pages)/admin/components/ui/tabs";
 import { getAllPizzas } from "@utils/pizza";
-import { ProductsTable } from "./components/table";
+import { ProductsTable } from "./components/Table";
 import { getCurrentUser } from "@utils/users";
 import { redirect } from "next/navigation";
 
