@@ -56,7 +56,7 @@ export const columns = [
           href={`/admin/users/?highlight=${customer.id}`}
           className="cursor-pointer underline hover:text-gray-400"
         >
-          {customer.full_name || customer.email}
+          {customer.full_name || customer.email} ({customer.mobile_number})
         </Link>
       );
     },
@@ -64,6 +64,15 @@ export const columns = [
   {
     accessorKey: "shipping_address",
     header: "Shipping Address",
+  },
+  {
+    accessorKey: "notes",
+    header: "Notes",
+    cell: ({ row }) => {
+      return row.getValue("notes") ? (
+        <span className="italic">"{row.getValue("notes")}"</span>
+      ) : null;
+    },
   },
   {
     accessorKey: "placed_date",

@@ -11,7 +11,10 @@ import { formatPrice } from "@utils/formatters";
 import { getAllCustomers } from "@utils/users";
 import FilteredSales from "./FilteredSales";
 
-export default async function Overview({ salesFilter = "" }) {
+export default async function Overview({
+  salesFilter = "",
+  monthlySales = [],
+}) {
   const pendingOrders = await getAllPendingOrders();
   const totalSales = await getTotalSales();
   const customers = await getAllCustomers();
@@ -100,7 +103,7 @@ export default async function Overview({ salesFilter = "" }) {
           </CardContent>
         </Card>
       </div>
-      <FilteredSales sales={filteredSales} />
+      <FilteredSales sales={filteredSales} monthlySales={monthlySales} />
     </>
   );
 }
