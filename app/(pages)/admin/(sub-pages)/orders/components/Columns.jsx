@@ -73,6 +73,13 @@ export const columns = [
     },
   },
   {
+    accessorKey: "completion_date",
+    header: "Completed at",
+    cell: ({ row }) => {
+      return formatDate(row.getValue("completion_date"));
+    },
+  },
+  {
     accessorKey: "total_price",
     header: "Total Price",
     cell: ({ row }) => {

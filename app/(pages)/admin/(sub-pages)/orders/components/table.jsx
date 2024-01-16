@@ -13,8 +13,8 @@ import PDFreport from "./PDFReport";
 export function OrdersTable({ orders }) {
   const [showOrderFilter, setShowOrderFilter] = useState(false);
   const [filter, setFilter] = useState({
-    status: "PLACED",
-    payment_status: "paid",
+    status: "",
+    payment_status: "unpaid",
   });
 
   const exportReportPDF = () => {

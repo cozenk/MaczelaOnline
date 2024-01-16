@@ -9,17 +9,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@shared/Popover";
 import {
   FacebookIcon,
   InstagramIcon,
-  MapIcon,
   MapPinnedIcon,
   PhoneIcon,
   TwitterIcon,
 } from "lucide-react";
-import { MapPinIcon } from "@heroicons/react/24/outline";
-
-const navigation = [
-  { name: "Socials", href: "#" },
-  { name: "Contact Us", href: "#" },
-];
+import Link from "next/link";
 
 const socials = [
   {
@@ -57,6 +51,12 @@ export default async function Nav() {
         </div>
         <Bars />
         <div className="hidden md:flex md:gap-x-12">
+          <Link
+            href="#menu"
+            className="text-sm font-semibold leading-6  dark:text-white"
+          >
+            Menu
+          </Link>
           <Popover>
             <PopoverTrigger className="text-sm font-semibold leading-6  dark:text-white">
               Socials
@@ -77,6 +77,7 @@ export default async function Nav() {
               </div>
             </PopoverContent>
           </Popover>
+
           <Popover>
             <PopoverTrigger className="text-sm font-semibold leading-6  dark:text-white">
               Contact us

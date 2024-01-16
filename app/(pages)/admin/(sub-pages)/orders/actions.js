@@ -67,7 +67,7 @@ export async function updateOrderInfo(prevState, formData) {
       });
 
       revalidatePath("/");
-      revalidatePath("/admin/orders");
+      revalidatePath("/admin");
 
       return {
         infoSaved: true,
@@ -93,7 +93,7 @@ export async function deleteOrderAction(id) {
   try {
     await deleteOrder(id);
 
-    revalidatePath("/admin/orders");
+    revalidatePath("/admin");
 
     return {
       orderDeleted: true,
