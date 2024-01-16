@@ -1,7 +1,9 @@
 import { sql } from "@vercel/postgres";
 
-export async function getAllPizzas() {
-  const { rows } = await sql`SELECT * FROM pizza;`;
+export async function getAllPizzas({ size }) {
+  const { rows } = !size
+    ? await sql`SELECT * FROM pizza;`
+    : await sql`SELECT * FROM pizza WHERE size = ${size}`;
 
   if (rows.length) {
     const pizzasWithVariants = Promise.all(
