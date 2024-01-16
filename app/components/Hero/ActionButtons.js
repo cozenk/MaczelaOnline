@@ -9,9 +9,9 @@ export default function ActionButtons({ className = "" }) {
 
   return (
     <div className={`mt-10 flex items-center gap-x-10 ${className}`}>
-      <Button variant="success">
+      {/* <Button variant="success">
         <a href="#menu">See the menu</a>
-      </Button>
+      </Button> */}
 
       {!isSignedIn ? (
         <Link

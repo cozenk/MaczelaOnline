@@ -166,13 +166,22 @@ export async function createOrderItems(orderId, orderItems) {
     return null;
   };
 
+  const escapeQuotes = (inputString) => {
+    // Escape single quotes
+    const escapedSingleQuotes = inputString.replace(/'/g, "''");
+
+    return escapedSingleQuotes;
+  };
+
   const query = `INSERT INTO order_items (order_id, pizza_id, name, price, size, quantity, image_url)
 VALUES
 ${orderItems.map(
   (item) =>
-    `('${orderId}', '${extractPizzaId(item.pizzaId) || item.pizzaId}', "${
-      item.name
-    }", ${item.price}, '${item.size}', ${item.quantity}, '${item.imageSrc}')
+    `('${orderId}', '${
+      extractPizzaId(item.pizzaId) || item.pizzaId
+    }', '${escapeQuotes(item.name)}', ${item.price}, '${item.size}', ${
+      item.quantity
+    }, '${item.imageSrc}')
 `,
 )} RETURNING *;`;
 

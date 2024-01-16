@@ -16,7 +16,7 @@ export async function PATCH(req) {
     const last_name = formData.get("last_name");
     const mobile_number = formData.get("mobile_number").replace(/\s/g, "");
 
-    const street_address = formData.get("street_address");
+    const complete_address = formData.get("complete_address");
     const city = formData.get("city");
     const province = formData.get("province");
     const postal_code = formData.get("postal_code");
@@ -29,10 +29,10 @@ export async function PATCH(req) {
     };
 
     const newShippingAddress = {
-      street_address,
-      city,
-      province,
-      postal_code,
+      complete_address,
+      city: "Marikina",
+      province: "Rizal",
+      postal_code: "1800",
     };
 
     try {

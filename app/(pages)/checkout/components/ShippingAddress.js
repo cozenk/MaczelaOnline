@@ -7,20 +7,20 @@ export default function ShippingAddress({ user = null }) {
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div className="col-span-full">
           <label
-            htmlFor="street_address"
+            htmlFor="complete_address"
             className="block text-sm font-medium leading-6 "
           >
-            Street address
+            Complete address
           </label>
           <div className="mt-2">
             {user ? (
               <input
                 required
-                defaultValue={user.street_address}
+                defaultValue={user.complete_address}
                 type="text"
-                name="street_address"
-                id="street_address"
-                autoComplete="street_address"
+                name="complete_address"
+                id="complete_address"
+                autoComplete="complete_address"
                 className="block w-full rounded-md border-0 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
             ) : (
@@ -79,7 +79,7 @@ export default function ShippingAddress({ user = null }) {
           </div>
         </div>
 
-        <div className="sm:col-span-2">
+        {/* <div className="sm:col-span-2">
           <label
             htmlFor="postal_code"
             className="block text-sm font-medium leading-6 "
@@ -102,7 +102,7 @@ export default function ShippingAddress({ user = null }) {
               <Skeleton height={35} />
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </Section>
   );

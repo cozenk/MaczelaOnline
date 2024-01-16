@@ -6,8 +6,10 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { cn } from "@utils/cn";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useCurrentUser } from "@shared/hooks";
 
 const Tabs = ({ children }) => {
+  const { isLoading, user } = useCurrentUser();
   const pathname = usePathname();
 
   const splitPaths = pathname.split("/");
@@ -16,9 +18,9 @@ const Tabs = ({ children }) => {
       ? "overview"
       : splitPaths[splitPaths.length - 1];
 
-  return (
-    <TabsPrimitive.Root value={adminTab} className="space-y-4">
-      <TabsList className="gap-x-4 px-2 pl-1 text-sm">
+  const rolesLinks = {
+    STAFF: (
+      <>
         <Link
           className={cn("rounded-sm p-1 px-2", {
             ["bg-black text-white"]: adminTab === "overview",
@@ -35,6 +37,7 @@ const Tabs = ({ children }) => {
         >
           Users
         </Link>
+
         <Link
           className={cn("rounded-sm p-1 px-2", {
             ["bg-black text-white"]: adminTab === "products",
@@ -51,6 +54,61 @@ const Tabs = ({ children }) => {
         >
           Orders
         </Link>
+      </>
+    ),
+    ADMIN: (
+      <>
+        <Link
+          className={cn("rounded-sm p-1 px-2", {
+            ["bg-black text-white"]: adminTab === "overview",
+          })}
+          href={"/admin/"}
+        >
+          Overview
+        </Link>
+        <Link
+          className={cn("rounded-sm p-1 px-2", {
+            ["bg-black text-white"]: adminTab === "users",
+          })}
+          href={"/admin/users"}
+        >
+          Users
+        </Link>
+
+        <Link
+          className={cn("rounded-sm p-1 px-2", {
+            ["bg-black text-white"]: adminTab === "products",
+          })}
+          href={"/admin/products"}
+        >
+          Products
+        </Link>
+        <Link
+          className={cn("rounded-sm p-1 px-2", {
+            ["bg-black text-white"]: adminTab === "orders",
+          })}
+          href={"/admin/orders"}
+        >
+          Orders
+        </Link>
+      </>
+    ),
+    DELIVERY_RIDER: (
+      <Link
+        className={cn("rounded-sm p-1 px-2", {
+          ["bg-black text-white"]: adminTab === "orders",
+        })}
+        href={"/admin/orders"}
+      >
+        Orders
+      </Link>
+    ),
+  };
+
+  return (
+    <TabsPrimitive.Root value={adminTab} className="space-y-4">
+      <TabsList className="gap-x-4 px-2 pl-1 text-sm">
+        {!isLoading && rolesLinks[user.role]}
       </TabsList>
       {children}
     </TabsPrimitive.Root>

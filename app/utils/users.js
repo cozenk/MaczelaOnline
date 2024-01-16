@@ -167,6 +167,23 @@ export async function makeUserAdmin(userId) {
   throw new Error("Can't update user. User doesn't exist");
 }
 
+export async function updateUserRole(userId, role) {
+  const { rows } = await sql`SELECT * FROM users WHERE id = ${userId}`;
+
+  if (rows.length) {
+    const updateQuery = "UPDATE users SET role = $1 WHERE id = $2 RETURNING *";
+    const updateData = [role, userId];
+
+    const { rows: updatedUserRows } = await sql.query(updateQuery, updateData);
+
+    if (updatedUserRows.length) return updatedUserRows[0];
+
+    throw new Error("Can't update user role");
+  }
+
+  throw new Error("Can't update user role. User doesn't exist");
+}
+
 const getFullName = (user = null) => {
   if (!user) return null;
 
@@ -188,8 +205,8 @@ const getFullName = (user = null) => {
 const getFullAddress = (user = null) => {
   if (!user) return null;
 
-  if (user.street_address && user.city && user.province && user.postal_code)
-    return `${user.street_address}, ${user.city}, ${user.province}, ${user.postal_code}`;
+  if (user.complete_address && user.city && user.province && user.postal_code)
+    return `${user.complete_address}, ${user.city}, ${user.province}, ${user.postal_code}`;
 
   return null;
 };

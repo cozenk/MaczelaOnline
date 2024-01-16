@@ -4,10 +4,9 @@ import ContactInformation from "(pages)/checkout/components/ContactInformation";
 import ShippingAddress from "(pages)/checkout/components/ShippingAddress";
 import Modal from "@shared/Modal";
 import SubmitButton from "./SubmitButton";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { saveUserInfo } from "./actions";
 import { useFormState } from "react-dom";
-import { NavContext } from "@providers/NavProvider";
 
 export default function EditUserInfo({
   show,

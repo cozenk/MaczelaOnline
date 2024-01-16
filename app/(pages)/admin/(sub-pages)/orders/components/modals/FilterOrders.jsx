@@ -31,7 +31,10 @@ export default function FilterOrders({
     const params = new URLSearchParams(window.location.search);
     params.delete(`orderStatus`);
     params.delete(`paymentStatus`);
-    startTransition(() => replace(`${pathname}?${params.toString()}`));
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`);
+      onClose();
+    });
   };
 
   useEffect(() => {
@@ -103,10 +106,11 @@ export default function FilterOrders({
 
       <button
         type="button"
+        disabled={isFiltering}
         onClick={applyFilter}
-        className={`flex
-        w-full
-        items-center justify-center rounded-md border border-transparent bg-green-600 px-6 py-3  text-base font-medium text-white shadow-sm hover:bg-green-700 disabled:cursor-not-allowed`}
+        className={`${isFiltering ? "bg-gray-300" : "bg-green-600"} ${
+          isFiltering ? "hover:bg-gray-300" : "hover:bg-green-700"
+        } flex w-full items-center justify-center rounded-md border border-transparent  px-6 py-3  text-base font-medium text-white shadow-sm disabled:cursor-not-allowed`}
       >
         {isFiltering ? "Loading..." : "Save"}
       </button>
