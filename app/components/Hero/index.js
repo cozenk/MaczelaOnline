@@ -3,8 +3,14 @@ import leaves from "@assets/leaves.png";
 import tomatos from "@assets/tomatos.png";
 import pizzaHero from "@assets/pizza-hero.png";
 import ActionButtons from "./ActionButtons";
+import MainText from "./MainText";
+import { getMainText, getSubText } from "@utils/hero_content";
+import SubText from "./SubText";
 
-export default function Hero() {
+export default async function Hero() {
+  const mainText = await getMainText();
+  const subText = await getSubText();
+
   return (
     <div className="relative isolate px-6 pt-14 lg:px-8">
       <div
@@ -19,25 +25,18 @@ export default function Hero() {
           }}
         />
       </div>
-      <div className="relative z-20 w-full px-10 py-24 md:py-32 lg:px-28 2xl:px-40">
-        <div className="relative flex w-full flex-wrap items-center justify-center lg:justify-between">
-          <div className="text max-w-lg">
-            <h1 className="mb-10 text-center text-6xl font-bold tracking-tight  dark:text-white md:text-left">
-              Garantisadong fresh na may{" "}
-              <span className="text-red-500">pagmamahal ♥️</span>
-            </h1>
-            <p className="mt-6 hidden text-lg italic leading-8 text-black dark:text-white lg:block">
-              One of the <span className="text-red-600">BEST PIZZA</span> in
-              Marikina since 2010. <br />
-              With all over 12 branches nationwide!
-            </p>
+      <div className="relative z-20 w-full px-10 py-36 md:py-20 lg:px-28 2xl:px-40">
+        <div className="relative flex w-full flex-wrap items-center justify-center space-y-10 lg:justify-between">
+          <div className="text max-w-xl">
+            <MainText initialText={mainText} />
+            <SubText initialText={subText} />
             <ActionButtons className="hidden lg:flex" />
           </div>
 
           <Image
             src={pizzaHero}
             alt="hero image of a pizza"
-            className="max-w-md object-contain 2xl:max-w-lg"
+            className="max-w-lg object-contain 2xl:max-w-xl"
           />
           <ActionButtons className="flex lg:hidden" />
         </div>

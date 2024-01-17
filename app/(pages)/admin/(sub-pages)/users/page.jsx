@@ -1,18 +1,30 @@
 import { TabsContent } from "(pages)/admin/components/ui/tabs";
-import { getAllUsers } from "@utils/users";
-import { DataTable as UsersTable } from "(pages)/admin/components/ui/data-table";
-import { columns } from "./components/Columns";
+import { getAllCustomers, getAllUsers, getCurrentUser } from "@utils/users";
+import { UsersTable } from "./components/Table";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminUsers() {
-  const users = await getAllUsers();
+export default async function AdminUsers({ searchParams }) {
+  const currentUser = await getCurrentUser();
+
+  if (currentUser.role === "DELIVERY_RIDER") redirect("/");
+
+  const getData = async () => {
+    if (currentUser.role === "STAFF") return await getAllCustomers();
+
+    return await getAllUsers(
+      searchParams?.role
+        ? {
+            role: searchParams?.role,
+          }
+        : {},
+    );
+  };
 
   return (
     <TabsContent value="users" className="pt-8">
-      <div className="space-y-8">
-        <UsersTable columns={columns} data={users} />
-      </div>
+      <UsersTable data={await getData()} />
     </TabsContent>
   );
 }

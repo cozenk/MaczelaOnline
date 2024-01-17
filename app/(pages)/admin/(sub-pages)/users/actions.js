@@ -1,7 +1,7 @@
 "use server";
 
 import { clerkClient } from "@clerk/nextjs";
-import { makeUserAdmin } from "@utils/users";
+import { makeUserAdmin, updateUserRole } from "@utils/users";
 import { revalidatePath } from "next/cache";
 
 export async function deleteUserAction(clerkId) {
@@ -11,8 +11,14 @@ export async function deleteUserAction(clerkId) {
   revalidatePath("/admin/users");
 }
 
-export async function makeUserAdminAction(userId) {
-  await makeUserAdmin(userId);
+export async function updateUserRoleAction(prevState, formData) {
+  const userId = formData.get("user_id");
+  const role = formData.get("role");
 
-  revalidatePath("/admin/users");
+  if (userId && role) {
+    await updateUserRole(userId, role);
+
+    revalidatePath("/");
+    revalidatePath("/admin/users");
+  } else throw new Error("userId and role cannot be empty");
 }

@@ -72,6 +72,12 @@ export default async function Orders({ searchParams }) {
                     </label>
                     <span className="">{order.status}</span>
                   </div>
+                  <div>
+                    <label className="text-gray-500 dark:text-gray-400">
+                      Notes:{" "}
+                    </label>
+                    <span className="italic">"{order.notes}"</span>
+                  </div>
                 </div>
                 <div className="right-info">
                   <h2>

@@ -18,9 +18,9 @@ export const columns = [
 
       const getVariant = () => {
         if (status === "PLACED") return "destructive";
-        if (status === "PREPARING") return "outline";
+        if (status === "PREPARING") return "secondary";
         if (status === "DELIVERED") return "success";
-        return "secondary";
+        return "outline";
       };
 
       return (
@@ -56,7 +56,7 @@ export const columns = [
           href={`/admin/users/?highlight=${customer.id}`}
           className="cursor-pointer underline hover:text-gray-400"
         >
-          {customer.full_name || customer.email}
+          {customer.full_name || customer.email} ({customer.mobile_number})
         </Link>
       );
     },
@@ -66,10 +66,26 @@ export const columns = [
     header: "Shipping Address",
   },
   {
+    accessorKey: "notes",
+    header: "Notes",
+    cell: ({ row }) => {
+      return row.getValue("notes") ? (
+        <span className="italic">"{row.getValue("notes")}"</span>
+      ) : null;
+    },
+  },
+  {
     accessorKey: "placed_date",
     header: "Placed at",
     cell: ({ row }) => {
       return formatDate(row.getValue("placed_date"));
+    },
+  },
+  {
+    accessorKey: "completion_date",
+    header: "Completed at",
+    cell: ({ row }) => {
+      return formatDate(row.getValue("completion_date"));
     },
   },
   {

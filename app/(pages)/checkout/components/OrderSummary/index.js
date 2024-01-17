@@ -3,6 +3,7 @@ import Section from "../Section";
 import Total from "./Total";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
+import OrderNotes from "../OrderNotes";
 
 export default function OrderSummary() {
   const { pending } = useFormStatus();
@@ -10,6 +11,7 @@ export default function OrderSummary() {
   return (
     <Section title="Order summary" titleColor="text-green-700 dark:text-white">
       <CartItems />
+      <OrderNotes />
       <Total />
       <div className="mt-6">
         <button

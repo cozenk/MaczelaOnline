@@ -1,18 +1,14 @@
-import { OrdersTable } from "./components/table";
+import { OrdersTable } from "./components/Table";
 import { TabsContent } from "(pages)/admin/components/ui/tabs";
 import { getAllOrders } from "@utils/orders";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminOrders({ searchParams }) {
-  const orders = await getAllOrders(
-    searchParams?.orderStatus
-      ? {
-          status: searchParams?.orderStatus,
-          payment_status: searchParams?.paymentStatus,
-        }
-      : {},
-  );
+  const orders = await getAllOrders({
+    status: searchParams?.orderStatus,
+    payment_status: searchParams?.paymentStatus,
+  });
 
   return (
     <TabsContent value="orders">

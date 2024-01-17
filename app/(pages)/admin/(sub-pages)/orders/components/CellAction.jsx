@@ -21,8 +21,11 @@ import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import { formatPrice } from "@utils/formatters";
 import { useRouter } from "next/navigation";
 import UpdateOrder from "./modals/UpdateOrder";
+import { useCurrentUser } from "@shared/hooks";
 
 export const CellAction = ({ row = null }) => {
+  const { isLoading, user } = useCurrentUser();
+
   const order = row.original;
 
   const router = useRouter();
@@ -143,43 +146,46 @@ export const CellAction = ({ row = null }) => {
             <Edit className="mr-2 h-4 w-4" />
             Update Order
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={async () => {
-              const ordersRows = document.getElementById("orders-rows");
 
-              const currentRow = ordersRows.children[row.index];
+          {!isLoading && user.role === "ADMIN" && (
+            <DropdownMenuItem
+              onClick={async () => {
+                const ordersRows = document.getElementById("orders-rows");
 
-              const pendingClasses = [
-                "pointer-events-none",
-                "bg-gray-500/30",
-                "opacity-30",
-                "backdrop-blur-2xl",
-                "hover:!bg-gray-500/30",
-              ];
+                const currentRow = ordersRows.children[row.index];
 
-              if (
-                confirm(
-                  `Are you sure you want to delete ${
-                    order.customer.full_name || order.customer.email
-                  }'s order?`,
-                ) == true
-              ) {
-                pendingClasses.forEach(function (twClass) {
-                  currentRow.classList.add(twClass);
-                });
-                await deleteOrderAction(order.id);
+                const pendingClasses = [
+                  "pointer-events-none",
+                  "bg-gray-500/30",
+                  "opacity-30",
+                  "backdrop-blur-2xl",
+                  "hover:!bg-gray-500/30",
+                ];
 
-                setTimeout(() => {
+                if (
+                  confirm(
+                    `Are you sure you want to delete ${
+                      order.customer.full_name || order.customer.email
+                    }'s order?`,
+                  ) == true
+                ) {
                   pendingClasses.forEach(function (twClass) {
-                    currentRow.classList.remove(twClass);
+                    currentRow.classList.add(twClass);
                   });
-                }, 500);
-              }
-            }}
-          >
-            <Trash className="mr-2 h-4 w-4 " />
-            Delete
-          </DropdownMenuItem>
+                  await deleteOrderAction(order.id);
+
+                  setTimeout(() => {
+                    pendingClasses.forEach(function (twClass) {
+                      currentRow.classList.remove(twClass);
+                    });
+                  }, 500);
+                }
+              }}
+            >
+              <Trash className="mr-2 h-4 w-4 " />
+              Delete
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

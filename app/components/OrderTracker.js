@@ -26,9 +26,9 @@ export default function OrderTracker({ className = "" }) {
 
   const getVariant = () => {
     if (recentOrder.status === "PLACED") return "destructive";
-    if (recentOrder.status === "PREPARING") return "outline";
+    if (recentOrder.status === "PREPARING") return "secondary";
     if (recentOrder.status === "DELIVERED") return "success";
-    return "secondary";
+    return "outline";
   };
 
   if (!recentOrder) return null;

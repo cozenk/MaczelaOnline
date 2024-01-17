@@ -10,6 +10,8 @@ import { redirect } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import { Suspense } from "react";
 
+const allowedRoles = ["ADMIN", "STAFF", "DELIVERY_RIDER"];
+
 export async function generateMetadata() {
   const user = await getCurrentUser();
 
@@ -21,9 +23,25 @@ export async function generateMetadata() {
 export default async function AdminLayout({ children }) {
   const user = await getCurrentUser();
 
-  if (user?.role !== "ADMIN") {
+  if (!allowedRoles.includes(user.role)) {
     redirect("/");
   }
+
+  const getMainTextFromRole = () => {
+    switch (user.role) {
+      case "ADMIN":
+        return "Admin";
+
+      case "STAFF":
+        return "Staff";
+
+      case "DELIVERY_RIDER":
+        return "Delivery Rider";
+
+      default:
+        user.role;
+    }
+  };
 
   return (
     <main>
@@ -50,7 +68,9 @@ export default async function AdminLayout({ children }) {
       </div>
       <div className="flex-1 space-y-4 p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Admin panel</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            <span>{getMainTextFromRole()}</span> Panel
+          </h2>
         </div>
         <Tabs>{children}</Tabs>
       </div>

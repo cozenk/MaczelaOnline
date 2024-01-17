@@ -1,9 +1,14 @@
 import { sql } from "@vercel/postgres";
 import { getAllCustomers, getCurrentUser, getUserById } from "./users";
 
-export async function getAllOrders({ status, payment_status }) {
+export async function getAllOrders(
+  { status, payment_status } = { status: "", payment_status: "" },
+) {
   const { rows: orderRows } = !status
-    ? await sql`SELECT * FROM orders ORDER BY placed_date DESC;`
+    ? await sql`SELECT * FROM orders 
+    WHERE status IS NOT NULL AND 
+    is_completed = ${payment_status === "paid" ? true : false} 
+    ORDER BY placed_date DESC;`
     : await sql`
     SELECT * 
     FROM orders 
@@ -118,10 +123,17 @@ export async function updateOrder(orderId, newInfo) {
 
 export async function createOrder(
   userId,
-  { cartItems, totalPrice, totalItems, shippingAddress },
+  { cartItems, totalPrice, totalItems, shippingAddress, notes },
 ) {
-  const query = `INSERT INTO orders (user_id, status, total_price, total_items, shipping_address) VALUES($1, $2, $3, $4, $5) RETURNING *;`;
-  const data = [userId, "PLACED", totalPrice, totalItems, shippingAddress];
+  const query = `INSERT INTO orders (user_id, status, total_price, total_items, shipping_address, notes) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;`;
+  const data = [
+    userId,
+    "PLACED",
+    totalPrice,
+    totalItems,
+    shippingAddress,
+    notes,
+  ];
 
   const { rows } = await sql.query(query, data);
 
@@ -166,13 +178,22 @@ export async function createOrderItems(orderId, orderItems) {
     return null;
   };
 
+  const escapeQuotes = (inputString) => {
+    // Escape single quotes
+    const escapedSingleQuotes = inputString.replace(/'/g, "''");
+
+    return escapedSingleQuotes;
+  };
+
   const query = `INSERT INTO order_items (order_id, pizza_id, name, price, size, quantity, image_url)
 VALUES
 ${orderItems.map(
   (item) =>
-    `('${orderId}', '${extractPizzaId(item.pizzaId) || item.pizzaId}', "${
-      item.name
-    }", ${item.price}, '${item.size}', ${item.quantity}, '${item.imageSrc}')
+    `('${orderId}', '${
+      extractPizzaId(item.pizzaId) || item.pizzaId
+    }', '${escapeQuotes(item.name)}', ${item.price}, '${item.size}', ${
+      item.quantity
+    }, '${item.imageSrc}')
 `,
 )} RETURNING *;`;
 

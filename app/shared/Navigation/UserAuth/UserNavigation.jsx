@@ -37,6 +37,22 @@ export default function UserNavigation({ user }) {
     }
   }, [showUserNavigation]);
 
+  const getTextAndHrefFromRole = () => {
+    switch (user.role) {
+      case "ADMIN":
+        return { href: "/admin", text: "Admin" };
+
+      case "STAFF":
+        return { href: "/admin", text: "Staff" };
+
+      case "DELIVERY_RIDER":
+        return { href: "/admin/orders", text: "Delivery Rider" };
+
+      default:
+        return { href: "/admin", text: user.role };
+    }
+  };
+
   return (
     <div className="user-navigation relative flex items-center gap-3 font-medium">
       <UserInfo
@@ -119,25 +135,25 @@ export default function UserNavigation({ user }) {
                       <EditIcon
                         className="modal-trigger cursor-pointer text-green-700 hover:text-green-500"
                         width={16}
-                        onClick={() => showEditUserInfo("street_address")}
+                        onClick={() => showEditUserInfo("complete_address")}
                       />
                     </div>
                   ) : (
                     <span
                       className="modal-trigger cursor-pointer text-green-700"
-                      onClick={() => showEditUserInfo("street_address")}
+                      onClick={() => showEditUserInfo("complete_address")}
                     >
                       Add +
                     </span>
                   )}
                 </div>
                 <div className="my-2 flex flex-col gap-y-2">
-                  {user.role === "ADMIN" && !pathname.includes("/admin") ? (
+                  {user.role !== "CUSTOMER" && !pathname.includes("/admin") ? (
                     <Link
-                      href={"/admin"}
+                      href={getTextAndHrefFromRole().href}
                       className="text-base text-black underline hover:text-gray-600"
                     >
-                      Go to admin panel
+                      Go to {getTextAndHrefFromRole().text} Panel
                     </Link>
                   ) : null}
 

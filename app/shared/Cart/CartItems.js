@@ -1,10 +1,17 @@
 "use client";
 
 import { Button } from "@shared/Button";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { CartContext } from "@providers/CartProvider";
 import { priceRegex } from "@utils/regex";
-import { Trash2Icon } from "lucide-react";
+import {
+  Trash2Icon,
+  MinusIcon,
+  PlusIcon,
+  StickyNoteIcon,
+  PenIcon,
+  TextIcon,
+  PenBoxIcon,
+} from "lucide-react";
 import Image from "next/image";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";

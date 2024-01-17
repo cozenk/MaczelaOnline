@@ -1,32 +1,66 @@
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "(pages)/admin/components/ui/card";
-import { BanknotesIcon } from "@heroicons/react/24/outline";
 import { ShoppingBagIcon } from "lucide-react";
-import { Chart } from "./chart";
-import { RecentSales } from "(pages)/admin/components/recent-sales";
 import { getAllPendingOrders } from "@utils/orders";
+import { getFilteredSales, getTotalSales } from "@utils/sales";
+import { formatPrice } from "@utils/formatters";
+import { getAllCustomers } from "@utils/users";
+import FilteredSales from "./FilteredSales";
 
-export default async function Overview() {
+export default async function Overview({
+  salesFilter = "",
+  monthlySales = [],
+}) {
   const pendingOrders = await getAllPendingOrders();
+  const totalSales = await getTotalSales();
+  const customers = await getAllCustomers();
+  const filteredSales = await getFilteredSales({ time: salesFilter });
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <BanknotesIcon width={16} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₱12,000.49</div>
+            <div className="text-2xl font-bold">
+              {formatPrice(totalSals)}
+            </div>
             <p className="text-muted-foreground text-xs">
               +20.1% from last month
             </p>
+          </CardContent>
+        </Card> 
+*/}
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total sales</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="text-muted-foreground h-4 w-4"
+            >
+              <rect width="20" height="14" x="2" y="5" rx="2" />
+              <path d="M2 10h20" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatPrice(totalSales)}</div>
+            {/* <p className="text-muted-foreground text-xs">
+              +19% from last month
+            </p> */}
           </CardContent>
         </Card>
         <Card>
@@ -45,7 +79,7 @@ export default async function Overview() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Customers</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -62,56 +96,14 @@ export default async function Overview() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-muted-foreground text-xs">
+            <div className="text-2xl font-bold">{customers.length}</div>
+            {/* <p className="text-muted-foreground text-xs">
               +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              className="text-muted-foreground h-4 w-4"
-            >
-              <rect width="20" height="14" x="2" y="5" rx="2" />
-              <path d="M2 10h20" />
-            </svg>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-muted-foreground text-xs">
-              +19% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <Chart />
-          </CardContent>
-        </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-            <CardDescription>You made 265 sales this month.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentSales />
-          </CardContent>
-        </Card>
-      </div>
+      <FilteredSales sales={filteredSales} monthlySales={monthlySales} />
     </>
   );
 }

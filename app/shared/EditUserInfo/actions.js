@@ -12,7 +12,7 @@ export async function saveUserInfo(prevState, formData) {
 
     const email = formData.get("email");
 
-    const street_address = formData.get("street_address");
+    const complete_address = formData.get("complete_address");
     const city = formData.get("city");
     const province = formData.get("province");
     const postal_code = formData.get("postal_code");
@@ -25,11 +25,12 @@ export async function saveUserInfo(prevState, formData) {
     };
 
     const newShippingAddress = {
-      street_address,
-      city,
-      province,
-      postal_code,
+      complete_address,
+      city: "Marikina",
+      province: "Rizal",
+      postal_code: "1800",
     };
+
     try {
       await updateUserInfo(user_id, {
         ...newUserInfo,
