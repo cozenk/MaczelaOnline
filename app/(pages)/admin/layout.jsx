@@ -46,11 +46,17 @@ export default async function AdminLayout({ children }) {
   return (
     <main>
       <div className="border-b">
-        <div className="flex h-16 items-center px-4">
-          <Link href="/" className="-m-1.5 flex items-center gap-2 p-1.5">
+        <div className="flex h-16 items-center px-4 md:px-6 lg:px-8">
+          <Link href="/" className="-m-1.5 flex items-center gap-4 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image src={icon} width={35} height={35} alt="brand icon" />
-            <span className="text-xl font-bold  dark:text-white">
+            <Image
+              src={icon}
+              width={35}
+              height={35}
+              className="md:scale-150"
+              alt="brand icon"
+            />
+            <span className="text-xl font-bold dark:text-white md:text-2xl lg:text-3xl">
               Maczela's <span className="text-red-600">Pizza</span>
             </span>
           </Link>

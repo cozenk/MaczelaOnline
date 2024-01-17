@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useFormState } from "react-dom";
 import ContactInformation from "./ContactInformation";
-import ShippingAddress from "./ShippingAddress";
+import DeliveryAddress from "./DeliveryAddress";
 import OrderSummary from "./OrderSummary";
 import icon from "@assets/icon.png";
 import Modal from "@shared/Modal";
@@ -74,7 +74,7 @@ export default function FormAndSummary({ user = null }) {
               </div>
 
               <ContactInformation user={user} />
-              <ShippingAddress user={user} />
+              <DeliveryAddress user={user} />
               {/* <BillingAddress /> */}
             </div>
             <div className="bg-gray-50/59 dark:bg-gray-800/59 overflow-y-auto px-8 py-16 backdrop-blur-sm lg:h-[100vh] lg:px-20">

@@ -44,7 +44,7 @@ export default function CartMenu({ isOpen = false, closeCartMenu = () => {} }) {
                 <p className="text-xl">{cart.totalPriceDisplay}</p>
               </div>
               <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
-                Shipping and taxes calculated at checkout.
+                Delivery and taxes calculated at checkout.
               </p>
               <div className="mt-6">
                 {!isSignedIn ? (

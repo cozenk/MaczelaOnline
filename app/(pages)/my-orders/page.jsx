@@ -70,7 +70,9 @@ export default async function Orders({ searchParams }) {
                       {" "}
                       Status:{" "}
                     </label>
-                    <span className="">{order.status}</span>
+                    <span className="">
+                      {order.status === "PLACED" ? "TO CONFIRM" : order.status}
+                    </span>
                   </div>
                   <div>
                     <label className="text-gray-500 dark:text-gray-400">
@@ -81,7 +83,7 @@ export default async function Orders({ searchParams }) {
                 </div>
                 <div className="right-info">
                   <h2>
-                    Order total (+ shipping fee):{" "}
+                    Order total (+ delivery fee):{" "}
                     <span className="text-lg font-semibold text-green-700 dark:text-green-500">
                       {formatPrice(order.total_price)}
                     </span>

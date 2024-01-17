@@ -14,12 +14,9 @@ import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { Button } from "@shared/Button";
 import Modal from "@shared/Modal";
 import Image from "next/image";
-import { useFormState } from "react-dom";
 
-import { deleteOrderAction, updateOrderInfo } from "../actions";
-import SubmitButton from "@shared/EditUserInfo/SubmitButton";
+import { deleteOrderAction } from "../actions";
 import { formatPrice } from "@utils/formatters";
-import { useRouter } from "next/navigation";
 import UpdateOrder from "./modals/UpdateOrder";
 import { useCurrentUser } from "@shared/hooks";
 
@@ -27,12 +24,6 @@ export const CellAction = ({ row = null }) => {
   const { isLoading, user } = useCurrentUser();
 
   const order = row.original;
-
-  const router = useRouter();
-
-  const [state, formAction] = useFormState(updateOrderInfo, {
-    infoSaved: false,
-  });
 
   const [modals, setModals] = useState({
     showOrderItems: false,
@@ -63,15 +54,6 @@ export const CellAction = ({ row = null }) => {
       showUpdateOrder: false,
     }));
 
-  useEffect(() => {
-    if (state.infoSaved) {
-      closeUpdateOrderModal();
-      router.refresh();
-
-      state.infoSaved = false;
-    }
-  }, [state.infoSaved]);
-
   return (
     <>
       <Modal show={modals.showOrderItems} onClose={closeOrderItemsModal}>
@@ -79,7 +61,7 @@ export const CellAction = ({ row = null }) => {
           <div>
             <div>
               Total price:{" "}
-              <span>{formatPrice(order.total_price)} (+ Shipping fee)</span>
+              <span>{formatPrice(order.total_price)} (+ Delivery fee)</span>
             </div>
             <div>
               Total items: <span>x{order.total_items}</span>
@@ -116,10 +98,6 @@ export const CellAction = ({ row = null }) => {
         show={modals.showUpdateOrder}
         onClose={closeUpdateOrderModal}
         order={order}
-        formAction={formAction}
-        disabledSubmitButton={
-          !state.infoSaved && !state.infoSaved === undefined
-        }
       />
 
       <DropdownMenu>

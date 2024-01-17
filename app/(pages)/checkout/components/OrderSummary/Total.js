@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 export default function Total() {
   const { cart } = useContext(CartContext);
-  const shippingFee = 50;
+  const deliveryFee = 50;
 
   return (
     <div className="mt-10 border-t-2 pt-5">
@@ -16,8 +16,8 @@ export default function Total() {
           <p className="text-lg">{cart.totalPriceDisplay}</p>
         </div>
         <div className="flex justify-between ">
-          <p>Shipping</p>
-          <p className="text-lg">{formatPrice(shippingFee)}</p>
+          <p>Delivery</p>
+          <p className="text-lg">{formatPrice(deliveryFee)}</p>
         </div>
       </div>
 
@@ -26,9 +26,9 @@ export default function Total() {
         <input
           type="hidden"
           name="total_price"
-          value={cart.totalPrice + shippingFee}
+          value={cart.totalPrice + deliveryFee}
         />
-        <p className="">{formatPrice(cart.totalPrice + shippingFee)}</p>
+        <p className="">{formatPrice(cart.totalPrice + deliveryFee)}</p>
       </div>
     </div>
   );

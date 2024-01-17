@@ -4,6 +4,13 @@ import { formatDate, formatPrice } from "@utils/formatters";
 import { CellAction } from "./CellAction";
 import Link from "next/link";
 import { Badge } from "(pages)/admin/components/ui/badge";
+import UpdateOrder from "./modals/UpdateOrder";
+import { useState } from "react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "(pages)/admin/components/ui/hover-card";
 
 export const columns = [
   {
@@ -14,7 +21,10 @@ export const columns = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
+      const [showUpdateOrderModal, setShowUpdateOrderModal] = useState(false);
+
       const status = row.getValue("status");
+      const order = row.original;
 
       const getVariant = () => {
         if (status === "PLACED") return "destructive";
@@ -24,9 +34,21 @@ export const columns = [
       };
 
       return (
-        <Badge variant={getVariant()}>
-          {status === "PLACED" ? "TO CONFIRM" : status}
-        </Badge>
+        <>
+          <UpdateOrder
+            show={showUpdateOrderModal}
+            onClose={() => setShowUpdateOrderModal(false)}
+            order={order}
+          />
+
+          <Badge
+            onClick={() => setShowUpdateOrderModal(true)}
+            className={"modal-trigger cursor-pointer text-center"}
+            variant={getVariant()}
+          >
+            {status === "PLACED" ? "TO CONFIRM" : status}
+          </Badge>
+        </>
       );
     },
   },
@@ -34,6 +56,10 @@ export const columns = [
     accessorKey: "is_completed",
     header: "Is Paid?",
     cell: ({ row }) => {
+      const [showUpdateOrderModal, setShowUpdateOrderModal] = useState(false);
+
+      const order = row.original;
+
       const is_completed = row.getValue("is_completed");
 
       const getVariant = () => {
@@ -42,7 +68,20 @@ export const columns = [
       };
 
       return (
-        <Badge variant={getVariant()}>{is_completed ? "YES" : "NO"}</Badge>
+        <>
+          <UpdateOrder
+            show={showUpdateOrderModal}
+            onClose={() => setShowUpdateOrderModal(false)}
+            order={order}
+          />
+          <Badge
+            className={"cursor-pointer"}
+            onClick={() => setShowUpdateOrderModal(true)}
+            variant={getVariant()}
+          >
+            {is_completed ? "YES" : "NO"}
+          </Badge>
+        </>
       );
     },
   },
@@ -52,18 +91,36 @@ export const columns = [
     cell: ({ row }) => {
       const customer = row.getValue("customer");
       return (
-        <Link
-          href={`/admin/users/?highlight=${customer.id}`}
-          className="cursor-pointer underline hover:text-gray-400"
-        >
-          {customer.full_name || customer.email} ({customer.mobile_number})
-        </Link>
+        <HoverCard openDelay={200}>
+          <HoverCardTrigger>
+            <div
+              // href={`/admin/users/?highlight=${customer.id}`}
+              className="cursor-pointer underline hover:text-gray-400"
+            >
+              {customer.full_name}
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent className="space-y-1 text-base">
+            <div>
+              Customer: <span>{customer.full_name}</span>
+            </div>
+            <div>
+              Contact: <span>{customer.mobile_number}</span>
+            </div>
+            <div>
+              Email: <span>{customer.email}</span>
+            </div>
+            <div>
+              Orders count: <span>{customer.orders_count}</span>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       );
     },
   },
   {
-    accessorKey: "shipping_address",
-    header: "Shipping Address",
+    accessorKey: "delivery_address",
+    header: "Delivery Address",
   },
   {
     accessorKey: "notes",

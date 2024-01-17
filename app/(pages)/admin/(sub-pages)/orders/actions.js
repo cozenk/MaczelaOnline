@@ -21,13 +21,28 @@ export async function updateOrderInfo(prevState, formData) {
       ...(order_status === "TO DELIVER" && {
         estimated_delivery_time: `${estimated_time} minutes`,
       }),
+      ...(is_completed && {
+        completion_date: is_completed ? new Date().toISOString() : null,
+      }),
     };
 
     try {
-      const { status, estimated_preparation_time, estimated_delivery_time } =
-        await updateOrder(orderId, newOrderInfo);
+      const {
+        status,
+        estimated_preparation_time,
+        estimated_delivery_time,
+        is_completed,
+      } = await updateOrder(orderId, newOrderInfo);
 
       const getEmailContentFromStatus = () => {
+        if (is_completed) {
+          return {
+            subject: `Your order is now paid - Order ID: ${orderId}`,
+            text: `Your order is now paid - Order ID: ${orderId}`,
+            html: `<h1>Paid!</h1><p>Hello, check the status of your order <a href='https://maczela-online.vercel.app/my-orders?highlight=${orderId}'>here</a></p>`,
+          };
+        }
+
         switch (status) {
           case "PREPARING":
             return {
@@ -60,11 +75,12 @@ export async function updateOrderInfo(prevState, formData) {
         }
       };
 
-      await transporter.sendMail({
-        ...mailOptions,
-        to: customer_email,
-        ...getEmailContentFromStatus(),
-      });
+      if (status !== "PLACED" || is_completed)
+        await transporter.sendMail({
+          ...mailOptions,
+          to: customer_email,
+          ...getEmailContentFromStatus(),
+        });
 
       revalidatePath("/");
       revalidatePath("/admin");

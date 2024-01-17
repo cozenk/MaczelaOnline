@@ -60,7 +60,7 @@ export default function SubText({ initialText = "" }) {
       ) : (
         <p
           onMouseEnter={(e) => {
-            if (user.role === "ADMIN") setShowEditOverlay(true);
+            if (user?.role === "ADMIN") setShowEditOverlay(true);
           }}
         >
           {initialText ? (

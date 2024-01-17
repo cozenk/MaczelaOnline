@@ -23,7 +23,7 @@ export default function BillingAddress() {
           htmlFor="billing-same-as-contact"
           className="block text-sm font-medium leading-6 "
         >
-          Same as shipping address
+          Same as delivery address
         </label>
       </div>
 

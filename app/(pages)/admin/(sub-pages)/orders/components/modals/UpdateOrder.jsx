@@ -3,16 +3,33 @@
 import SubmitButton from "@shared/EditUserInfo/SubmitButton";
 import Modal from "@shared/Modal";
 import { estimatedTimeSelections } from "@utils/orders";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { useFormState } from "react-dom";
+import { updateOrderInfo } from "../../actions";
+import { useRouter } from "next/navigation";
 
 export default function UpdateOrder({
   show = false,
   onClose = () => {},
-  formAction = null,
   order = null,
-  disabledSubmitButton = false,
 }) {
   const [selectedStatus, setSelectedStatus] = useState(null);
+
+  const [state, formAction] = useFormState(updateOrderInfo, {
+    infoSaved: false,
+  });
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state.infoSaved) {
+      onClose();
+      router.refresh();
+
+      state.infoSaved = false;
+    }
+  }, [state.infoSaved]);
 
   return (
     <Modal show={show} onClose={onClose}>
@@ -77,7 +94,9 @@ export default function UpdateOrder({
             </select>
           </div>
         </div>
-        <SubmitButton disabled={disabledSubmitButton} />
+        <SubmitButton
+          disabled={!state.infoSaved && !state.infoSaved === undefined}
+        />
       </form>
     </Modal>
   );

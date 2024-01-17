@@ -3,8 +3,6 @@ import { getAllOrders } from "./orders";
 import { getUserById } from "./users";
 
 export async function getFilteredSales({ time } = { time: null }) {
-  const availableTimes = ["DAILY", "MONTHLY", "YEARLY"];
-
   const getQuery = async () => {
     switch (time) {
       case "DAILY":

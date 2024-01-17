@@ -14,7 +14,7 @@ export function OrdersTable({ orders }) {
   const [showOrderFilter, setShowOrderFilter] = useState(false);
   const [filter, setFilter] = useState({
     status: "",
-    payment_status: "unpaid",
+    payment_status: "",
   });
 
   const exportReportPDF = () => {

@@ -60,7 +60,7 @@ export default function MainText({ initialText = "" }) {
       ) : (
         <h1
           onMouseEnter={(e) => {
-            if (user.role === "ADMIN") setShowEditOverlay(true);
+            if (user?.role === "ADMIN") setShowEditOverlay(true);
           }}
         >
           {initialText ? (
