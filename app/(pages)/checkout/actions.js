@@ -12,6 +12,7 @@ export async function submitOrder(cartItems = [], prevState, formData) {
     const mobileNumber = formData.get("mobile_number");
     const email = formData.get("email");
 
+    const notes = formData.get("notes");
     const totalPrice = formData.get("total_price");
     const totalItems = formData.get("total-items");
 
@@ -42,6 +43,7 @@ export async function submitOrder(cartItems = [], prevState, formData) {
       totalPrice,
       totalItems,
       shippingAddress,
+      notes,
     });
 
     updateUserInfo(userId, {

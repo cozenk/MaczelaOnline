@@ -65,3 +65,44 @@ export async function getTotalSales() {
     0,
   );
 }
+
+export async function getMonthlySales() {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const monthlySales = await Promise.all(
+    months.map(async (month, index) => {
+      const query = `SELECT * FROM orders
+        WHERE is_completed = true
+        AND (EXTRACT(MONTH FROM completion_date), EXTRACT(YEAR FROM completion_date)) 
+        IN (($1, $2));
+      `;
+      const values = [index + 1, new Date().getFullYear()];
+
+      const { rows } = await sql.query(query, values);
+
+      return {
+        name: month,
+        total: rows.length
+          ? rows.reduce(
+              (total, order) => total + parseFloat(order.total_price),
+              0,
+            )
+          : 0,
+      };
+    }),
+  );
+
+  return monthlySales;
+}

@@ -12,7 +12,7 @@ import { Chart } from "./chart";
 import SalesList from "../SalesList";
 import { useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FileDown, Filter } from "lucide-react";
+import { FileDown } from "lucide-react";
 import PDFreport from "./PDFReport";
 import { formatPrice } from "@utils/formatters";
 
@@ -34,7 +34,7 @@ const filters = [
   },
 ];
 
-export default function FilteredSales({ sales = [] }) {
+export default function FilteredSales({ sales = [], monthlySales = [] }) {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -81,7 +81,7 @@ export default function FilteredSales({ sales = [] }) {
           <CardTitle>Overview</CardTitle>
         </CardHeader>
         <CardContent className="pl-2">
-          <Chart />
+          <Chart chartData={monthlySales} />
         </CardContent>
       </Card>
       <Card className="col-span-3">

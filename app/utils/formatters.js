@@ -12,15 +12,25 @@ export function formatDate(date = "") {
   });
 }
 
-export function formatPrice(price, options = { withoutTag: false }) {
-  if (options.withoutTag)
+export function formatPrice(
+  price,
+  options = { withoutTag: false, withoutDecimals: false },
+) {
+  if (options.withoutTag) {
+    if (options.withoutDecimals)
+      return new Intl.NumberFormat("en-US").format(price);
+
     return new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(price);
-  else
+  } else {
+    if (options.withoutDecimals)
+      return `₱${new Intl.NumberFormat("en-US").format(price)}`;
+
     return `₱${new Intl.NumberFormat("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(price)}`;
+  }
 }
