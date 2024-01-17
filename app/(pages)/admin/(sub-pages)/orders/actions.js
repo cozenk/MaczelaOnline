@@ -31,8 +31,8 @@ export async function updateOrderInfo(prevState, formData) {
         switch (status) {
           case "PREPARING":
             return {
-              subject: `We are now prepring your order - Order ID: ${orderId}`,
-              text: `We are now prepring your order - Order ID: ${orderId}`,
+              subject: `We are now preparing your order - Order ID: ${orderId}`,
+              text: `We are now preparing your order - Order ID: ${orderId}`,
               html: `<h1>Preparing!</h1><p>Hello, this is to notify you that <a href='https://maczela-online.vercel.app/my-orders?highlight=${orderId}'>your order</a> will be prepared to deliver in ${estimated_preparation_time}</p>`,
             };
 
