@@ -88,11 +88,9 @@ export default function FilteredSales({ sales = [], monthlySales = [] }) {
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <span>
-              {
-                filters.find(
-                  (filter) => filter.value === searchParams.get("salesFilter"),
-                ).label
-              }{" "}
+              {filters.find(
+                (filter) => filter.value === searchParams.get("salesFilter"),
+              )?.label || "Daily"}{" "}
               sales (
               {formatPrice(
                 sales.reduce(
