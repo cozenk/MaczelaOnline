@@ -1,9 +1,10 @@
 import { currentUser } from "@clerk/nextjs";
 import { sql } from "@vercel/postgres";
 
-export async function getAllUsers() {
-  const { rows } =
-    await sql`SELECT * FROM users ORDER BY role DESC, created_at DESC;`;
+export async function getAllUsers({ role }) {
+  const { rows } = !role
+    ? await sql`SELECT * FROM users ORDER BY role DESC, created_at DESC;`
+    : await sql`SELECT * FROM users WHERE role = ${role} ORDER BY role DESC, created_at DESC;`;
 
   if (rows.length) {
     return rows.map((user) => {

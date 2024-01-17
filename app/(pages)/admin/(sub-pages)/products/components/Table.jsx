@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusCircle, Filter } from "lucide-react";
+import { PlusCircle, Filter, FileDown } from "lucide-react";
 
 import { Button } from "@shared/Button";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { columns } from "./Columns";
 import { DataTable } from "(pages)/admin/components/ui/data-table";
 import AddPizzaModal from "./modals/AddPiza";
 import FilterPizza from "./modals/FilterPizza";
+import PDFreport from "./PDFReport";
 
 export function ProductsTable({ pizzas }) {
   const [showAddPizzaModal, setShowAddPizzaModal] = useState(false);
@@ -16,6 +17,10 @@ export function ProductsTable({ pizzas }) {
   const [filter, setFilter] = useState({
     size: "",
   });
+
+  const exportProductReportPDF = () => {
+    PDFreport(pizzas);
+  };
 
   return (
     <>
@@ -40,6 +45,11 @@ export function ProductsTable({ pizzas }) {
           <Button onClick={() => setShowFilterPizzaModal(true)}>
             <Filter className="mr-2 h-4 w-4" />
             Filter
+          </Button>
+
+          <Button onClick={exportProductReportPDF}>
+            <FileDown className="mr-2 w-4" />
+            Export Report
           </Button>
 
           <Button onClick={() => setShowAddPizzaModal(true)}>
