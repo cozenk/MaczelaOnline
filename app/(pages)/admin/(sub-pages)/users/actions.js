@@ -20,5 +20,9 @@ export async function updateUserRoleAction(prevState, formData) {
 
     revalidatePath("/");
     revalidatePath("/admin/users");
+
+    return {
+      infoSaved: true,
+    };
   } else throw new Error("userId and role cannot be empty");
 }

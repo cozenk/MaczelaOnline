@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "(pages)/admin/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Edit, KeyRound, MoreHorizontal, Trash } from "lucide-react";
 
 import { Button } from "@shared/Button";
@@ -42,6 +42,10 @@ export const CellAction = ({ user = null }) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (state.infoSaved) setShowEditUserRoleModal(false);
+  }, [state.infoSaved]);
 
   const rolesButton = {
     STAFF: (
