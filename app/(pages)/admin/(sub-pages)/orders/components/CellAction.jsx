@@ -125,7 +125,7 @@ export const CellAction = ({ row = null }) => {
             Update Order
           </DropdownMenuItem>
 
-          {!isLoading && user.role === "ADMIN" && (
+          {!isLoading && user?.role === "ADMIN" && (
             <DropdownMenuItem
               onClick={async () => {
                 const ordersRows = document.getElementById("orders-rows");
