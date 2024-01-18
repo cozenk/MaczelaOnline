@@ -108,7 +108,7 @@ const Tabs = ({ children }) => {
   return (
     <TabsPrimitive.Root value={adminTab} className="space-y-4">
       <TabsList className="gap-x-4 px-2 pl-1 text-sm">
-        {!isLoading && user && rolesLinks[user.role]}
+        {!isLoading && user && rolesLinks[user?.role]}
       </TabsList>
       {children}
     </TabsPrimitive.Root>

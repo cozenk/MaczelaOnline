@@ -41,7 +41,7 @@ export default function UserNavigation({ user }) {
   }, [showUserNavigation]);
 
   const getTextAndHrefFromRole = () => {
-    switch (user.role) {
+    switch (user?.role) {
       case "ADMIN":
         return { href: "/admin", text: "Admin" };
 
@@ -52,7 +52,7 @@ export default function UserNavigation({ user }) {
         return { href: "/admin/orders", text: "Delivery Rider" };
 
       default:
-        return { href: "/admin", text: user.role };
+        return { href: "/admin", text: user?.role };
     }
   };
 
@@ -151,7 +151,7 @@ export default function UserNavigation({ user }) {
                   )}
                 </div>
                 <div className="my-2 flex flex-col gap-y-2">
-                  {user.role !== "CUSTOMER" && !pathname.includes("/admin") ? (
+                  {user?.role !== "CUSTOMER" && !pathname.includes("/admin") ? (
                     <Link
                       href={getTextAndHrefFromRole().href}
                       className="text-base text-black underline hover:text-gray-600"

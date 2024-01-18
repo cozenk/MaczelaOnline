@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminProducts({ searchParams }) {
   const currentUser = await getCurrentUser();
 
-  if (currentUser.role === "DELIVERY_RIDER") redirect("/");
+  if (currentUser?.role === "DELIVERY_RIDER") redirect("/");
 
   const pizzas = await getAllPizzas(
     searchParams?.size

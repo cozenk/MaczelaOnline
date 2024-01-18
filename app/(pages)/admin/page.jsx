@@ -11,7 +11,7 @@ export default async function AdminOverview({ searchParams }) {
   const currentUser = await getCurrentUser();
   const monthlySales = await getMonthlySales();
 
-  if (currentUser.role === "DELIVERY_RIDER") redirect("/");
+  if (currentUser?.role === "DELIVERY_RIDER") redirect("/");
 
   return (
     <TabsContent value="overview" className="space-y-4">

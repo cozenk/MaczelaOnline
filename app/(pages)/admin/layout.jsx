@@ -23,12 +23,12 @@ export async function generateMetadata() {
 export default async function AdminLayout({ children }) {
   const user = await getCurrentUser();
 
-  if (!allowedRoles.includes(user.role)) {
+  if (!allowedRoles.includes(user?.role)) {
     redirect("/");
   }
 
   const getMainTextFromRole = () => {
-    switch (user.role) {
+    switch (user?.role) {
       case "ADMIN":
         return "Admin";
 
@@ -39,7 +39,7 @@ export default async function AdminLayout({ children }) {
         return "Delivery Rider";
 
       default:
-        user.role;
+        user?.role;
     }
   };
 

@@ -115,7 +115,7 @@ export const CellAction = ({ user = null }) => {
               Role:
             </label>
             <select
-              defaultValue={user.role}
+              defaultValue={user?.role}
               name="role"
               id="role"
               className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
@@ -145,7 +145,7 @@ export const CellAction = ({ user = null }) => {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            {rolesButton[currentUser.role] || (
+            {rolesButton[currentUser?.role] || (
               <span className="p-2 text-sm">
                 No available actions for your role
               </span>

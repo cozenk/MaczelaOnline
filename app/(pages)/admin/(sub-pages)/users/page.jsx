@@ -8,10 +8,10 @@ export const dynamic = "force-dynamic";
 export default async function AdminUsers({ searchParams }) {
   const currentUser = await getCurrentUser();
 
-  if (currentUser.role === "DELIVERY_RIDER") redirect("/");
+  if (currentUser?.role === "DELIVERY_RIDER") redirect("/");
 
   const getData = async () => {
-    if (currentUser.role === "STAFF") return await getAllCustomers();
+    if (currentUser?.role === "STAFF") return await getAllCustomers();
 
     return await getAllUsers(
       searchParams?.role
