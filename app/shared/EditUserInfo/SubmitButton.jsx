@@ -2,12 +2,14 @@
 
 import { useFormStatus } from "react-dom";
 
-export default function SubmitButton({ disabled = false }) {
+export default function SubmitButton({
+  disabled = false,
+  disabledText = "Loading...",
+}) {
   const { pending } = useFormStatus();
 
   const isDisabled = () => {
-    if (disabled) return true;
-    if (pending) return true;
+    if (disabled || pending) return true;
     return false;
   };
 
@@ -19,7 +21,7 @@ export default function SubmitButton({ disabled = false }) {
         isDisabled() ? "hover:bg-gray-300" : "hover:bg-green-700"
       } flex w-full items-center justify-center rounded-md border border-transparent px-6  py-3 text-base font-medium text-white shadow-sm disabled:cursor-not-allowed`}
     >
-      {isDisabled() ? "Loading..." : "Save"}
+      {isDisabled() ? disabledText : "Save"}
     </button>
   );
 }

@@ -4,6 +4,8 @@ import { Button } from "@shared/Button";
 import PriceInput from "@shared/PriceInput";
 import { priceRegex } from "@utils/regex";
 import { PlusIcon, XIcon } from "lucide-react";
+import { useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 
 export default function VariantFields({
   openedFields = [],
@@ -44,22 +46,29 @@ export default function VariantFields({
                     <input
                       value={field.name}
                       onChange={(e) => {
-                        setOpenedFiedls((prev) =>
-                          prev.map((currentField) => {
+                        setOpenedFiedls((prev) => {
+                          return prev.map((currentField) => {
                             if (currentField.id === field.id) {
+                              const alreadyExist = prev.some(
+                                (field) => field.name === e.target.value,
+                              );
                               return {
                                 ...currentField,
                                 name: e.target.value,
+                                error: alreadyExist,
                               };
                             }
                             return currentField;
-                          }),
-                        );
+                          });
+                        });
                       }}
                       name="name"
                       id={`variant-${field.id}-name`}
                       required
-                      className="dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6"
+                      className={twMerge(
+                        "dark:rign-gray-black block w-full rounded-md border-0 px-2 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 dark:bg-black sm:text-sm sm:leading-6",
+                        field.error ? "outline outline-red-500" : "",
+                      )}
                     />
                   </div>
                   <div>
@@ -72,9 +81,13 @@ export default function VariantFields({
                           setOpenedFiedls((prev) =>
                             prev.map((currentField) => {
                               if (currentField.id === field.id) {
+                                const alreadyExist = prev.some(
+                                  (field) => field.price === e.target.value,
+                                );
                                 return {
                                   ...currentField,
                                   price: e.target.value,
+                                  error: alreadyExist,
                                 };
                               }
                               return currentField;
@@ -82,7 +95,10 @@ export default function VariantFields({
                           );
                       }}
                       required
-                      className="dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className={twMerge(
+                        "dark:rign-gray-black block w-full rounded-md border-0  py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6",
+                        field.error ? "outline outline-red-500" : "",
+                      )}
                     />
                   </div>
                 </div>
@@ -93,6 +109,7 @@ export default function VariantFields({
       ) : null}
 
       <Button
+        disabled={openedFields.some((field) => field.error)}
         type="button"
         variant="outline"
         className="gap-2"
