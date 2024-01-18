@@ -9,10 +9,13 @@ import { usePathname } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { NavContext } from "@providers/NavProvider";
 import { CartContext } from "@providers/CartProvider";
+import { useRouter } from "next/navigation";
 
 export default function UserNavigation({ user }) {
   const { showUserNavigation, setShowUserNavigation, showEditUserInfo } =
     useContext(NavContext);
+
+  const router = useRouter();
 
   const { resetClientCart } = useContext(CartContext);
 
@@ -171,6 +174,7 @@ export default function UserNavigation({ user }) {
                     queryKey: ["current-user"],
                   });
                   resetClientCart();
+                  router.push("/");
                 }}
               >
                 <h2 className="cursor-pointer text-red-600 hover:text-red-700">
