@@ -29,20 +29,20 @@ export async function submitOrder(cartItems = [], prevState, formData) {
       email,
     };
 
-    const shippingInformation = {
+    const deliveryInformation = {
       complete_address,
       city: "Marikina",
       province: "Rizal",
       postal_code: "1800",
     };
 
-    const shippingAddress = `${shippingInformation.complete_address}, ${shippingInformation.city}, ${shippingInformation.province}, ${shippingInformation.postal_code}`;
+    const deliveryAddress = `${deliveryInformation.complete_address}, ${deliveryInformation.city}, ${deliveryInformation.province}, ${deliveryInformation.postal_code}`;
 
     const createdOrder = await createOrder(userId, {
       cartItems,
       totalPrice,
       totalItems,
-      shippingAddress,
+      deliveryAddress,
       notes,
     });
 

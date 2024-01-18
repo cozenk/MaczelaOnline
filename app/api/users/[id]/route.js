@@ -29,7 +29,7 @@ export async function PATCH(req) {
       email,
     };
 
-    const newShippingAddress = {
+    const newDeliveryAddress = {
       complete_address,
       city: "Marikina",
       province: "Rizal",
@@ -39,7 +39,7 @@ export async function PATCH(req) {
     try {
       const user = await updateUserInfo(user_id, {
         ...newUserInfo,
-        ...newShippingAddress,
+        ...newDeliveryAddress,
       });
       return NextResponse.json(user);
     } catch (error) {

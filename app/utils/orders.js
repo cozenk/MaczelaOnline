@@ -1,15 +1,25 @@
 import { sql } from "@vercel/postgres";
-import { getAllCustomers, getCurrentUser, getUserById } from "./users";
+import { getCurrentUser, getUserById } from "./users";
 
 export async function getAllOrders(
   { status, payment_status } = { status: "", payment_status: "" },
 ) {
-  const { rows: orderRows } = !status
-    ? await sql`SELECT * FROM orders 
+  const getQuery = async () => {
+    if (!status && !payment_status) {
+      return await sql`SELECT * FROM orders 
+    WHERE status IS NOT NULL AND
+    is_completed IS NOT NULL 
+    ORDER BY placed_date DESC;`;
+    }
+
+    if (!status && payment_status) {
+      return await sql`SELECT * FROM orders 
     WHERE status IS NOT NULL AND 
     is_completed = ${payment_status === "paid" ? true : false} 
-    ORDER BY placed_date DESC;`
-    : await sql`
+    ORDER BY placed_date DESC;`;
+    }
+
+    return await sql`
     SELECT * 
     FROM orders 
     WHERE 
@@ -17,6 +27,9 @@ export async function getAllOrders(
       is_completed = ${payment_status === "paid" ? true : false}
     ORDER BY placed_date DESC;
   `;
+  };
+
+  const { rows: orderRows } = await getQuery();
 
   if (orderRows.length) {
     const ordersWithItemsAndCustomer = Promise.all(
@@ -123,15 +136,15 @@ export async function updateOrder(orderId, newInfo) {
 
 export async function createOrder(
   userId,
-  { cartItems, totalPrice, totalItems, shippingAddress, notes },
+  { cartItems, totalPrice, totalItems, deliveryAddress, notes },
 ) {
-  const query = `INSERT INTO orders (user_id, status, total_price, total_items, shipping_address, notes) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;`;
+  const query = `INSERT INTO orders (user_id, status, total_price, total_items, delivery_address, notes) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;`;
   const data = [
     userId,
     "PLACED",
     totalPrice,
     totalItems,
-    shippingAddress,
+    deliveryAddress,
     notes,
   ];
 

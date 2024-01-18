@@ -80,7 +80,13 @@ export async function getCurrentUser() {
 
 export async function getUserById(userId = null) {
   if (userId) {
-    const { rows } = await sql`SELECT * FROM users WHERE id = ${userId};`;
+    const { rows } =
+      await sql`SELECT users.id, users.first_name, users.last_name, users.clerk_id, users.image_url, users.mobile_number, users.email, users.complete_address, users.city, users.province, users.postal_code, users.role, users.created_at, COUNT(orders.id) AS orders_count 
+    FROM users 
+    LEFT JOIN orders ON users.id = orders.user_id 
+    WHERE users.id = ${userId}
+    GROUP BY users.id, users.first_name, users.last_name, users.clerk_id, users.image_url, users.mobile_number, users.email, users.complete_address, users.city, users.province, users.postal_code, users.role, users.created_at;
+    `;
 
     if (rows.length) {
       const user = rows[0];

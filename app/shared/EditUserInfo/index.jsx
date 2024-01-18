@@ -1,7 +1,7 @@
 "use client";
 
 import ContactInformation from "(pages)/checkout/components/ContactInformation";
-import ShippingAddress from "(pages)/checkout/components/ShippingAddress";
+import DeliveryAddress from "(pages)/checkout/components/DeliveryAddress";
 import Modal from "@shared/Modal";
 import SubmitButton from "./SubmitButton";
 import { useEffect } from "react";
@@ -53,7 +53,7 @@ export default function EditUserInfo({
 
       <form action={formAction}>
         <ContactInformation user={user} />
-        <ShippingAddress user={user} />
+        <DeliveryAddress user={user} />
 
         <SubmitButton />
       </form>

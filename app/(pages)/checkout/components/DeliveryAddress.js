@@ -1,9 +1,9 @@
 import Section from "./Section";
 import Skeleton from "react-loading-skeleton";
 
-export default function ShippingAddress({ user = null }) {
+export default function DeliveryAddress({ user = null }) {
   return (
-    <Section title="Shipping address" titleColor="text-green-700">
+    <Section title="Delivery address" titleColor="text-green-700">
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div className="col-span-full">
           <label

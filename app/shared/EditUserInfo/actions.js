@@ -24,7 +24,7 @@ export async function saveUserInfo(prevState, formData) {
       email,
     };
 
-    const newShippingAddress = {
+    const newDeliveryAddress = {
       complete_address,
       city: "Marikina",
       province: "Rizal",
@@ -34,7 +34,7 @@ export async function saveUserInfo(prevState, formData) {
     try {
       await updateUserInfo(user_id, {
         ...newUserInfo,
-        ...newShippingAddress,
+        ...newDeliveryAddress,
       });
 
       revalidatePath("/");
