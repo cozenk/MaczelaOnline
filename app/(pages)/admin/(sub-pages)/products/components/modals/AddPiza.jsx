@@ -145,7 +145,16 @@ export default function AddPizzaModal({
           />
         </div>
 
-        <SubmitButton disabled={!isReadyToSubmit} />
+        <SubmitButton
+          disabled={
+            !isReadyToSubmit || openedVariantFields.some((field) => field.error)
+          }
+          disabledText={
+            openedVariantFields.some((field) => field.error)
+              ? "Save"
+              : "Loading..."
+          }
+        />
       </form>
     </Modal>
   );
