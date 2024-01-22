@@ -11,7 +11,7 @@ const PDFreport = async (reportData, startDate, endDate) => {
   const document = new jsPDF(orientation, unit, size);
   const dateToday = new Date();
   const generatedDate = "Generated Date: " + dateToday;
-  const print = new User();
+  const print = new users();
   const printedby = "Printed by: " + print;
   
 
