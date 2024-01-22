@@ -65,7 +65,7 @@ const PDFreport = async (reportData, startDate, endDate) => {
   document.setFontSize(10);
   document.text("Sales Report", marginLeft, 70);
   document.text("Record of Sales: ", marginLeft, 100);
-  document.text("Date Generated: " + dateGenerated);
+  document.text("Date Generated: " + dateGenerated.toString(), marginLeft, 100);
   
   autoTable(document, content);
   return document.save(
