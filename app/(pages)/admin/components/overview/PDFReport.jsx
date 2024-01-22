@@ -9,6 +9,8 @@ const PDFreport = async (reportData, startDate, endDate) => {
   const orientation = "portrait";
   const marginLeft = 10;
   const document = new jsPDF(orientation, unit, size);
+  const dateGenerated = new Date();
+  
 
   const headers = [
     ["ORDER ID", "DATE", "CUSTOMER", "ITEMS", "TOTAL PRICE", "TOTAL ITEMS"],
@@ -63,7 +65,8 @@ const PDFreport = async (reportData, startDate, endDate) => {
   document.setFontSize(10);
   document.text("Sales Report", marginLeft, 70);
   document.text("Record of Sales: ", marginLeft, 100);
-
+  document.text("Date Generated: ", dateGenerated);
+  
   autoTable(document, content);
   return document.save(
     `Sales_Report-${moment(startDate).format("YYYY-MM-DD")}-to-${moment(
