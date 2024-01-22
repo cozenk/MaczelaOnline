@@ -9,7 +9,9 @@ const PDFreport = async (reportData, startDate, endDate) => {
   const orientation = "portrait";
   const marginLeft = 10;
   const document = new jsPDF(orientation, unit, size);
-  const dateGenerated = new Date();
+  const dateToday = new Date();
+  const generatedDate = "Generated Date: " + dateToday;
+ 
   
 
   const headers = [
@@ -64,9 +66,8 @@ const PDFreport = async (reportData, startDate, endDate) => {
   // Header
   document.setFontSize(10);
   document.text("Sales Report", marginLeft, 70);
-  document.text("Record of Sales: ", marginLeft, 100);
-  document.text("Date Generated: ",marginLeft, 100);
-  console.log(dateGenerated);
+  document.text(generatedDate, marginLeft, 100);
+  
   
   autoTable(document, content);
   return document.save(
