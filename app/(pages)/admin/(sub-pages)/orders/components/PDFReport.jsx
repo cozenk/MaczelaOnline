@@ -62,9 +62,10 @@ const PDFreport = async (reportData, startDate, endDate) => {
   };
   // Header
   document.setFontSize(10);
-  document.text("Order Report", marginLeft, 70);
+  document.text("Maczela Pizza Order Report", marginLeft, 70);
   document.text("Record of Order: ", marginLeft, 100);
-
+  document.text("Print Date:", currentDate);
+  document.text("Printed By: ", user.firstname, user.lastname);
   autoTable(document, content);
   return document.save(
     `Order_Report-${moment(startDate).format("YYYY-MM-DD")}-to-${moment(
