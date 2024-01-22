@@ -7,11 +7,6 @@ const PDFreport = async (reportData, startDate, endDate) => {
   const size = "A4";
   const orientation = "portrait";
   const marginLeft = 10;
-  const today = new Date();
-  const month = today.getMonth()+1;
-  const year = today.getFullYear();
-  const date = today. getDate();
-  const currentDate = month + "/" + date + "/" + year;
   const document = new jsPDF(orientation, unit, size);
 
   const headers = [
@@ -69,8 +64,6 @@ const PDFreport = async (reportData, startDate, endDate) => {
   document.setFontSize(10);
   document.text("Maczela Pizza Order Report", marginLeft, 70);
   document.text("Record of Order: ", marginLeft, 100);
-  document.text("Print Date:", currentDate);
-  document.text("Printed By: ", user.firstname, user.lastname);
   autoTable(document, content);
   return document.save(
     `Order_Report-${moment(startDate).format("YYYY-MM-DD")}-to-${moment(
