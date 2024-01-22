@@ -7,6 +7,11 @@ const PDFreport = async (reportData, startDate, endDate) => {
   const size = "A4";
   const orientation = "portrait";
   const marginLeft = 10;
+  const today = new Date();
+  const month = today.getMonth()+1;
+  const year = today.getFullYear();
+  const date = today. getDate();
+  const currentDate = month + "/" + date + "/" + year;
   const document = new jsPDF(orientation, unit, size);
 
   const headers = [
