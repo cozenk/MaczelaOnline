@@ -2,6 +2,7 @@ import jsPDF from "jspdf";
 import moment from "moment";
 import autoTable from "jspdf-autotable";
 import { formatPrice } from "@utils/formatters";
+import { getCurrentUser } from "@utils/users";
 
 const PDFreport = async (reportData, startDate, endDate) => {
   const unit = "pt";
