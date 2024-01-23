@@ -3,22 +3,22 @@
 import { Button } from "@shared/Button";
 import { CartContext } from "@providers/CartProvider";
 import { priceRegex } from "@utils/regex";
-import {
-  Trash2Icon,
-  MinusIcon,
-  PlusIcon,
-  StickyNoteIcon,
-  PenIcon,
-  TextIcon,
-  PenBoxIcon,
-} from "lucide-react";
+import { Trash2Icon, MinusIcon, PlusIcon } from "lucide-react";
 import Image from "next/image";
 import { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
+import { Popover, PopoverContent, PopoverTrigger } from "@shared/Popover";
+import AddOnsSelection from "./AddOnsSelection";
+import { formatPrice } from "@utils/formatters";
 
 export default function CartItems({ imageSize }) {
-  const { cart, updateCartItem, updateItemTypedQuantity, removeAllCartItems } =
-    useContext(CartContext);
+  const {
+    cart,
+    updateCartItem,
+    updateItemTypedQuantity,
+    updateItemSelectedAddOns,
+    removeAllCartItems,
+  } = useContext(CartContext);
 
   return (
     <div className="cart-items">
@@ -56,6 +56,54 @@ export default function CartItems({ imageSize }) {
                   <span className="variant text-md text-gray-600 dark:text-gray-400">
                     {item.size}
                   </span>
+                  <div>
+                    {item.selectedAddOns.length > 0 ? (
+                      <div className="text-xs text-neutral-500">
+                        <span>Addons:</span>
+                        <ul>
+                          {item.selectedAddOns.map((addOn) => (
+                            <li key={addOn.id}>
+                              - {addOn.label} (+
+                              {formatPrice(addOn.additionalPrice, {
+                                withoutDecimals: true,
+                              })}
+                              )
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          className="-ml-1 flex h-7 items-center gap-1 rounded-full"
+                          variant={"outline"}
+                          size="sm"
+                        >
+                          Add ons <PlusIcon size={16} />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <AddOnsSelection
+                          selectedAddOns={item.selectedAddOns}
+                          onChangeSelectedAddOns={(value, addOn) => {
+                            if (value)
+                              updateItemSelectedAddOns(item.pizzaId, [
+                                ...item.selectedAddOns,
+                                addOn,
+                              ]);
+                            else
+                              updateItemSelectedAddOns(
+                                item.pizzaId,
+                                item.selectedAddOns.filter(
+                                  (selected) => selected.id !== addOn.id,
+                                ),
+                              );
+                          }}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                 </div>
               </div>
 
@@ -63,7 +111,7 @@ export default function CartItems({ imageSize }) {
                 <h2 className="mr-2 text-lg font-medium">
                   {item.displayPrice}
                 </h2>
-                <div className="quantity-control flex w-28 items-center justify-between rounded-full border border-black px-2 py-1 dark:border-white">
+                <div className="quantity-control flex w-24 items-center justify-between rounded-full border border-black px-2 py-1 dark:border-white">
                   <MinusIcon
                     onClick={() => {
                       if (item.quantity === 1) {

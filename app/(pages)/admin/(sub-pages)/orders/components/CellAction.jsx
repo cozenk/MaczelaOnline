@@ -54,6 +54,24 @@ export const CellAction = ({ row = null }) => {
       showUpdateOrder: false,
     }));
 
+  const calculatePriceWithAddOns = (item) => {
+    const addonsString = item.add_ons;
+
+    const regex = /\(\+₱(\d+)\)/g;
+    const prices = [];
+    let match;
+
+    while ((match = regex.exec(addonsString)) !== null) {
+      prices.push(parseInt(match[1], 10));
+    }
+
+    return (
+      parseFloat(item.price) +
+      prices.reduce((total, addon) => total + addon, 0) +
+      50
+    );
+  };
+
   return (
     <>
       <Modal show={modals.showOrderItems} onClose={closeOrderItemsModal}>
@@ -80,15 +98,22 @@ export const CellAction = ({ row = null }) => {
                   height={100}
                   className="h-[5rem] w-[5rem] rounded-md object-cover"
                 />
-                <div className="flex gap-x-4">
+                <div className="flex gap-x-4 text-base">
                   <h2>
                     {item.name} ({item.size})
                   </h2>
                   <span>{formatPrice(item.price)}</span>
                   <span>x{item.quantity}</span>
                 </div>
+                {item.add_ons?.length > 0 ? (
+                  <p className="whitespace-pre text-sm">{item.add_ons}</p>
+                ) : null}
               </div>
-              <div>{formatPrice(item.price * item.quantity)}</div>
+              <div>
+                {item.add_ons?.length
+                  ? formatPrice(calculatePriceWithAddOns(item))
+                  : formatPrice(item.price * item.quantity)}
+              </div>
             </div>
           ))}
         </div>

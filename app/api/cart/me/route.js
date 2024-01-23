@@ -13,6 +13,7 @@ export async function GET() {
     price: Number(item.price),
     size: item.size,
     typedQuantity: null,
+    selectedAddOns: [],
   }));
 
   return NextResponse.json({ id: cart.id, cartItems });

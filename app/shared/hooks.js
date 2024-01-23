@@ -14,6 +14,7 @@ export function useGetAllUsers() {
   } = useQuery({
     queryKey: ["users"],
     queryFn: fetchAllUser,
+    retry: 3,
   });
 
   return { users, isLoading, error };
@@ -31,6 +32,7 @@ export function useCurrentUser() {
   } = useQuery({
     queryKey: ["current-user"],
     queryFn: fetchCurrentUser,
+    retry: false,
   });
 
   return { user, isLoading, error };
@@ -48,6 +50,7 @@ export function useGetUserById(userId = null) {
   } = useQuery({
     queryKey: ["user", userId],
     queryFn: fetchUserById,
+    retry: 3,
   });
 
   return { user, isLoading, error };
