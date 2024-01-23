@@ -46,7 +46,7 @@ export default function OrderNotes() {
       {showEditor ? (
         <>
           <div className="notes">
-            <h3>Order notes: </h3>
+            <h3>PWD/Senior Citizen Card No: </h3>
             <input
               id="notes"
               name="notes"
@@ -59,7 +59,7 @@ export default function OrderNotes() {
               contentEditable={!isSaved}
               ref={editorRef}
             >
-              Your request here
+              Input your ID Number For 20% Discount!
             </p>
           </div>
           <Button
@@ -89,7 +89,7 @@ export default function OrderNotes() {
           variant="outline"
           className="mb-5 flex w-full items-center gap-2"
         >
-          Add notes <PenBoxIcon size={16} />{" "}
+          Add Your ID Number to avail 20% Discount <PenBoxIcon size={16} />{" "}
         </Button>
       )}
     </div>
