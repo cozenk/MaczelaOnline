@@ -6,11 +6,13 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "(pages)/admin/components/ui/hover-card";
+import { useCurrentUser } from "@shared/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { formatPrice } from "@utils/formatters";
 import Link from "next/link";
 
 export default function OrderTracker({ className = "" }) {
+  const { user } = useCurrentUser();
   const { data: recentOrder, isLoading } = useQuery({
     queryKey: ["my-recent-order"],
     queryFn: async () => {
@@ -22,6 +24,7 @@ export default function OrderTracker({ className = "" }) {
     },
     refetchInterval: 3000,
     refetchOnWindowFocus: false,
+    enabled: !!user,
   });
 
   const getVariant = () => {

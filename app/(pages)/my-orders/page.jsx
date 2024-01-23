@@ -17,6 +17,24 @@ export default async function Orders({ searchParams }) {
     0,
   );
 
+  const calculatePriceWithAddOns = (item) => {
+    const addonsString = item.add_ons;
+
+    const regex = /\(\+₱(\d+)\)/g;
+    const prices = [];
+    let match;
+
+    while ((match = regex.exec(addonsString)) !== null) {
+      prices.push(parseInt(match[1], 10));
+    }
+
+    return (
+      parseFloat(item.price) +
+      prices.reduce((total, addon) => total + addon, 0) +
+      50
+    );
+  };
+
   return (
     <div className="overflow-y-auto  px-10 pb-16 pt-10 lg:h-[100vh] lg:px-28">
       <div className="flex w-full items-center justify-between">
@@ -112,26 +130,30 @@ export default async function Orders({ searchParams }) {
                       </Link>
                     </div>
                     <div className="item-info flex flex-col gap-1">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between gap-10">
                         <span className="font-semibold">{item.name}</span>{" "}
                         <span className="text-gray-600">
                           {item.size || 'Medium 10"'}
                         </span>
-                      </div>
-                      <div className="flex items-center justify-between">
                         <div className="price-quantity">
                           {formatPrice(item.price)}{" "}
                           <span className="ml-2 text-gray-600">
                             x{item.quantity}
                           </span>
                         </div>
-                        <div className="total">
-                          Total:{" "}
-                          <span className="font-semibold text-green-700 dark:text-green-500">
-                            {formatPrice(item.quantity * item.price)}
-                          </span>
-                        </div>
                       </div>
+                      {item.add_ons?.length > 0 ? (
+                        <p className="whitespace-pre text-sm">{item.add_ons}</p>
+                      ) : null}
+                      <div className="flex items-center justify-between"></div>
+                    </div>
+                    <div className="total">
+                      Total:{" "}
+                      <span className="font-semibold text-green-700 dark:text-green-500">
+                        {item.add_ons?.length
+                          ? formatPrice(calculatePriceWithAddOns(item))
+                          : formatPrice(item.price * item.quantity)}
+                      </span>
                     </div>
                   </div>
                 ))}

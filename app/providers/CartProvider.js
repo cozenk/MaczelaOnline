@@ -28,9 +28,19 @@ export default function CartProvider({ children }) {
   });
   const backendCartMutation = useBackendCartMutation();
 
+  const computePriceWithAddOns = (item) => {
+    return (
+      parseFloat(item.price) +
+      item.selectedAddOns.reduce(
+        (total, addOn) => total + addOn.additionalPrice,
+        0,
+      )
+    );
+  };
+
   const computedCart = useMemo(() => {
     const totalPrice = cart.cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => (total + computePriceWithAddOns(item)) * item.quantity,
       0,
     );
 
@@ -38,7 +48,7 @@ export default function CartProvider({ children }) {
       ...cart,
       cartItems: cart.cartItems.map((item) => ({
         ...item,
-        displayPrice: formatPrice(item.price),
+        displayPrice: formatPrice(computePriceWithAddOns(item)),
       })),
       totalItems: cart.cartItems.reduce(
         (total, item) => total + item.quantity,
@@ -81,6 +91,7 @@ export default function CartProvider({ children }) {
         imageAlt,
         size,
         typedQuantity: null,
+        selectedAddOns: [],
       };
 
       setCart((cart) => ({
@@ -132,6 +143,23 @@ export default function CartProvider({ children }) {
     }));
   };
 
+  const updateItemSelectedAddOns = (pizzaId, selectedAddOns = []) => {
+    const updatedCartItems = cart.cartItems.map((item) => {
+      if (item.pizzaId === pizzaId)
+        return {
+          ...item,
+          selectedAddOns,
+        };
+
+      return item;
+    });
+
+    setCart((cart) => ({
+      ...cart,
+      cartItems: updatedCartItems,
+    }));
+  };
+
   const resetClientCart = () => {
     setCart(initialState);
     setLocalStorageItem("cart", initialState);
@@ -166,6 +194,7 @@ export default function CartProvider({ children }) {
         closeCartMenu,
         resetClientCart,
         updateItemTypedQuantity,
+        updateItemSelectedAddOns,
         getPizzaById,
         removeAllCartItems,
         removeCartItemById,

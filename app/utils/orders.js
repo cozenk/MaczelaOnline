@@ -198,7 +198,7 @@ export async function createOrderItems(orderId, orderItems) {
     return escapedSingleQuotes;
   };
 
-  const query = `INSERT INTO order_items (order_id, pizza_id, name, price, size, quantity, image_url)
+  const query = `INSERT INTO order_items (order_id, pizza_id, name, price, size, quantity, image_url, add_ons)
 VALUES
 ${orderItems.map(
   (item) =>
@@ -206,7 +206,13 @@ ${orderItems.map(
       extractPizzaId(item.pizzaId) || item.pizzaId
     }', '${escapeQuotes(item.name)}', ${item.price}, '${item.size}', ${
       item.quantity
-    }, '${item.imageSrc}')
+    }, '${item.imageSrc}', '${
+      item.selectedAddOns.length
+        ? `Addons: \n${item.selectedAddOns
+            .map((addon) => `- ${addon.label} (+₱${addon.additionalPrice})`)
+            .join("\n")}`
+        : ""
+    }')
 `,
 )} RETURNING *;`;
 
