@@ -124,7 +124,7 @@ export const columns = [
   },
   {
     accessorKey: "notes",
-    header: "Notes",
+    header: "ID Number",
     cell: ({ row }) => {
       return row.getValue("notes") ? (
         <span className="italic">"{row.getValue("notes")}"</span>
