@@ -94,7 +94,7 @@ export default async function Orders({ searchParams }) {
                   </div>
                   <div>
                     <label className="text-gray-500 dark:text-gray-400">
-                      Notes:{" "}
+                      ID Number:{" "}
                     </label>
                     <span className="italic">"{order.notes}"</span>
                   </div>
