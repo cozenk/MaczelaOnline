@@ -6,6 +6,8 @@ import { updateSubTextAction } from "./actions";
 import { PencilIcon } from "lucide-react";
 import { toast } from "@shared/use-toast";
 
+const allowedRoles = ["ADMIN", "STAFF"];
+
 export default function SubText({ initialText = "" }) {
   const { isLoading, user } = useCurrentUser();
 
@@ -20,12 +22,25 @@ export default function SubText({ initialText = "" }) {
     onSaveText: async (newText) => {
       await updateSubTextAction(newText);
 
-      toast({
-        title: "New sub-text saved!",
-        description: `"${newText}"`,
-      });
+      if (!newText) {
+        toast({
+          title: "Using the default sub-text!",
+        });
+      } else
+        toast({
+          title: "New sub-text saved!",
+          description: `"${newText}"`,
+        });
     },
   });
+
+  const defaultText = (
+    <>
+      One of the <span className="text-red-600">BEST PIZZA</span> in Marikina
+      since 2010. <br />
+      With all over 12 branches nationwide!
+    </>
+  );
 
   if (isLoading) return null;
 
@@ -47,31 +62,15 @@ export default function SubText({ initialText = "" }) {
             }
           }}
         >
-          {initialText ? (
-            initialText
-          ) : (
-            <>
-              One of the <span className="text-red-600">BEST PIZZA</span> in
-              Marikina since 2010. <br />
-              With all over 12 branches nationwide!
-            </>
-          )}
+          {initialText ? initialText : defaultText}
         </p>
       ) : (
         <p
           onMouseEnter={(e) => {
-            if (user?.role === "ADMIN") setShowEditOverlay(true);
+            if (allowedRoles.includes(user?.role)) setShowEditOverlay(true);
           }}
         >
-          {initialText ? (
-            initialText
-          ) : (
-            <>
-              One of the <span className="text-red-600">BEST PIZZA</span> in
-              Marikina since 2010. <br />
-              With all over 12 branches nationwide!
-            </>
-          )}
+          {initialText ? initialText : defaultText}
         </p>
       )}
 

@@ -41,7 +41,7 @@ export default async function Nav() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 flex items-center gap-4 p-1.5">
+          <Link href="#" className="-m-1.5 flex items-center gap-4 p-1.5">
             <span className="sr-only">Your Company</span>
             <Image
               src={icon}
@@ -53,7 +53,7 @@ export default async function Nav() {
             <span className="text-xl font-bold  dark:text-white md:text-2xl lg:text-3xl">
               Maczela's <span className="text-red-600">Pizza</span>
             </span>
-          </a>
+          </Link>
         </div>
         <Bars />
         <div className="hidden md:flex md:gap-x-12">

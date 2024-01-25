@@ -6,6 +6,8 @@ import { useCurrentUser } from "@shared/hooks";
 import { updateMainTextAction } from "./actions";
 import { toast } from "@shared/use-toast";
 
+const allowedRoles = ["ADMIN", "STAFF"];
+
 export default function MainText({ initialText = "" }) {
   const { isLoading, user } = useCurrentUser();
 
@@ -20,18 +22,30 @@ export default function MainText({ initialText = "" }) {
     onSaveText: async (newText) => {
       await updateMainTextAction(newText);
 
-      toast({
-        title: "New main-text saved!",
-        description: `"${newText}"`,
-      });
+      if (!newText) {
+        toast({
+          title: "Using the default main-text!",
+        });
+      } else
+        toast({
+          title: "New main-text saved!",
+          description: `"${newText}"`,
+        });
     },
   });
+
+  const defaultText = (
+    <div className="space-x-4">
+      <span>Garantisadong fresh na may</span>
+      <span className="text-red-500">pagmamahal ♥️</span>
+    </div>
+  );
 
   if (isLoading) return null;
 
   return (
     <div
-      className={`relative mb-10 w-full text-center text-5xl font-bold tracking-tight dark:text-white  md:text-left md:text-7xl`}
+      className={`relative mb-10 w-full text-center text-4xl font-bold tracking-tight dark:text-white  md:text-left md:text-6xl`}
     >
       {editable ? (
         <h1
@@ -48,29 +62,15 @@ export default function MainText({ initialText = "" }) {
             }
           }}
         >
-          {initialText ? (
-            initialText
-          ) : (
-            <>
-              Garantisadong fresh na may{" "}
-              <span className="text-red-500">pagmamahal ♥️</span>
-            </>
-          )}
+          {initialText ? initialText : defaultText}
         </h1>
       ) : (
         <h1
           onMouseEnter={(e) => {
-            if (user?.role === "ADMIN") setShowEditOverlay(true);
+            if (allowedRoles.includes(user?.role)) setShowEditOverlay(true);
           }}
         >
-          {initialText ? (
-            initialText
-          ) : (
-            <>
-              Garantisadong fresh na may{" "}
-              <span className="text-red-500">pagmamahal ♥️</span>
-            </>
-          )}
+          {initialText ? initialText : defaultText}
         </h1>
       )}
 

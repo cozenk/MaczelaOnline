@@ -38,6 +38,15 @@ export async function updateMainText(newMainText = "") {
     }
 
     throw new Error("Can't update main_text");
+  } else {
+    const query = `INSERT INTO hero_content(main_text) VALUES($1) RETURNING *`;
+    const data = [newMainText];
+
+    const { rows } = await sql.query(query, data);
+
+    if (rows.length) {
+      return rows[0];
+    }
   }
 
   return null;
@@ -59,6 +68,15 @@ export async function updateSubText(newSubText = "") {
     }
 
     throw new Error("Can't update sub_text");
+  } else {
+    const query = `INSERT INTO hero_content(sub_text) VALUES($1) RETURNING *`;
+    const data = [newSubText];
+
+    const { rows } = await sql.query(query, data);
+
+    if (rows.length) {
+      return rows[0];
+    }
   }
 
   return null;
