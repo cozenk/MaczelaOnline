@@ -1,7 +1,5 @@
 import MobileMenu from "./MobileMenu";
-import Image from "next/image";
 import UserAuth from "./UserAuth";
-import icon from "@assets/icon.png";
 import Bars from "./Bars";
 import { Suspense } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -14,6 +12,9 @@ import {
   TwitterIcon,
 } from "lucide-react";
 import Link from "next/link";
+import { getBrandIcon } from "@utils/cms";
+import BrandIcon from "./BrandIcon";
+import { updateBrandIconAction } from "components/Hero/actions";
 
 const socials = [
   {
@@ -34,6 +35,8 @@ const socials = [
 ];
 
 export default async function Nav() {
+  const brandIcon = await getBrandIcon();
+
   return (
     <>
       <nav
@@ -41,19 +44,16 @@ export default async function Nav() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 flex items-center gap-4 p-1.5">
+          <Link href="#" className="-m-1.5 flex items-center gap-4 p-1.5">
             <span className="sr-only">Your Company</span>
-            <Image
-              src={icon}
-              width={35}
-              height={35}
-              alt="brand icon"
-              className="md:scale-150"
+            <BrandIcon
+              cmsBrandIcon={brandIcon}
+              setCmsBrandIcon={updateBrandIconAction}
             />
             <span className="text-xl font-bold  dark:text-white md:text-2xl lg:text-3xl">
               Maczela's <span className="text-red-600">Pizza</span>
             </span>
-          </a>
+          </Link>
         </div>
         <Bars />
         <div className="hidden md:flex md:gap-x-12">
@@ -140,6 +140,8 @@ export default async function Nav() {
       <MobileMenu
         socials={socials}
         userAuth={<UserAuth cartStyles="!mt-5" />}
+        cmsBrandIcon={brandIcon}
+        setCmsBrandIcon={updateBrandIconAction}
       />
     </>
   );

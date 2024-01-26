@@ -1,9 +1,6 @@
 "use client";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import UserAuth from "./UserAuth";
-import icon from "@assets/icon.png";
 import SlideMenu from "./SlideMenu";
 import { useContext, useEffect } from "react";
 import { NavContext } from "@providers/NavProvider";
@@ -11,8 +8,15 @@ import { CartContext } from "@providers/CartProvider";
 import { Button } from "@shared/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@shared/Popover";
 import { MapPinnedIcon, PhoneIcon } from "lucide-react";
+import BrandIcon from "./BrandIcon";
+import Link from "next/link";
 
-export default function MobileMenu({ socials = [], userAuth = null }) {
+export default function MobileMenu({
+  socials = [],
+  userAuth = null,
+  cmsBrandIcon = "",
+  setCmsBrandIcon = async () => {},
+}) {
   const { cart } = useContext(CartContext);
   const { mobileMenuOpen, closeMobileMenu } = useContext(NavContext);
 
@@ -27,13 +31,16 @@ export default function MobileMenu({ socials = [], userAuth = null }) {
       menuStyles="overflow-x-visible"
     >
       <div className="flex items-center justify-between gap-x-20">
-        <a href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
+        <Link href="#" className="-m-1.5 flex items-center gap-2 p-1.5">
           <span className="sr-only">Your Company</span>
-          <Image src={icon} width={35} height={35} alt="brand icon" />
+          <BrandIcon
+            cmsBrandIcon={cmsBrandIcon}
+            setCmsBrandIcon={setCmsBrandIcon}
+          />
           <span className="text-xl font-bold ">
             Maczela's <span className="text-red-600">Pizza</span>
           </span>
-        </a>
+        </Link>
         <Button className="-mr-2" variant="ghost" onClick={closeMobileMenu}>
           <span className="sr-only">Close menu</span>
           <XMarkIcon className="h-6 w-6" aria-hidden="true" />

@@ -4,12 +4,14 @@ import tomatos from "@assets/tomatos.png";
 import pizzaHero from "@assets/pizza-hero.png";
 import ActionButtons from "./ActionButtons";
 import MainText from "./MainText";
-import { getMainText, getSubText } from "@utils/hero_content";
+import { getHeroMainText, getHeroSubText } from "@utils/cms";
 import SubText from "./SubText";
+import BgEditButton from "./BgEditButton";
+import { updateHomeBgUrlAction } from "./actions";
 
 export default async function Hero() {
-  const mainText = await getMainText();
-  const subText = await getSubText();
+  const mainText = await getHeroMainText();
+  const subText = await getHeroSubText();
 
   return (
     <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -59,6 +61,8 @@ export default async function Hero() {
         alt="hero image of a tomato"
         className="absolute bottom-0 right-0 w-52 translate-x-[30%] translate-y-[30%]"
       />
+
+      {/* <BgEditButton setHomeBgUrl={updateHomeBgUrlAction} /> */}
 
       {/* <div
           className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
