@@ -4,12 +4,17 @@ import Nav from "@shared/Navigation/Nav";
 import OrderTracker from "components/OrderTracker";
 import OperationInfoBanner from "@shared/OperationInfoBanner";
 import { getPizzasByCategory } from "@utils/pizza";
+import { getHomeBgUrl } from "@utils/cms";
 
 export default async function Home() {
   const bestSellerPizzas = await getPizzasByCategory("Best sellers");
 
+  const homeBgUrl = await getHomeBgUrl();
+
   return (
-    <main className="overflow-x-hidden bg-[url('/pattern-light.png')] bg-[length:70rem_41rem] bg-center bg-repeat dark:bg-[url('/pattern-dark.png')]">
+    <main
+      className={`overflow-x-hidden  bg-[length:70rem_41rem] bg-center bg-repeat dark:bg-[url('/pattern-dark.png')]`}
+    >
       <OperationInfoBanner className="translate-y-[calc(0%+83px)] " />
       <header className="absolute inset-x-0 top-0 z-50">
         <Nav />

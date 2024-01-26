@@ -3,7 +3,7 @@
 import { PencilIcon } from "lucide-react";
 import { useEditable } from "./hooks";
 import { useCurrentUser } from "@shared/hooks";
-import { updateMainTextAction } from "./actions";
+import { updateHeroMainTextAction } from "./actions";
 import { toast } from "@shared/use-toast";
 
 const allowedRoles = ["ADMIN", "STAFF"];
@@ -20,7 +20,7 @@ export default function MainText({ initialText = "" }) {
     editableElementRef,
   } = useEditable({
     onSaveText: async (newText) => {
-      await updateMainTextAction(newText);
+      await updateHeroMainTextAction(newText);
 
       if (!newText) {
         toast({

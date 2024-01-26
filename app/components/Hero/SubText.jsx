@@ -2,7 +2,7 @@
 
 import { useCurrentUser } from "@shared/hooks";
 import { useEditable } from "./hooks";
-import { updateSubTextAction } from "./actions";
+import { updateHeroSubTextAction } from "./actions";
 import { PencilIcon } from "lucide-react";
 import { toast } from "@shared/use-toast";
 
@@ -20,7 +20,7 @@ export default function SubText({ initialText = "" }) {
     editableElementRef,
   } = useEditable({
     onSaveText: async (newText) => {
-      await updateSubTextAction(newText);
+      await updateHeroSubTextAction(newText);
 
       if (!newText) {
         toast({

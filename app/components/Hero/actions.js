@@ -1,14 +1,29 @@
 "use server";
 
-import { updateMainText, updateSubText } from "@utils/hero_content";
+import {
+  updateBrandIcon,
+  updateHeroMainText,
+  updateHeroSubText,
+  updateHomeBgUrl,
+} from "@utils/cms";
 import { revalidatePath } from "next/cache";
 
-export const updateMainTextAction = async (newMainText = "") => {
-  await updateMainText(newMainText);
+export const updateHeroMainTextAction = async (newMainText = "") => {
+  await updateHeroMainText(newMainText);
   revalidatePath("/");
 };
 
-export const updateSubTextAction = async (newSubText = "") => {
-  await updateSubText(newSubText);
+export const updateHeroSubTextAction = async (newSubText = "") => {
+  await updateHeroSubText(newSubText);
+  revalidatePath("/");
+};
+
+export const updateBrandIconAction = async (newBrandIcon = "") => {
+  await updateBrandIcon(newBrandIcon);
+  revalidatePath("/");
+};
+
+export const updateHomeBgUrlAction = async (newHomeBgUrl = "") => {
+  await updateHomeBgUrl(newHomeBgUrl);
   revalidatePath("/");
 };
